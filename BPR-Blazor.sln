@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BPR-Blazor", "BPR-Blazor\BPR-Blazor.csproj", "{5F32A2A0-5DDB-4F24-9A04-9B50385E6A48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BPR-API", "BPR-API\BPR-API.csproj", "{32F3AD06-0BDB-499D-885A-C2C5A2291441}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BPR-API", "BPR-API\BPR-API.csproj", "{32F3AD06-0BDB-499D-885A-C2C5A2291441}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
