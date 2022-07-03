@@ -14,7 +14,8 @@ namespace BPR_Blazor.Data
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var user = JsonConvert.DeserializeObject<User>(json);
+                    //var user = JsonConvert.DeserializeObject<User>(json);
+                    var user = new User("a", 1, "a", "a", new DateTime(100), null);
                     return user;
                 }
                 else
@@ -42,7 +43,7 @@ namespace BPR_Blazor.Data
             //        throw new Exception(response.ReasonPhrase);
             //    }
             //}
-            return null;
+            return true;
         }
     }
 }

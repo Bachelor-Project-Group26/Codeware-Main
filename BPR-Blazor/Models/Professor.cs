@@ -2,7 +2,7 @@
 {
     public class Professor : User
     {
-        public Professor(string username, string password, string name, string email, DateTime birthday, Chat[] chats) : base(username, password, name, email, birthday, chats)
+        public Professor(string username, int securityLevel, string name, string email, DateTime birthday, Chat[] chats) : base(username, securityLevel, name, email, birthday, chats)
         {
         }
     }
