@@ -1,5 +1,6 @@
 ﻿using BPR_API.DBAccess;
-using BPR_API.Models;
+using BPR_API.DBModels;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace BPR_API.Controllers
@@ -10,24 +11,43 @@ namespace BPR_API.Controllers
     {
         [HttpGet]
         [Route("/user")]
-        public Task<string> Login(string username, string password)
+        public async Task<string> Login(string username, string password)
         {
-            return null;
+            using (DatabaseContext dbContext = new DatabaseContext())
+            {
+                var dbPassword = dbContext.Passwords.FirstOrDefault(p => p.Username == username);
+                if (dbPassword == null) return "Username not found!";
+                string hash = GenerateHash(password, dbPassword.Salt);
+                if (hash.Equals(dbPassword.Hash)) return "User logged in successfully!";
+            }
+            return "Wrong password!";
         }
 
         [HttpPost]
         [Route("/user")]
-        public async Task<string> Register(string username, string password)
+        public async Task<int> Register([FromBody] UserWithPassword userWithPassword)
         {
-            string salt = GenerateSalt(5);
-            string hash = GenerateHash(password, salt);
-            Password newPassword = new Password(username, hash, salt);
-            using(DBContext dbContext = new DBContext())
+            using (DatabaseContext dbContext = new DatabaseContext())
             {
+                var dbPassword = dbContext.Passwords.FirstOrDefault(p => p.Username == userWithPassword.Username);
+                var dbUser = dbContext.Users.FirstOrDefault(u => u.Username == userWithPassword.Username);
+                if (dbPassword != null | dbUser != null) return 400;
+            }
+
+            User user = new User();
+
+            string salt = GenerateSalt(5);
+            string hash = GenerateHash(userWithPassword.Password, salt);
+            Password newPassword = new Password(userWithPassword.Password, hash, salt);
+
+            using (DatabaseContext dbContext = new DatabaseContext())
+            {
+                await dbContext.Users.AddAsync(user);
                 await dbContext.Passwords.AddAsync(newPassword);
                 await dbContext.SaveChangesAsync();
             }
-            return null;
+
+            return 201;
         }
 
         private string GenerateSalt(int size)
@@ -41,7 +61,7 @@ namespace BPR_API.Controllers
         private string GenerateHash(string password, string salt)
         {
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(password + salt);
-            System.Security.Cryptography.SHA256Managed sha256hashstring = 
+            System.Security.Cryptography.SHA256Managed sha256hashstring =
                 new System.Security.Cryptography.SHA256Managed();
             byte[] hash = sha256hashstring.ComputeHash(bytes);
             return System.Text.Encoding.UTF8.GetString(hash, 0, hash.Length);

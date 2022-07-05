@@ -1,19 +1,18 @@
 ﻿namespace BPR_Blazor.Models
 {
-    [Serializable]
-    public class User : Followable
+    public class UserWithPassword
     {
-        public int UserId { get; set; }
         public string Username { get; set; }
+        public string Password { get; set; }
         public int SecurityLevel { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public DateTime Birthday { get; set; }
 
-        public User(int userId, string username, int securityLevel, string name, string email, DateTime birthday)
+        public UserWithPassword(string username, string password, int securityLevel, string name, string email, DateTime birthday)
         {
-            UserId = userId;
             Username = username;
+            Password = password;
             SecurityLevel = securityLevel;
             Name = name;
             Email = email;

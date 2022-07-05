@@ -1,4 +1,4 @@
-﻿namespace BPR_API.Models
+﻿namespace BPR_API.DBModels
 {
     public class Password
     {
