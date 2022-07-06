@@ -25,3 +25,13 @@ C:\Users\javic\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\refint\BPR-API.d
 C:\Users\javic\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.pdb
 C:\Users\javic\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.genruntimeconfig.cache
 C:\Users\javic\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\ref\BPR-API.dll
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.csproj.AssemblyReference.cache
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.AssemblyInfoInputs.cache
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.AssemblyInfo.cs
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.csproj.CoreCompileInputs.cache
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.dll
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\refint\BPR-API.dll
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\obj\Debug\net6.0\BPR-API.pdb

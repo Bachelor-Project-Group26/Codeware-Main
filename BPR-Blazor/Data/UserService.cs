@@ -10,7 +10,10 @@ namespace BPR_Blazor.Data
 
         public static async Task<User> Login(string username, string password)
         {
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync($"{url}/user?username={username}&password={password}"))
+            UserWithPassword userWithPassword = new UserWithPassword(username, password);
+            string jsonUserWithPassword = Newtonsoft.Json.JsonConvert.SerializeObject(userWithPassword);
+            StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PatchAsync($"{url}/login"))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -30,7 +33,7 @@ namespace BPR_Blazor.Data
             UserWithPassword userWithPassword = new UserWithPassword(username, password, securityLevel, name, email, birthday);
             string jsonUserWithPassword = Newtonsoft.Json.JsonConvert.SerializeObject(userWithPassword);
             StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/user", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/register", content))
             {
                 if (response.IsSuccessStatusCode)
                 {

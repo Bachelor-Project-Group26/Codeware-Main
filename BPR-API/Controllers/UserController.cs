@@ -2,6 +2,9 @@
 using BPR_API.DBModels;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace BPR_API.Controllers
 {
@@ -9,29 +12,53 @@ namespace BPR_API.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        [HttpGet]
-        [Route("/user")]
-        public async Task<string> Login(string username, string password)
+        private readonly IConfiguration _configuration;
+
+        public UserController(IConfiguration configuration) {
+            _configuration = configuration;
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> Login([FromBody] UserWithPassword userWithPassword)
         {
             using (DatabaseContext dbContext = new DatabaseContext())
             {
-                var dbPassword = dbContext.Passwords.FirstOrDefault(p => p.Username == username);
-                if (dbPassword == null) return "Username not found!";
-                string hash = GenerateHash(password, dbPassword.Salt);
-                if (hash.Equals(dbPassword.Hash)) return "User logged in successfully!";
+                var dbPassword = dbContext.Passwords.FirstOrDefault(p => p.Username == userWithPassword.Username);
+                if (dbPassword == null) return BadRequest("Username not found!");
+                string hash = GenerateHash(userWithPassword.Password, dbPassword.Salt);
+                if (hash.Equals(dbPassword.Hash)) return Ok(CreateToken(userWithPassword));
             }
-            return "Wrong password!";
+            return BadRequest("Wrong password!");
         }
 
-        [HttpPost]
-        [Route("/user")]
-        public async Task<int> Register([FromBody] UserWithPassword userWithPassword)
+        private string CreateToken(UserWithPassword user)
+        {
+            List<Claim> claims = new List<Claim>
+            {               
+                new Claim(ClaimTypes.Name, user.Username)
+            };
+
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+                _configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: creds);
+            
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<string>> Register([FromBody] UserWithPassword userWithPassword)
         {
             using (DatabaseContext dbContext = new DatabaseContext())
             {
                 var dbPassword = dbContext.Passwords.FirstOrDefault(p => p.Username == userWithPassword.Username);
                 var dbUser = dbContext.Users.FirstOrDefault(u => u.Username == userWithPassword.Username);
-                if (dbPassword != null | dbUser != null) return 400;
+                if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
             }
 
             User user = new User();
@@ -47,7 +74,7 @@ namespace BPR_API.Controllers
                 await dbContext.SaveChangesAsync();
             }
 
-            return 201;
+            return Ok("User created!");
         }
 
         private string GenerateSalt(int size)
