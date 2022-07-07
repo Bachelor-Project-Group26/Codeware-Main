@@ -1,6 +1,6 @@
 ﻿namespace BPR_Blazor.Models
 {
-    public class Subject : Followable
+    public class Subject
     {
     }
 }

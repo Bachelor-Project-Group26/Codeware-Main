@@ -1,4 +1,4 @@
-﻿namespace BPR_API.DBModels
+﻿namespace BPR_API.APIModels
 {
     [Serializable]
     public class UserWithPassword

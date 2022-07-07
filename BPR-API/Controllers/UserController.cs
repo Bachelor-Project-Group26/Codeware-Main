@@ -1,4 +1,5 @@
-﻿using BPR_API.DBAccess;
+﻿using BPR_API.APIModels;
+using BPR_API.DBAccess;
 using BPR_API.DBModels;
 
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace BPR_API.Controllers
         {
             using (DatabaseContext dbContext = new DatabaseContext())
             {
-                var dbPassword = dbContext.Passwords.FirstOrDefault(p => p.Username == userWithPassword.Username);
+                var dbPassword = dbContext.Users.FirstOrDefault(p => p.Username == userWithPassword.Username);
                 if (dbPassword == null) return BadRequest("Username not found!");
                 string hash = GenerateHash(userWithPassword.Password, dbPassword.Salt);
                 if (hash.Equals(dbPassword.Hash)) return Ok(CreateToken(userWithPassword));
@@ -56,21 +57,21 @@ namespace BPR_API.Controllers
         {
             using (DatabaseContext dbContext = new DatabaseContext())
             {
-                var dbPassword = dbContext.Passwords.FirstOrDefault(p => p.Username == userWithPassword.Username);
-                var dbUser = dbContext.Users.FirstOrDefault(u => u.Username == userWithPassword.Username);
+                var dbPassword = dbContext.Users.FirstOrDefault(p => p.Username == userWithPassword.Username);
+                var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == userWithPassword.Username);
                 if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
             }
 
-            User user = new User();
+            UserDetails user = new UserDetails();
 
             string salt = GenerateSalt(5);
             string hash = GenerateHash(userWithPassword.Password, salt);
-            Password newPassword = new Password(userWithPassword.Password, hash, salt);
+            User newPassword = new User(userWithPassword.Password, hash, salt);
 
             using (DatabaseContext dbContext = new DatabaseContext())
             {
-                await dbContext.Users.AddAsync(user);
-                await dbContext.Passwords.AddAsync(newPassword);
+                await dbContext.UserDetails.AddAsync(user);
+                await dbContext.Users.AddAsync(newPassword);
                 await dbContext.SaveChangesAsync();
             }
 

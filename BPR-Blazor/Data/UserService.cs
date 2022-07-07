@@ -1,4 +1,5 @@
 ﻿using BPR_Blazor.Models;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -8,17 +9,17 @@ namespace BPR_Blazor.Data
     {
         private static readonly string url = "http://localhost:8080";
 
-        public static async Task<User> Login(string username, string password)
+        public static async Task<UserDetails> Login(string username, string password)
         {
             UserWithPassword userWithPassword = new UserWithPassword(username, password);
             string jsonUserWithPassword = Newtonsoft.Json.JsonConvert.SerializeObject(userWithPassword);
             StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PatchAsync($"{url}/login"))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/login", content))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var user = JsonConvert.DeserializeObject<User>(json);
+                    var user = JsonConvert.DeserializeObject<UserDetails>(json);
                     return user;
                 }
                 else
@@ -28,9 +29,9 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public static async Task<string> Register(string username, string password, int securityLevel, string name, string email, DateTime birthday)
+        public static async Task<string> Register(string username, string password)
         {
-            UserWithPassword userWithPassword = new UserWithPassword(username, password, securityLevel, name, email, birthday);
+            UserWithPassword userWithPassword = new UserWithPassword(username, password);
             string jsonUserWithPassword = Newtonsoft.Json.JsonConvert.SerializeObject(userWithPassword);
             StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/register", content))
@@ -38,13 +39,13 @@ namespace BPR_Blazor.Data
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var integer = JsonConvert.DeserializeObject<int>(json);
-                    switch(integer)
+                    var deserializedResponse = JsonConvert.DeserializeObject<ActionResult<string>>(json);
+                    switch(deserializedResponse)
                     {
-                        case 201: // Created
-                            return "User created!";
-                        case 400: // Bad request
-                            return "User already exits!";
+                        //case 201: // Created
+                        //    return "User created!";
+                        //case 400: // Bad request
+                        //    return "User already exits!";
                         default:
                             return "There was an issue in the server!";
                     }
@@ -54,6 +55,11 @@ namespace BPR_Blazor.Data
                     throw new Exception(response.ReasonPhrase);
                 }
             }
+        }
+
+        public static async Task<string> UpdateUser()
+        {
+            return "";
         }
     }
 }

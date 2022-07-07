@@ -1,12 +1,23 @@
-﻿namespace BPR_API.DBModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BPR_API.DBModels
 {
     public class User
     {
-        public int UserId { get; set; }
+        [Key]
+        public int Id { get; set; }
+        [Required]
         public string Username { get; set; }
-        public int SecurityLevel { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public DateTime Birthday { get; set; }
+        [Required]
+        public string Hash { get; set; }
+        [Required]
+        public string Salt { get; set; }
+
+        public User(string username, string hash, string salt)
+        {
+            Username = username;
+            Hash = hash;
+            Salt = salt;
+        }
     }
 }
