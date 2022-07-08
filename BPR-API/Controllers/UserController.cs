@@ -55,12 +55,12 @@ namespace BPR_API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<string>> Register([FromBody] UserWithPassword userWithPassword)
         {
-            //using (DatabaseContext dbContext = new DatabaseContext())
-            //{
-            //    var dbPassword = dbContext.Users.FirstOrDefault(p => p.Username == userWithPassword.Username);
-            //    var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == userWithPassword.Username);
-            //    if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
-            //}
+            using (DatabaseContext dbContext = new DatabaseContext())
+            {
+                var dbPassword = dbContext.Users.FirstOrDefault(p => p.Username == userWithPassword.Username);
+                var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == userWithPassword.Username);
+                if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
+            }
 
             UserDetails userDetails = new UserDetails()
             {

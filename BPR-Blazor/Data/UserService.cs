@@ -9,7 +9,7 @@ namespace BPR_Blazor.Data
     {
         private static readonly string url = "http://localhost:8080";
 
-        public static async Task<UserDetails> Login(string username, string password)
+        public static async Task<string> Login(string username, string password)
         {
             UserWithPassword userWithPassword = new UserWithPassword(username, password);
             string jsonUserWithPassword = Newtonsoft.Json.JsonConvert.SerializeObject(userWithPassword);
@@ -19,8 +19,8 @@ namespace BPR_Blazor.Data
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var user = JsonConvert.DeserializeObject<UserDetails>(json);
-                    return user;
+                    var token = JsonConvert.DeserializeObject<string>(json);
+                    return token;
                 }
                 else
                 {
@@ -39,16 +39,8 @@ namespace BPR_Blazor.Data
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var deserializedResponse = JsonConvert.DeserializeObject<ActionResult<string>>(json);
-                    switch(deserializedResponse)
-                    {
-                        //case 201: // Created
-                        //    return "User created!";
-                        //case 400: // Bad request
-                        //    return "User already exits!";
-                        default:
-                            return "There was an issue in the server!";
-                    }
+                    var str = JsonConvert.DeserializeObject<string>(json);
+                    return str;
                 }
                 else
                 {
