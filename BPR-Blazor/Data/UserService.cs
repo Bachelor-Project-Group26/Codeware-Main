@@ -16,16 +16,13 @@ namespace BPR_Blazor.Data
             StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/login", content))
             {
-                if (response.IsSuccessStatusCode)
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                if (!response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var token = JsonConvert.DeserializeObject<string>(json);
-                    return token;
+                    str = response.StatusCode + str;
                 }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
+                return str;
             }
         }
 
@@ -36,16 +33,9 @@ namespace BPR_Blazor.Data
             StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/register", content))
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var str = JsonConvert.DeserializeObject<string>(json);
-                    return str;
-                }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return response.StatusCode + str;
             }
         }
     }
