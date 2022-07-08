@@ -1,5 +1,5 @@
 ﻿using BPR_API.APIModels;
-using BPR_API.DBAccess;
+using BPR_API.DataAccess;
 using BPR_API.DBModels;
 
 using Microsoft.AspNetCore.Mvc;
@@ -55,23 +55,26 @@ namespace BPR_API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<string>> Register([FromBody] UserWithPassword userWithPassword)
         {
-            using (DatabaseContext dbContext = new DatabaseContext())
-            {
-                var dbPassword = dbContext.Users.FirstOrDefault(p => p.Username == userWithPassword.Username);
-                var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == userWithPassword.Username);
-                if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
-            }
+            //using (DatabaseContext dbContext = new DatabaseContext())
+            //{
+            //    var dbPassword = dbContext.Users.FirstOrDefault(p => p.Username == userWithPassword.Username);
+            //    var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == userWithPassword.Username);
+            //    if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
+            //}
 
-            UserDetails user = new UserDetails();
+            UserDetails userDetails = new UserDetails()
+            {
+                Username = userWithPassword.Username
+            };
 
             string salt = GenerateSalt(5);
             string hash = GenerateHash(userWithPassword.Password, salt);
-            User newPassword = new User(userWithPassword.Password, hash, salt);
+            User user = new User(userWithPassword.Username, hash, salt);
 
             using (DatabaseContext dbContext = new DatabaseContext())
             {
-                await dbContext.UserDetails.AddAsync(user);
-                await dbContext.Users.AddAsync(newPassword);
+                await dbContext.UserDetails.AddAsync(userDetails);
+                await dbContext.Users.AddAsync(user);
                 await dbContext.SaveChangesAsync();
             }
 

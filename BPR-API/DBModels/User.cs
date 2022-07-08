@@ -2,15 +2,16 @@
 
 namespace BPR_API.DBModels
 {
+    [Serializable]
     public class User
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required, MaxLength(50)]
         public string Username { get; set; }
-        [Required]
+        [Required, MaxLength(50)]
         public string Hash { get; set; }
-        [Required]
+        [Required, MaxLength(50)]
         public string Salt { get; set; }
 
         public User(string username, string hash, string salt)

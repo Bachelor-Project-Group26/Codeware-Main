@@ -1,7 +1,7 @@
 ﻿using BPR_API.DBModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace BPR_API.DBAccess
+namespace BPR_API.DataAccess
 {
     public class DatabaseContext : DbContext
     {
@@ -12,7 +12,7 @@ namespace BPR_API.DBAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source = DB.db");
+            optionsBuilder.UseSqlite("Data Source = BPR-DB.db");
         }
     }
 }

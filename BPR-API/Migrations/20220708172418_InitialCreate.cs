@@ -15,11 +15,11 @@ namespace BPR_API.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Username = table.Column<string>(type: "TEXT", nullable: false),
-                    SecurityLevel = table.Column<int>(type: "INTEGER", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Birthday = table.Column<DateTime>(type: "TEXT", rowVersion: true, nullable: false)
+                    Username = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    SecurityLevel = table.Column<int>(type: "INTEGER", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    Birthday = table.Column<DateTime>(type: "TEXT", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,9 +32,9 @@ namespace BPR_API.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Username = table.Column<string>(type: "TEXT", nullable: false),
-                    Hash = table.Column<string>(type: "TEXT", nullable: false),
-                    Salt = table.Column<string>(type: "TEXT", nullable: false)
+                    Username = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Hash = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Salt = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {

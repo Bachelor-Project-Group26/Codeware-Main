@@ -56,10 +56,5 @@ namespace BPR_Blazor.Data
                 }
             }
         }
-
-        public static async Task<string> UpdateUser()
-        {
-            return "";
-        }
     }
 }

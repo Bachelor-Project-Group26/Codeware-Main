@@ -2,16 +2,19 @@
 
 namespace BPR_API.DBModels
 {
+    [Serializable]
     public class UserDetails
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required, MaxLength(50)]
         public string Username { get; set; }
-        public int SecurityLevel { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
+        public int? SecurityLevel { get; set; }
+        [MaxLength(50)]
+        public string? Name { get; set; }
+        [MaxLength(50)]
+        public string? Email { get; set; }
         [Timestamp]
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
     }
 }
