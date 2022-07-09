@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "QzVmtR4I/OGEvRllq4ZG10JmJS5Jtkbd9GubzUx6OSXuxLWAXp/Nm1Vtc1WET8s4mIba92Jrw+17vG3SUuTeTg==",
+  "dgSpecHash": "dvXcyWJw21svKlz3A8tDITXzmxrScE6+ZaFFXd8vfhippeHXFJgJnAYd9oyXimX+33LWcSCoggt5YTmCj2amzQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\joaob\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj",
+  "projectFilePath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\joaob\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+    "C:\\Users\\javic\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],
   "logs": []
 }

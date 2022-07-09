@@ -11,5 +11,6 @@
             Username = username;
             Password = password;
         }
+        public UserWithPassword(){}
     }
 }

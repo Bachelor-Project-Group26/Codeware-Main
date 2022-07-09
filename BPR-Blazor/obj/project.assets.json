@@ -48,19 +48,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\joaob\\.nuget\\packages\\": {}
+    "C:\\Users\\javic\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\joaob\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj",
+      "projectUniqueName": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj",
       "projectName": "BPR-Blazor",
-      "projectPath": "C:\\Users\\joaob\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj",
-      "packagesPath": "C:\\Users\\joaob\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\joaob\\source\\repos\\BPR-Blazor\\BPR-Blazor\\obj\\",
+      "projectPath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj",
+      "packagesPath": "C:\\Users\\javic\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\joaob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\javic\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

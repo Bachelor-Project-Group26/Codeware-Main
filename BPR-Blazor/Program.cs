@@ -7,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
