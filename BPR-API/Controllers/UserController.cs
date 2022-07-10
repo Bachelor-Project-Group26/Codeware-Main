@@ -62,7 +62,7 @@ namespace BPR_API.Controllers
                 if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
             }
 
-            UserDetails userDetails = new UserDetails()
+            UserDetailsDB userDetails = new UserDetailsDB()
             {
                 Username = userWithPassword.Username
             };

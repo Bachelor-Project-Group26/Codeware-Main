@@ -9,6 +9,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
+ApiHelper.InitializeClient();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

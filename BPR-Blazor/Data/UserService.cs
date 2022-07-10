@@ -7,7 +7,7 @@ namespace BPR_Blazor.Data
 {
     public class UserService : IUserService
     {
-        private static readonly string url = "http://localhost:8080";
+        private static readonly string url = "http://localhost:7000";
         private ILocalStorageService _localStorageService;
         public UserWithPassword user { get; private set; }
 
@@ -46,6 +46,17 @@ namespace BPR_Blazor.Data
                 var str = JsonConvert.DeserializeObject<string>(json);
                 return response.StatusCode + str;
             }
+        }
+
+        public async Task<string> UpdateUser(string username, int securityLevel, string name, string email, DateTime birthday)
+        {
+            UserDetails userDetails = new UserDetails(username, securityLevel, name, email, birthday);
+            return "";
+        }
+
+        public async Task<string> DeleteUser(string username)
+        {
+            return "";
         }
     }
 }

@@ -5,7 +5,7 @@ namespace BPR_API.DataAccess
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<UserDetails> UserDetails { get; set; }
+        public DbSet<UserDetailsDB> UserDetails { get; set; }
         public DbSet<User> Users { get; set; }
         //public DbSet<UserChat> UserChats { get; set; }
         //public DbSet<Chat> Chats { get; set; }
