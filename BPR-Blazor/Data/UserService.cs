@@ -7,7 +7,7 @@ namespace BPR_Blazor.Data
 {
     public class UserService : IUserService
     {
-        private static readonly string url = "http://localhost:7000";
+        private static readonly string url = "https://localhost:7000";
         private ILocalStorageService _localStorageService;
         public UserWithPassword user { get; private set; }
 
