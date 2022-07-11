@@ -8,20 +8,16 @@ namespace BPR_Blazor.Data
     public class UserService : IUserService
     {
         private static readonly string url = "https://localhost:7000";
-        private ILocalStorageService _localStorageService;
         public UserWithPassword user { get; private set; }
 
-        public UserService(ILocalStorageService localStorageService)
-        {
-            _localStorageService = localStorageService;
-        }
+       
 
         public async Task<string> Login(string username, string password)
         {
             UserWithPassword userWithPassword = new UserWithPassword(username, password);
             string jsonUserWithPassword = Newtonsoft.Json.JsonConvert.SerializeObject(userWithPassword);
             StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/User/login", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -29,8 +25,6 @@ namespace BPR_Blazor.Data
                 {
                     str = response.StatusCode + str;
                 }
-                
-                await _localStorageService.SetItem("user", str);
                 return str;
             }
         }
@@ -40,7 +34,7 @@ namespace BPR_Blazor.Data
             UserWithPassword userWithPassword = new UserWithPassword(username, password);
             string jsonUserWithPassword = Newtonsoft.Json.JsonConvert.SerializeObject(userWithPassword);
             StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/register", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/User/register", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);

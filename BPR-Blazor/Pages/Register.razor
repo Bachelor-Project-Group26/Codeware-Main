@@ -1,12 +1,8 @@
-﻿@page "/"
-@inject IUserService UserService
-@inject NavigationManager navManager
-@inject HttpClient Http
-@inject AuthenticationStateProvider AuthStateProvider
-@inject ILocalStorageService LocalStorage
+﻿@page "/Register"
 @using BPR_Blazor.Models
 @using BPR_Blazor.Data
-@using Microsoft.AspNetCore.Mvc
+@inject IUserService UserService
+@inject NavigationManager navManager
 <section class="login-form-1">
         <h1>Codeware</h1>
         <div class="container">
@@ -14,7 +10,7 @@
             <div class="login-form-grid">
                 <div class="login-main">
                     <div class="login-content">
-                        <h2>Log In</h2>
+                        <h2>Register</h2>
                         <EditForm Model="@_userWithPassword" OnValidSubmit="OnValidSubmit">
                             <DataAnnotationsValidator />
                             <InputText @bind-Value="_userWithPassword.Username" type="text" class="text" name="text" placeholder="UserName" required="" autofocus />
@@ -22,7 +18,7 @@
                             <button class="btn" type="submit">Log In</button>
                         </EditForm>
                         
-                        <p class="account">Don't have an account? <a href="register">Register</a></p>
+                        <p class="account">Already have an account? <a href="">Log in</a></p>
                     </div>
                     <div class="login_form align-self">
                         <div class="left_grid_info">
@@ -41,20 +37,13 @@
     {
         try
         {
-          var result =  await UserService.Login(_userWithPassword.Username, _userWithPassword.Password);
-           
+          var result =  await UserService.Register(_userWithPassword.Username, _userWithPassword.Password);
             Console.WriteLine(result);
-            if (!result.Equals(""))
-            {
-                await LocalStorage.SetItemAsync("token", result);
-                await AuthStateProvider.GetAuthenticationStateAsync();
-                StateHasChanged();
-                navManager.NavigateTo("index");
-            }
+            
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
-    }
+    } 
 }
