@@ -17,5 +17,7 @@
             Email = email;
             Birthday = birthday;
         }
+
+        public UserDetails(){}
     }
 }

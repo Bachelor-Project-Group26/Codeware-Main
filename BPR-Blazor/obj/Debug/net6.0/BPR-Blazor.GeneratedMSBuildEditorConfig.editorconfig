@@ -31,8 +31,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/javic/source/repos/BPR-Blazor/BPR-Blazor/Pages/Logout.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/javic/source/repos/BPR-Blazor/BPR-Blazor/Pages/Register.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/javic/source/repos/BPR-Blazor/BPR-Blazor/Pages/UserProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclByb2ZpbGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/javic/source/repos/BPR-Blazor/BPR-Blazor/Pages/UserSignUp.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclNpZ25VcC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/javic/source/repos/BPR-Blazor/BPR-Blazor/Shared/SurveyPrompt.razor]

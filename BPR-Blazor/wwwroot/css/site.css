@@ -62,6 +62,8 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+ /* Login Style*/   
+    
 .container {
     max-width: 890px;
     margin: 0 auto;
@@ -80,18 +82,41 @@ a, .btn-link {
     border-bottom-right-radius: 8px;
     align-items: center;
     display: grid;
+    
+}
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
 }
 .login-form-1 {
     position: relative;
     min-height: 100vh;
     z-index: 0;
-    background: #0568C1;
+    background: linear-gradient(141deg, #0026f9, #e500e6);
+    background-size: 400% 400%;
+
+    -webkit-animation: AnimationName 31s ease infinite;
+    -moz-animation: AnimationName 31s ease infinite;
+    animation: AnimationName 31s ease infinite;
+    
     padding: 40px 40px;
     justify-content: center;
     display: grid;
     grid-template-rows: 1fr auto 1fr;
     align-items: center;
 }
+
 .login-content {
     flex-basis:50%;
     -webkit-flex-basis:50%;
@@ -171,3 +196,41 @@ a, .btn-link {
 .login-form-1 button:hover {
     background: #fdc500;
 }
+.login-form-1.register{
+    position: relative;
+    min-height: 100vh;
+    z-index: 0;
+    background: linear-gradient(141deg, #833ab4, #fcb045, #fd1d1d);
+    background-size: 600% 600%;
+
+    -webkit-animation: AnimationName 29s ease infinite;
+    -moz-animation: AnimationName 29s ease infinite;
+    animation: AnimationName 29s ease infinite;
+
+    padding: 40px 40px;
+    justify-content: center;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    align-items: center;
+}
+.login-form-1.signup{
+    position: relative;
+    min-height: 100vh;
+    z-index: 0;
+    background: linear-gradient(270deg, #eeaeca, #75aced);
+    background-size: 400% 400%;
+
+    -webkit-animation: AnimationName 29s ease infinite;
+    -moz-animation: AnimationName 29s ease infinite;
+    animation: AnimationName 29s ease infinite;
+
+    padding: 40px 40px;
+    justify-content: center;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    align-items: center;
+}
+
+
+/* … */
+

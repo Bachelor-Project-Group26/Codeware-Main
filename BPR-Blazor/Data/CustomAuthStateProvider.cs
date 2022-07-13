@@ -38,6 +38,13 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         
         return state;
     }
+    public void MarkUserAsLoggedOut()
+    {
+        var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
+        var authState = Task.FromResult(new AuthenticationState(anonymousUser));
+        NotifyAuthenticationStateChanged(authState);
+    }
+    
     public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
         var payload = jwt.Split('.')[1];
