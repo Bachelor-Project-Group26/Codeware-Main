@@ -1,21 +1,30 @@
-﻿@page "/UserSignUp"
+﻿@page "/SignUp"
 @using BPR_Blazor.Models
 <section class="login-form-1 signup">
-        <h1>Codeware</h1>
-        <div class="container">
+    <div class="container">
             <!-- /form -->
             <div class="login-form-grid">
                 <div class="login-main">
                     <div class="login-content">
                         <h2>Create your User Profile</h2>
                         <EditForm Model="@_userDetails" OnValidSubmit="SubmitProfile">
-                            <DataAnnotationsValidator />
-                            <InputText @bind-Value="@_userDetails.Name" type="text" class="text" name="text" placeholder="Name" required="" autofocus />
-                            <InputText @bind-Value="@_userDetails.Email"  type="text" class="text" name="text" placeholder="Email" required="" autofocus />
-                            <InputDate @bind-Value="@_userDetails.Birthday" TValue="DateTime"/>
+                            <DataAnnotationsValidator/>
+                            <div class="txt_field">
+                                <InputText @bind-Value="@_userDetails.Name" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <span></span>
+                                <label>Username</label>
+                            </div>
+                            <div class="txt_field">
+                                <InputText @bind-Value="@_userDetails.Email" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <span></span>
+                                <label>Email</label>
+                            </div>
+                            
+                            <InputDate @bind-Value="@_userDetails.Birthday" class="input" TValue="DateTime"/>
+                            
+                               
                             <button class="btn" type="submit">Log In</button>
                         </EditForm>
-                        
                         <p class="account">Don't have an account? <a href="register">Register</a></p>
                     </div>
                     <div class="login_form align-self">
