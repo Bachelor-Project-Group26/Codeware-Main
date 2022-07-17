@@ -26,5 +26,30 @@
         </div>
     </section>
 @code {
+<<<<<<< Updated upstream
     
+=======
+    private UserWithPassword _userWithPassword = new UserWithPassword();
+
+    private async void OnValidSubmit()
+    {
+        try
+        {
+          var result =  await UserService.Login(_userWithPassword.Username, _userWithPassword.Password);
+           
+            Console.WriteLine(result);
+            if (!result.Equals(""))
+            {
+                await LocalStorage.SetItemAsync("token", result);
+                await AuthStateProvider.GetAuthenticationStateAsync();
+                StateHasChanged();
+                navManager.NavigateTo("index");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+>>>>>>> Stashed changes
 }

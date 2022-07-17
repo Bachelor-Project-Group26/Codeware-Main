@@ -5,56 +5,90 @@ using System.Text;
 
 namespace BPR_Blazor.Data
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private static readonly string url = "http://localhost:8080";
+        private static readonly string url = "https://localhost:7000";    
 
-        public static async Task<UserDetails> Login(string username, string password)
+        public async Task<string> Login(string username, string password)
         {
-            UserWithPassword userWithPassword = new UserWithPassword(username, password);
-            string jsonUserWithPassword = Newtonsoft.Json.JsonConvert.SerializeObject(userWithPassword);
-            StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/login", content))
+            UserDTO user = new UserDTO { 
+                Username = username, 
+                Password = password 
+            };
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/User/login", content))
             {
-                if (response.IsSuccessStatusCode)
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                if (!response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var user = JsonConvert.DeserializeObject<UserDetails>(json);
-                    return user;
+                    str = response.StatusCode + str;
                 }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
+                return str;
             }
         }
 
-        public static async Task<string> Register(string username, string password)
+        public async Task<string> Register(string username, string password)
         {
-            UserWithPassword userWithPassword = new UserWithPassword(username, password);
-            string jsonUserWithPassword = Newtonsoft.Json.JsonConvert.SerializeObject(userWithPassword);
-            StringContent content = new StringContent(jsonUserWithPassword, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/register", content))
+            UserDTO user = new UserDTO
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var deserializedResponse = JsonConvert.DeserializeObject<ActionResult<string>>(json);
-                    switch(deserializedResponse)
-                    {
-                        //case 201: // Created
-                        //    return "User created!";
-                        //case 400: // Bad request
-                        //    return "User already exits!";
-                        default:
-                            return "There was an issue in the server!";
-                    }
-                }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
+                Username = username,
+                Password = password
+            };
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/User/register", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return response.StatusCode + str;
             }
+        }
+
+        public async Task<string> UpdateDetails(string username, string token, int securityLevel, string name, string email, DateTime birthday)
+        {
+            UserDTO user = new UserDTO 
+            { 
+                Username = username, 
+                Token = token,
+                SecurityLevel = securityLevel, 
+                Name = name, 
+                Email = email, 
+                Birthday = birthday 
+            };
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/login", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return response.StatusCode + str;
+            }
+        }
+
+        public async Task<string> UpdatePassword(string username, string token, string password)
+        {
+            UserDTO user = new UserDTO
+            {
+                Username = username,
+                Token = token,
+                Password = password
+            };
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/login", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return response.StatusCode + str;
+            }
+        }
+
+
+        public async Task<string> DeleteUser(string username)
+        {
+            return "";
         }
     }
 }

@@ -1,0 +1,49 @@
+﻿@page "/Register"
+@using BPR_Blazor.Models
+@using BPR_Blazor.Data
+@inject IUserService UserService
+@inject NavigationManager navManager
+<section class="login-form-1">
+        <h1>Codeware</h1>
+        <div class="container">
+            <!-- /form -->
+            <div class="login-form-grid">
+                <div class="login-main">
+                    <div class="login-content">
+                        <h2>Register</h2>
+                        <EditForm Model="@_userWithPassword" OnValidSubmit="OnValidSubmit">
+                            <DataAnnotationsValidator />
+                            <InputText @bind-Value="_userWithPassword.Username" type="text" class="text" name="text" placeholder="UserName" required="" autofocus />
+                            <InputText @bind-Value="_userWithPassword.Password" type="password" class="password" name="password" placeholder="Password" required="" autofocus/>
+                            <button class="btn" type="submit">Log In</button>
+                        </EditForm>
+                        
+                        <p class="account">Already have an account? <a href="">Log in</a></p>
+                    </div>
+                    <div class="login_form align-self">
+                        <div class="left_grid_info">
+                            <img src="images/1.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- //form -->
+        </div>
+    </section>
+@code {
+    private UserWithPassword _userWithPassword =new UserWithPassword();
+
+    private async void OnValidSubmit()
+    {
+        try
+        {
+          var result =  await UserService.Register(_userWithPassword.Username, _userWithPassword.Password);
+            Console.WriteLine(result);
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    } 
+}
