@@ -77,9 +77,17 @@ namespace BPR_API.Controllers
             if (!Authentication.VerifyToken(user.Token)) return Unauthorized("Token invalid!");
             try
             {
-                _dbContext.UserDetails.Update(_dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username));
+                var dbUserDetails = _dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username);
+
+                dbUserDetails.SecurityLevel = user.SecurityLevel;
+                dbUserDetails.Name = user.Username;
+                dbUserDetails.Email = user.Email;
+                dbUserDetails.Birthday = user.Birthday;
+
+                _dbContext.UserDetails.Update(dbUserDetails);
                 _dbContext.SaveChanges();
-                return Ok("Profile updated successfully!");
+
+                return Ok("Password updated successfully!");
             }
             catch (Exception)
             {
@@ -93,8 +101,12 @@ namespace BPR_API.Controllers
             if (!Authentication.VerifyToken(user.Token)) return Unauthorized("Token invalid!");
             try
             {
-                _dbContext.UserPasswords.FirstOrDefault(u => u.Username == user.Username);
-                //_dbContext.UserPasswords.Update();
+                var dbPassword = _dbContext.UserPasswords.FirstOrDefault(u => u.Username == user.Username);
+
+                dbPassword.Salt = Authentication.GenerateSalt(5);
+                dbPassword.Hash = Authentication.GenerateHash(user.Password, dbPassword.Salt);
+
+                _dbContext.UserPasswords.Update(dbPassword);
                 _dbContext.SaveChanges();
                 return Ok("Password updated successfully!");
             }
