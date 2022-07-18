@@ -89,9 +89,21 @@ namespace BPR_Blazor.Data
         }
 
 
-        public async Task<string> DeleteUser(string username)
+        public async Task<string> DeleteUser(string username, string token)
         {
-            return "";
+            UserDTO user = new UserDTO
+            {
+                Username = username,
+                Token = token
+            };
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/User/delete", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return response.StatusCode + str;
+            }
         }
     }
 }

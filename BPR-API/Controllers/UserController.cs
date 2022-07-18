@@ -116,7 +116,7 @@ namespace BPR_API.Controllers
             }
         }
 
-        [HttpDelete("delete")]
+        [HttpPut("delete")]
         public async Task<ActionResult<string>> DeleteUser([FromBody] UserDTO user)
         {
             if (!Authentication.VerifyToken(user.Token)) return Unauthorized("Token invalid!");
