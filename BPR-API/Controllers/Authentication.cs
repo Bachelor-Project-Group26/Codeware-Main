@@ -14,8 +14,8 @@ namespace BPR_API.Controllers
                 new Claim(ClaimTypes.Name, user.Username)
             };
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("a1b2c3d4e5f6"));
+            //_configuration.GetSection("AppSettings:Token").Value));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -46,33 +46,34 @@ namespace BPR_API.Controllers
 
         public static bool VerifyToken(string token)
         {
-            bool isVerified = true;
-
-            var splitToken = token.Split("=");
-            if (splitToken.Length > 2) isVerified = false;
-
-            user = null;
-            User tempUser = null;
-            try
-            {
-                var id = Int32.Parse(splitToken[0]);
-                tempUser = _dbContext.UserPasswords
-                    .First(a => a.Id == id);
-            }
-            catch (InvalidOperationException)
-            {
-                isVerified = false;
-            }
-
-            if (isVerified)
-            {
-                user = tempUser;
-                if (splitToken[1] != user.Token)
-                {
-                    isVerified = false;
-                    user = null;
-                }
-            }
+            return true;
+            //bool isVerified = true;
+            //
+            //var splitToken = token.Split("=");
+            //if (splitToken.Length > 2) isVerified = false;
+            //
+            //user = null;
+            //User tempUser = null;
+            //try
+            //{
+            //    var id = Int32.Parse(splitToken[0]);
+            //    tempUser = _dbContext.UserPasswords
+            //        .First(a => a.Id == id);
+            //}
+            //catch (InvalidOperationException)
+            //{
+            //    isVerified = false;
+            //}
+            //
+            //if (isVerified)
+            //{
+            //    user = tempUser;
+            //    if (splitToken[1] != user.Token)
+            //    {
+            //        isVerified = false;
+            //        user = null;
+            //    }
+            //}
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace BPR_API.DBModels
 {
     [Serializable]
-    public class UserDetailsDB
+    public class UserDetails
     {
         [Key]
         public int Id { get; set; }

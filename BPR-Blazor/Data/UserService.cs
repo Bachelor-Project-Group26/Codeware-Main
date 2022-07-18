@@ -9,6 +9,8 @@ namespace BPR_Blazor.Data
 {
     public class UserService : IUserService
     {
+        private string url = "http://localhost:7000";
+
 
         public async Task<string> Login(string username, string password)
         {
@@ -60,7 +62,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/User/update_details", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -78,7 +80,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/User/delete", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);

@@ -43,12 +43,12 @@ namespace BPR_API.Controllers
         {
             using (DatabaseContext dbContext = new DatabaseContext())
             {
-                var dbPassword = dbContext.Users.FirstOrDefault(p => p.Username == userWithPassword.Username);
-                var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == userWithPassword.Username);
+                var dbPassword = dbContext.UserPasswords.FirstOrDefault(p => p.Username == user.Username);
+                var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username);
                 if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
             }
 
-            UserDetailsDB userDetails = new UserDetailsDB()
+            UserDetails userDetails = new UserDetails()
             {
                 Username = user.Username
             };
@@ -94,7 +94,7 @@ namespace BPR_API.Controllers
             try
             {
                 _dbContext.UserPasswords.FirstOrDefault(u => u.Username == user.Username);
-                _dbContext.UserPasswords.Update();
+                //_dbContext.UserPasswords.Update();
                 _dbContext.SaveChanges();
                 return Ok("Password updated successfully!");
             }
