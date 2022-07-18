@@ -14,46 +14,32 @@ namespace BPR_API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private DatabaseContext _dbContext;
 
         public UserController(IConfiguration configuration) {
             _configuration = configuration;
+            _dbContext = new DatabaseContext();
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login([FromBody] UserWithPassword userWithPassword)
+        public async Task<ActionResult<string>> Login([FromBody] UserDTO user)
         {
-            using (DatabaseContext dbContext = new DatabaseContext())
+            try
             {
-                var dbPassword = dbContext.Users.FirstOrDefault(p => p.Username == userWithPassword.Username);
+                var dbPassword = _dbContext.UserPasswords.FirstOrDefault(p => p.Username == user.Username);
                 if (dbPassword == null) return BadRequest("Username not found!");
-                string hash = GenerateHash(userWithPassword.Password, dbPassword.Salt);
-                if (hash.Equals(dbPassword.Hash)) return Ok(CreateToken(userWithPassword));
+                string hash = Authentication.GenerateHash(user.Password, dbPassword.Salt);
+                if (hash.Equals(dbPassword.Hash)) return Ok(Authentication.CreateToken(user));
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
             }
             return BadRequest("Wrong password!");
         }
 
-        private string CreateToken(UserWithPassword user)
-        {
-            List<Claim> claims = new List<Claim>
-            {               
-                new Claim(ClaimTypes.Name, user.Username)
-            };
-
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddHours(1),
-                signingCredentials: creds);
-            
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
         [HttpPost("register")]
-        public async Task<ActionResult<string>> Register([FromBody] UserWithPassword userWithPassword)
+        public async Task<ActionResult<string>> Register([FromBody] UserDTO user)
         {
             using (DatabaseContext dbContext = new DatabaseContext())
             {
@@ -64,38 +50,75 @@ namespace BPR_API.Controllers
 
             UserDetailsDB userDetails = new UserDetailsDB()
             {
-                Username = userWithPassword.Username
+                Username = user.Username
             };
 
-            string salt = GenerateSalt(5);
-            string hash = GenerateHash(userWithPassword.Password, salt);
-            User user = new User(userWithPassword.Username, hash, salt);
+            string salt = Authentication.GenerateSalt(5);
+            string hash = Authentication.GenerateHash(user.Password, salt);
+            UserPassword userPassword = new UserPassword(user.Username, hash, salt);
 
-            using (DatabaseContext dbContext = new DatabaseContext())
+            try
             {
-                await dbContext.UserDetails.AddAsync(userDetails);
-                await dbContext.Users.AddAsync(user);
-                await dbContext.SaveChangesAsync();
+                await _dbContext.UserDetails.AddAsync(userDetails);
+                await _dbContext.UserPasswords.AddAsync(userPassword);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
             }
 
             return Ok("User created!");
         }
 
-        private string GenerateSalt(int size)
+        [HttpPut("update_details")]
+        public async Task<ActionResult<string>> UpdateDetails([FromBody] UserDTO user)
         {
-            var rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
-            var buff = new Byte[size];
-            rng.GetBytes(buff);
-            return Convert.ToBase64String(buff);
+            if (!Authentication.VerifyToken(user.Token)) return Unauthorized("Token invalid!");
+            try
+            {
+                _dbContext.UserDetails.Update(_dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username));
+                _dbContext.SaveChanges();
+                return Ok("Profile updated successfully!");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
         }
 
-        private string GenerateHash(string password, string salt)
+        [HttpPut("update_password")]
+        public async Task<ActionResult<string>> UpdatePassword([FromBody] UserDTO user)
         {
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(password + salt);
-            System.Security.Cryptography.SHA256Managed sha256hashstring =
-                new System.Security.Cryptography.SHA256Managed();
-            byte[] hash = sha256hashstring.ComputeHash(bytes);
-            return System.Text.Encoding.UTF8.GetString(hash, 0, hash.Length);
+            if (!Authentication.VerifyToken(user.Token)) return Unauthorized("Token invalid!");
+            try
+            {
+                _dbContext.UserPasswords.FirstOrDefault(u => u.Username == user.Username);
+                _dbContext.UserPasswords.Update();
+                _dbContext.SaveChanges();
+                return Ok("Password updated successfully!");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
+        }
+
+        [HttpDelete("delete")]
+        public async Task<ActionResult<string>> DeleteUser([FromBody] UserDTO user)
+        {
+            if (!Authentication.VerifyToken(user.Token)) return Unauthorized("Token invalid!");
+            try
+            {
+                _dbContext.UserPasswords.Remove(_dbContext.UserPasswords.FirstOrDefault(u => u.Username == user.Username));
+                _dbContext.UserDetails.Remove(_dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username));
+                _dbContext.SaveChanges();
+                return Ok("User deleted successfully!");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
         }
     }
 }

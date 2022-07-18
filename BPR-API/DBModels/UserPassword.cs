@@ -3,7 +3,7 @@
 namespace BPR_API.DBModels
 {
     [Serializable]
-    public class User
+    public class UserPassword
     {
         [Key]
         public int Id { get; set; }
@@ -14,7 +14,7 @@ namespace BPR_API.DBModels
         [Required, MaxLength(50)]
         public string Salt { get; set; }
 
-        public User(string username, string hash, string salt)
+        public UserPassword(string username, string hash, string salt)
         {
             Username = username;
             Hash = hash;
