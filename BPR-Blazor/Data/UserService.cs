@@ -49,15 +49,20 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> UpdateDetails(string username, string token, int securityLevel, string name, string email, DateTime birthday)
+        public async Task<string> UpdateDetails(string username, string token, int securityLevel, string firstName, 
+            string lastName, string email, string country, string bio, byte[] profilePicture, DateTime birthday)
         {
             UserDTO user = new UserDTO
             {
                 Username = username,
                 Token = token,
                 SecurityLevel = securityLevel,
-                Name = name,
+                FirstName = firstName,
+                LastName = lastName,
                 Email = email,
+                Country = country,
+                Bio = bio,
+                ProfilePicture = profilePicture,
                 Birthday = birthday
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);

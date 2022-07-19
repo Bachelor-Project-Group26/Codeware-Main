@@ -45,7 +45,7 @@ namespace BPR_API.Controllers
             {
                 var dbPassword = dbContext.UserPasswords.FirstOrDefault(p => p.Username == user.Username);
                 var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username);
-                if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
+                if (dbPassword != null | dbUser != null) return BadRequest("User alreadlsy exists!");
             }
 
             UserDetails userDetails = new UserDetails()
@@ -80,14 +80,18 @@ namespace BPR_API.Controllers
                 var dbUserDetails = _dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username);
 
                 dbUserDetails.SecurityLevel = user.SecurityLevel;
-                dbUserDetails.Name = user.Username;
+                dbUserDetails.FirstName = user.FirstName;
+                dbUserDetails.LastName = user.LastName;
                 dbUserDetails.Email = user.Email;
+                dbUserDetails.Country = user.Country;
+                dbUserDetails.Bio = user.Bio;
+                dbUserDetails.ProfilePicture = user.ProfilePicture;
                 dbUserDetails.Birthday = user.Birthday;
 
                 _dbContext.UserDetails.Update(dbUserDetails);
                 _dbContext.SaveChanges();
 
-                return Ok("Password updated successfully!");
+                return Ok("Details updated successfully!");
             }
             catch (Exception)
             {
