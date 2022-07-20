@@ -10,7 +10,7 @@
                         <EditForm Model="@_userDetails" OnValidSubmit="SubmitProfile">
                             <DataAnnotationsValidator/>
                             <div class="txt_field">
-                                <InputText @bind-Value="@_userDetails.Name" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <InputText @bind-Value="@_userDetails.FirstName" id="input" type="text" class="input" name="text" required="" autofocus/>
                                 <span></span>
                                 <label>Username</label>
                             </div>
@@ -38,7 +38,7 @@
         </div>
     </section>
 @code {
-    private UserDetails _userDetails = new UserDetails();
+    private UserDTO _userDetails = new UserDTO();
 
     private void SubmitProfile()
     {

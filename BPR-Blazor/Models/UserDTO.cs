@@ -13,6 +13,11 @@
         public string? Country { get; set; }
         public string? Bio { get; set; }
         public byte[]? ProfilePicture { get; set; }
-        public DateTime? Birthday { get; set; }
+        public DateTime Birthday { get; set; }
+
+        public UserDTO()
+        {
+            Username = "";
+        }
     }
 }
