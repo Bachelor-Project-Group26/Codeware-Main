@@ -1,7 +1,7 @@
 ﻿using BPR_API.APIModels;
 using BPR_API.DataAccess;
 using BPR_API.DBModels;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -29,7 +29,7 @@ namespace BPR_API.Controllers
                 var dbPassword = _dbContext.UserPasswords.FirstOrDefault(p => p.Username == user.Username);
                 if (dbPassword == null) return BadRequest("Username not found!");
                 string hash = Authentication.GenerateHash(user.Password, dbPassword.Salt);
-                if (hash.Equals(dbPassword.Hash)) return Ok(Authentication.CreateToken(user));
+                if (hash.Equals(dbPassword.Hash)) return Ok(Authentication.CreateToken(user, _configuration));
             }
             catch (Exception)
             {
@@ -71,10 +71,10 @@ namespace BPR_API.Controllers
             return Ok("User created!");
         }
 
-        [HttpPut("update_details")]
+        [HttpPut("update_details"), Authorize]
         public async Task<ActionResult<string>> UpdateDetails([FromBody] UserDTO user)
         {
-            if (!Authentication.VerifyToken(user.Token)) return Unauthorized("Token invalid!");
+            if (!(user.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
                 var dbUserDetails = _dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username);
@@ -99,10 +99,10 @@ namespace BPR_API.Controllers
             }
         }
 
-        [HttpPut("update_password")]
+        [HttpPut("update_password"), Authorize]
         public async Task<ActionResult<string>> UpdatePassword([FromBody] UserDTO user)
         {
-            if (!Authentication.VerifyToken(user.Token)) return Unauthorized("Token invalid!");
+            if (!(user.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
                 var dbPassword = _dbContext.UserPasswords.FirstOrDefault(u => u.Username == user.Username);
@@ -120,10 +120,10 @@ namespace BPR_API.Controllers
             }
         }
 
-        [HttpPut("delete")]
+        [HttpPut("delete"), Authorize]
         public async Task<ActionResult<string>> DeleteUser([FromBody] UserDTO user)
         {
-            if (!Authentication.VerifyToken(user.Token)) return Unauthorized("Token invalid!");
+            if (!(user.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
                 _dbContext.UserPasswords.Remove(_dbContext.UserPasswords.FirstOrDefault(u => u.Username == user.Username));

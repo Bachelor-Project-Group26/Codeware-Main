@@ -11,7 +11,6 @@ namespace BPR_Blazor.Data
     {
         private string url = "http://localhost:7000";
 
-
         public async Task<string> Login(string username, string password)
         {
             UserDTO user = new UserDTO {

@@ -8,5 +8,6 @@ public interface IUserService
     Task<string> UpdateDetails(string username, string token, int securityLevel, string firstName,
             string lastName, string email, string country, string bio, byte[] profilePicture, DateTime birthday);
     Task<string> UpdatePassword(string username, string token, string password);
+    //Task<List<UserDTO>> getAllUsers(string token); // Returns a list of IDs, Usernames, First Name, Last Name
     Task<string> DeleteUser(string username, string token);
 }
