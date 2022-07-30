@@ -29,6 +29,12 @@ namespace BPR_Blazor.Data
             }
         }
 
+        public string Logout(string username)
+        {
+            ApiHelper.RemoveToken();
+            return "User logged out!";
+        }
+
         public async Task<string> Register(string username, string password)
         {
             UserDTO user = new UserDTO
@@ -46,13 +52,12 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> UpdateDetails(string username, string token, int securityLevel, string firstName, 
+        public async Task<string> UpdateDetails(string username, int securityLevel, string firstName, 
             string lastName, string email, string country, string bio, byte[] profilePicture, DateTime birthday)
         {
             UserDTO user = new UserDTO
             {
                 Username = username,
-                Token = token,
                 SecurityLevel = securityLevel,
                 FirstName = firstName,
                 LastName = lastName,
@@ -72,12 +77,11 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> UpdatePassword(string username, string token, string password)
+        public async Task<string> UpdatePassword(string username, string password)
         {
             UserDTO user = new UserDTO
             {
                 Username = username,
-                Token = token,
                 Password = password
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
@@ -90,13 +94,16 @@ namespace BPR_Blazor.Data
             }
         }
 
+        // Returns a list of IDs, Usernames, First Name, Last Name
+        public async Task<List<UserDTO>> GetAllUsers()
+        {
 
-        public async Task<string> DeleteUser(string username, string token)
+        }
+        public async Task<string> DeleteUser(string username)
         {
             UserDTO user = new UserDTO
             {
-                Username = username,
-                Token = token
+                Username = username
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");

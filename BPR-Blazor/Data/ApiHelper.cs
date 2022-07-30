@@ -23,5 +23,10 @@ namespace BPR_Blazor.Data
         {
             ApiClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
+
+        public static void RemoveToken()
+        {
+            ApiClient.DefaultRequestHeaders.Authorization = null;
+        }
     } 
 }
