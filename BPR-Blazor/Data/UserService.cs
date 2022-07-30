@@ -23,10 +23,8 @@ namespace BPR_Blazor.Data
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
-                if (!response.IsSuccessStatusCode)
-                {
-                    str = response.StatusCode + str;
-                }
+                if (response.IsSuccessStatusCode) ApiHelper.AddToken(str);
+                else str = response.StatusCode + str;
                 return str;
             }
         }
