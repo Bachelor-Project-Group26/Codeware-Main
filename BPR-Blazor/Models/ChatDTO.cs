@@ -1,19 +1,19 @@
 ﻿namespace BPR_Blazor.Models
 {
     [Serializable]
-    public class Chat
+    public class ChatDTO
     {
-        public int Id { get; set; }
+        public int ChatId { get; set; }
         public string Name { get; set; }
         public DateTime LastMessage { get; set; }
-        public Message[] Messages { get; set; }
+        public List<MessageDTO> Messages { get; set; }
 
-        public Chat(int id, string name, DateTime lastMessage, Message[] messages)
+        public ChatDTO(int id, string name, DateTime lastMessage, MessageDTO[] messages)
         {
-            Id = id;
-            Name = name;
-            LastMessage = lastMessage;
-            Messages = messages;
+            ChatId = 0;
+            Name = "";
+            LastMessage = DateTime.Now;
+            Messages = new List<MessageDTO>();
         }
     }
 }
