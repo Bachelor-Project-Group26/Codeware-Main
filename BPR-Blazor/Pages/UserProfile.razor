@@ -1,6 +1,58 @@
 ﻿@page "/UserProfile"
-<h3>UserProfile</h3>
+@inject IJSRuntime JsRuntime
+<div class="profile-screen-1080screen">
+  <div class="overlap-group4">
+    <div class="container"></div>
+    <div class="overlap-group3">
+      <div class="profile-container">
+        <div class="profile-background" style=@myStyle></div> <img
+          class="profile-pic"
+          src="images/profile-pic.svg"
+        />
+      </div>
+      <div class="overlap-group2">
+        <h1 class="namelexend-semi-bold-heavy-metal-24px">Bernardo Dias</h1>
+        <div class="bernardodias1">bernardodias1</div>
+      </div>
+      <p class="software-engineer">Software Engineer 🌌<br />Gym enthusiast 💪<br />7 Semester</p>
+      <div class="overlap-group">
+        <div class="chat">Chat</div>
+      </div>
+    </div>
+    
+    <img class="post-2" src="images/post-2.svg" />
+    <div class="navbar">
+      <div class="logo">
+        <img class="vector" src="images/vector.svg" />
+        <div class="codeware">Codeware</div>
+      </div>
+      <div class="message">
+        <img class="mail" src="images/mail.svg" />
+      </div>
+      <div class="options">
+        <img class="x" src="images/---.svg" />
+      </div>
+      
+    </div>
+    <div class="java-machine-learning-c">Skills <br/> · Java<br />· Machine Learning<br />· C#</div>
+  </div>
+</div>
 
 @code {
+ public bool Initialized { get; set; }
+  public string myStyle;
+  public List<string> myStyles = new List<string>();
+  public List<string> array = new List<string>(); 
+  protected override async void  OnInitialized()
+  {
+
+    myStyles.Insert(0,"background : linear-gradient(20deg, #6e48aa 0%, #9d50bb 73%, #b176cc 100%);");
+    myStyles.Insert(1,"background : linear-gradient(20deg, #1fa2ff 0%, #12d8fa 73%, #a6ffcb 100%);");
+    myStyles.Insert(2,"background : linear-gradient(20deg, #56ab2f 0%, #a8e063 73%, #dce356 100%);");
+     
+    Random RD = new Random();
+     myStyle= myStyles[RD.Next(myStyles.Count)];
+     
     
+  }
 }
