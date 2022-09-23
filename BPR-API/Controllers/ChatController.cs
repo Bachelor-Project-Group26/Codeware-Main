@@ -28,8 +28,8 @@ namespace BPR_API.Controllers
             if (!(chatDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == chatDTO.Username);
-                var chatList = _dbContext.UserChats.SelectMany(p => p.UserId == user.Id);
+                var user = _dbContext.UserDetails.FirstOrDefault(userDetails => userDetails.Username == chatDTO.Username);
+                var chatList = _dbContext.UserChats.Where(userChat => userChat.UserId == user.Id);
                 foreach (UserChat chat in chatList)
                 {
                     bool isUserAllowed = false;
@@ -153,8 +153,8 @@ namespace BPR_API.Controllers
             if (!(chatDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == chatDTO.Username);
-                _dbContext.UserChats.Add(new UserChat { ChatId = chatDTO.Id, UserId = user.Id });
+                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == chatDTO.Username2);
+                _dbContext.UserChats.Add(new UserChat { ChatId = (int) chatDTO.Id, UserId = user.Id });
                 _dbContext.SaveChanges();
                 return Ok("User added!");
             }
@@ -170,8 +170,8 @@ namespace BPR_API.Controllers
             if (!(chatDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var user = _dbContext.UserDetails.FirstOrDefault();
-                _dbContext.UserChats.Remove(new UserChat { ChatId = chatDTO.Id, UserId = user.Id });
+                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == chatDTO.Username2);
+                _dbContext.UserChats.Remove(new UserChat { ChatId = (int) chatDTO.Id, UserId = user.Id });
                 _dbContext.SaveChanges();
                 return Ok("User removed!");
             }
@@ -193,7 +193,6 @@ namespace BPR_API.Controllers
             if (!(messageDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                // var user = _dbContext.UserDetails.FirstOrDefault();
                 _dbContext.Messages.Add(new Message { 
                     ChatID = messageDTO.ChatID, 
                     Username = messageDTO.Username,
@@ -202,24 +201,6 @@ namespace BPR_API.Controllers
                 });
                 _dbContext.SaveChanges();
                 return Ok("User added!");
-            }
-            catch (Exception)
-            {
-                return BadRequest("Something went wrong!");
-            }
-        }
-        
-        [HttpPost("del_msg_chat"), Authorize]
-        public async Task<ActionResult<string>> DeleteMessages([FromBody] ChatDTO chatDTO)
-        {
-            if (!(chatDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
-            try
-            {
-                var msg = _dbContext.Messages.FirstOrDefault(m => m.Id == chatDTO.Message.Id);
-                if (chatDTO.Username == msg.Username) _dbContext.Messages.Remove(msg);
-                else return Unauthorized("Unauthorized user!");
-                _dbContext.SaveChanges();
-                return Ok("User removed!");
             }
             catch (Exception)
             {
