@@ -45,7 +45,7 @@ namespace BPR_API.Controllers
             {
                 var dbPassword = dbContext.UserPasswords.FirstOrDefault(p => p.Username == user.Username);
                 var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username);
-                if (dbPassword != null | dbUser != null) return BadRequest("User alreadlsy exists!");
+                if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
             }
 
             UserDetails userDetails = new UserDetails()
