@@ -18,6 +18,29 @@
     top: -2px;
 }
 
+
+
+
+@media (min-width: 641px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .collapse {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+    }
+}
+/*
+.nav-item ::deep a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item ::deep a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
@@ -40,23 +63,130 @@
         line-height: 3rem;
     }
 
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka One', cursive;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #3b2a27;
+}
+ul{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+ul li a{
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 5em;
+    font-weight: bold;
+    color: transparent;
+    line-height: 1em;
+    -webkit-text-stroke: 1px rgba(225,225,225,0.5);
+}
+ul li a ::before{
+    content: '';
+    position: absolute;
+    width: 0;
+    color: #fff;
+    overflow: hidden;
+    transition: 1s;
+    border-right: 8px solid white;
+    -webkit-text-stroke: 1px rgba(225,225,225,0.5);
+}
+ul li a:hover::before{
+    width: 100%;
+    filter: drop-shadow(0 0 25pw white);
+    
+}
+*/
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    text-decoration: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    background: #dfe9f5;
 }
 
-.nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
+nav{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    background: #fff;
+    width: 90px;
+    overflow: hidden;
+    transition: width 0.2s linear;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.1);
 }
 
-@media (min-width: 641px) {
-    .navbar-toggler {
-        display: none;
-    }
-
-    .collapse {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-    }
+.logo{
+    display: flex;
+    text-align: center;
+    transition: all 0.5s ease;
+    margin: 10px 0 0 10px;
 }
+.logo img{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+.logo span{
+    font-weight: bold;
+    padding: 15px;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+a{
+    position: relative;
+    color: rgb(85,83,83);
+    font-size: 14px;
+    display: table;
+    width: 300px;
+    padding: 10px;
+}
+.fas{
+    position: relative;
+    width: 70px;
+    height: 40px;
+    top: 14px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.nav-item{
+    position: relative;
+    top: 12px;
+    margin-left: 10px;
+}
+a:hover{
+    background: #eee;
+}
+nav:hover{
+    width: 280px;
+    transition: all 0.5s ease;
+}
+.logout{
+    position: absolute;
+    bottom: 0;
+}
+

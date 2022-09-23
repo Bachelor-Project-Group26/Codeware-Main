@@ -18,37 +18,8 @@
     top: -2px;
 }
 
-.nav-item[b-d7ppp29zix] {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
-}
 
-    .nav-item:first-of-type[b-d7ppp29zix] {
-        padding-top: 1rem;
-    }
 
-    .nav-item:last-of-type[b-d7ppp29zix] {
-        padding-bottom: 1rem;
-    }
-
-    .nav-item[b-d7ppp29zix]  a {
-        color: #d7d7d7;
-        border-radius: 4px;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        line-height: 3rem;
-    }
-
-.nav-item[b-d7ppp29zix]  a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
-}
-
-.nav-item[b-d7ppp29zix]  a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
 
 @media (min-width: 641px) {
     .navbar-toggler[b-d7ppp29zix] {
@@ -60,3 +31,162 @@
         display: block;
     }
 }
+/*
+.nav-item ::deep a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item ::deep a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+.nav-item {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item ::deep a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka One', cursive;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #3b2a27;
+}
+ul{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+ul li a{
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 5em;
+    font-weight: bold;
+    color: transparent;
+    line-height: 1em;
+    -webkit-text-stroke: 1px rgba(225,225,225,0.5);
+}
+ul li a ::before{
+    content: '';
+    position: absolute;
+    width: 0;
+    color: #fff;
+    overflow: hidden;
+    transition: 1s;
+    border-right: 8px solid white;
+    -webkit-text-stroke: 1px rgba(225,225,225,0.5);
+}
+ul li a:hover::before{
+    width: 100%;
+    filter: drop-shadow(0 0 25pw white);
+    
+}
+*/
+
+*[b-d7ppp29zix]{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    text-decoration: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}
+body[b-d7ppp29zix]{
+    background: #dfe9f5;
+}
+
+nav[b-d7ppp29zix]{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    background: #fff;
+    width: 90px;
+    overflow: hidden;
+    transition: width 0.2s linear;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+}
+
+.logo[b-d7ppp29zix]{
+    display: flex;
+    text-align: center;
+    transition: all 0.5s ease;
+    margin: 10px 0 0 10px;
+}
+.logo img[b-d7ppp29zix]{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+.logo span[b-d7ppp29zix]{
+    font-weight: bold;
+    padding: 15px;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+a[b-d7ppp29zix]{
+    position: relative;
+    color: rgb(85,83,83);
+    font-size: 14px;
+    display: table;
+    width: 300px;
+    padding: 10px;
+}
+.fas[b-d7ppp29zix]{
+    position: relative;
+    width: 70px;
+    height: 40px;
+    top: 14px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.nav-item[b-d7ppp29zix]{
+    position: relative;
+    top: 12px;
+    margin-left: 10px;
+}
+a:hover[b-d7ppp29zix]{
+    background: #eee;
+}
+nav:hover[b-d7ppp29zix]{
+    width: 280px;
+    transition: all 0.5s ease;
+}
+.logout[b-d7ppp29zix]{
+    position: absolute;
+    bottom: 0;
+}
+

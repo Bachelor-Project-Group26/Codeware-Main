@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "wx/CJuexK8mwVfcR0nHGqbWRJZmHTMxVZoFF+kSDi7g=",
+  "Hash": "QKM53lBwXDh02xj1rKlf9gWdaK62DeQRyHStalo5C9U=",
   "Source": "BPR-Blazor",
   "BasePath": "_content/BPR-Blazor",
   "Mode": "Default",
@@ -338,6 +338,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\mail.svg"
+    },
+    {
+      "Identity": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\wwwroot\\images\\Picture.png",
+      "SourceId": "BPR-Blazor",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\wwwroot\\",
+      "BasePath": "_content/BPR-Blazor",
+      "RelativePath": "images/Picture.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Picture.png"
     },
     {
       "Identity": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\wwwroot\\images\\post-2.svg",

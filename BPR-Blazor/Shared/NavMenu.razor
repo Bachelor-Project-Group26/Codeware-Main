@@ -1,13 +1,55 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BPR-Blazor</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
+﻿
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav>
+        <ul>
+            <li>
+                <a href="#" class="logo">
+                    <img src="indie4.jpg" alt="">
+                    <span class="nav-item">CodeWare</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-item">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-item">Profile</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-comments"></i>
+                    <span class="nav-item">Chat</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-tasks"></i>
+                    <span class="nav-item">Tasks</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-cog"></i>
+                    <span class="nav-item">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-item">Log out</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+
+<!-- 
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
@@ -20,8 +62,53 @@
             </NavLink>
         </div>
     </nav>
-</div>
-
+ <nav>
+        <ul>
+            <li>
+                <a href="#" class="logo">
+                    <img src="indie4.jpg" alt="">
+                    <span class="nav-item">CodeWare</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-item">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-item">Profile</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-comments"></i>
+                    <span class="nav-item">Chat</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-tasks"></i>
+                    <span class="nav-item">Tasks</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-cog"></i>
+                    <span class="nav-item">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-item">Log out</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+-->
 @code {
     private bool collapseNavMenu = true;
 
