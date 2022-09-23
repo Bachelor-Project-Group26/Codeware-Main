@@ -9,7 +9,7 @@ namespace BPR_Blazor.Data
 {
     public class UserService : IUserService
     {
-        private string url = "http://localhost:7000";
+        private string URL = "http://localhost:7000";
 
         public async Task<string> Login(string username, string password)
         {
@@ -19,7 +19,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/User/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/login", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -44,7 +44,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{url}/User/register", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/register", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -69,7 +69,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/User/update_details", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/update_details", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -86,7 +86,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/User/delete", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/delete", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -119,7 +119,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/User/delete", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/delete", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
