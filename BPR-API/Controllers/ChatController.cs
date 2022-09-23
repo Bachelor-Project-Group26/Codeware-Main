@@ -54,14 +54,13 @@ namespace BPR_API.Controllers
             try
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == chatDTO.Username);
-                var ChatList = _dbContext.UserChats.FirstOrDefault(p => p.UserId == user.Id);
+                var ChatList = _dbContext.UserChats.Where(p => p.UserId == user.Id);
                 return Ok(ChatList); // I need to find how to serialize this!
             }
             catch (Exception)
             {
                 return BadRequest("Something went wrong!");
             }
-            return Ok("Test");
         }
 
         [HttpPost("create_chat"), Authorize]
@@ -184,7 +183,16 @@ namespace BPR_API.Controllers
         [HttpPost("get_msg_chat"), Authorize]
         public async Task<ActionResult<string>> GetMessages([FromBody] ChatDTO chatDTO)
         {
-            return Ok("Not implemented!");
+            if (!(chatDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            {
+                var MessageList = _dbContext.Messages.Where(p => p.ChatID == chatDTO.Id);
+                return Ok(MessageList);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
         }
 
         [HttpPost("snd_msg_chat"), Authorize]
