@@ -7,9 +7,14 @@ namespace BPR_API.DataAccess
     {
         public DbSet<UserDetails> UserDetails { get; set; }
         public DbSet<UserPassword> UserPasswords { get; set; }
-        public DbSet<Chat> Chats { get; set; }
         public DbSet<UserChat> UserChats { get; set; }
+        public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserChat>().HasKey(c => new { c.UserId, c.ChatId });
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
