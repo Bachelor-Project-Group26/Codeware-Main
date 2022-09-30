@@ -1,4 +1,4 @@
-﻿using BPR_API.APIModels;
+﻿using BPR_Blazor.Models;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -17,7 +17,7 @@ namespace BPR_Blazor.Data
             };
             string jsonChatDTO = Newtonsoft.Json.JsonConvert.SerializeObject(chatDTO);
             StringContent content = new StringContent(jsonChatDTO, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/get_chat", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Chat/get_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -33,7 +33,7 @@ namespace BPR_Blazor.Data
             };
             string jsonChatDTO = Newtonsoft.Json.JsonConvert.SerializeObject(chatDTO);
             StringContent content = new StringContent(jsonChatDTO, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/get_chat_list", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Chat/get_chat_list", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -48,11 +48,11 @@ namespace BPR_Blazor.Data
                 Username = Username,
                 ChatName = ChatName,
                 Bio = Bio,
-                ProfilePicture = ProfilePicture
+                // Add picture missing
             };
             string jsonChatDTO = Newtonsoft.Json.JsonConvert.SerializeObject(chatDTO);
             StringContent content = new StringContent(jsonChatDTO, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/create_chat", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Chat/create_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -67,11 +67,11 @@ namespace BPR_Blazor.Data
                 Username = Username,
                 ChatName = ChatName,
                 Bio = Bio,
-                ProfilePicture = ProfilePicture
+                // Add picture missing
             };
             string jsonChatDTO = Newtonsoft.Json.JsonConvert.SerializeObject(chatDTO);
             StringContent content = new StringContent(jsonChatDTO, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/update_chat", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/Chat/update_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -88,7 +88,7 @@ namespace BPR_Blazor.Data
             };
             string jsonChatDTO = Newtonsoft.Json.JsonConvert.SerializeObject(chatDTO);
             StringContent content = new StringContent(jsonChatDTO, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/delete_chat", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Chat/delete_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -106,7 +106,7 @@ namespace BPR_Blazor.Data
             };
             string jsonChatDTO = Newtonsoft.Json.JsonConvert.SerializeObject(chatDTO);
             StringContent content = new StringContent(jsonChatDTO, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/add_user_chat", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/Chat/add_user_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -124,7 +124,7 @@ namespace BPR_Blazor.Data
             };
             string jsonChatDTO = Newtonsoft.Json.JsonConvert.SerializeObject(chatDTO);
             StringContent content = new StringContent(jsonChatDTO, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/rem_user_chat", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/Chat/rem_user_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -141,7 +141,7 @@ namespace BPR_Blazor.Data
             };
             string jsonChatDTO = Newtonsoft.Json.JsonConvert.SerializeObject(chatDTO);
             StringContent content = new StringContent(jsonChatDTO, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/get_msg_chat", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Chat/get_msg_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -160,7 +160,7 @@ namespace BPR_Blazor.Data
             };
             string jsonMessageDTO = Newtonsoft.Json.JsonConvert.SerializeObject(messageDTO);
             StringContent content = new StringContent(jsonMessageDTO, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/snd_msg_chat", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Chat/snd_msg_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);

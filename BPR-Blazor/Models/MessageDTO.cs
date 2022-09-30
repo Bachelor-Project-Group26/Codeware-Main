@@ -1,4 +1,4 @@
-﻿namespace BPR_API.APIModels
+﻿namespace BPR_Blazor.Models
 {
     public class MessageDTO
     {

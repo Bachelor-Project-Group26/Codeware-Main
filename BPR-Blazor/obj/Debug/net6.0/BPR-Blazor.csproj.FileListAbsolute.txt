@@ -60,3 +60,5 @@ C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\BPR-Blazor.cs
 C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\BPR-Blazor.genruntimeconfig.cache
 C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\ref\BPR-Blazor.dll
 C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\scopedcss\Pages\UserProfile2.razor.rz.scp.css
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\scopedcss\Pages\UserProfile.razor.rz.scp.css
+C:\Users\joaob\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\scopedcss\Pages\UserProfile2.razor.rz.scp.css

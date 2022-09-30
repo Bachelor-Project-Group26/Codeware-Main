@@ -72,7 +72,7 @@ namespace BPR_API.Controllers
                 Username = chatDTO.Username,
                 ChatName = chatDTO.ChatName,
                 Bio = chatDTO.Bio,
-                ProfilePicture = chatDTO.ProfilePicture
+                // Add picture missing
             };
             UserChat userChat;
             try
@@ -115,7 +115,7 @@ namespace BPR_API.Controllers
                 dbChatDetails.Username = chatDTO.Username;
                 dbChatDetails.ChatName = chatDTO.ChatName;
                 dbChatDetails.Bio = chatDTO.Bio;
-                dbChatDetails.ProfilePicture = chatDTO.ProfilePicture;
+                // Add picture missing
 
                 _dbContext.Chats.Update(dbChatDetails);
                 _dbContext.SaveChanges();

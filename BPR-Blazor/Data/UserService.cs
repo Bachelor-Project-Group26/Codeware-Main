@@ -9,7 +9,7 @@ namespace BPR_Blazor.Data
 {
     public class UserService : IUserService
     {
-        private string URL = "http://localhost:7000";
+        private string URL = "https://localhost:7000";
 
         public async Task<string> Login(string username, string password)
         {
@@ -64,7 +64,7 @@ namespace BPR_Blazor.Data
                 Email = email,
                 Country = country,
                 Bio = bio,
-                ProfilePicture = profilePicture,
+                // Add picture missing
                 Birthday = birthday
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);

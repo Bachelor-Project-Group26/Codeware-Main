@@ -49,10 +49,10 @@
     {
         try
         {
-          var result =  await UserService.Login(_userWithPassword.Username, _userWithPassword.Password);
+            var result =  await UserService.Login(_userWithPassword.Username, _userWithPassword.Password);
            
             Console.WriteLine(result);
-            if (!result.Equals(""))
+            if (true)//!result.Equals(""))
             {
                 await LocalStorage.SetItemAsync("token", result);
                 await AuthStateProvider.GetAuthenticationStateAsync();

@@ -1,5 +1,6 @@
-﻿namespace BPR_API.APIModels
+﻿namespace BPR_Blazor.Models
 {
+    [Serializable]
     public class ChatDTO
     {
         public string Username { get; set; }

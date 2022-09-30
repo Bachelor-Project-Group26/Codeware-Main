@@ -85,7 +85,7 @@ namespace BPR_API.Controllers
                 dbUserDetails.Email = user.Email;
                 dbUserDetails.Country = user.Country;
                 dbUserDetails.Bio = user.Bio;
-                dbUserDetails.ProfilePicture = user.ProfilePicture;
+                // Add picture missing
                 dbUserDetails.Birthday = user.Birthday;
 
                 _dbContext.UserDetails.Update(dbUserDetails);

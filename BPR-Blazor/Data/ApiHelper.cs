@@ -19,11 +19,18 @@ namespace BPR_Blazor.Data
             ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        /// <summary>
+        /// This stores the token so it can be used later!
+        /// </summary>
+        /// <param name="token">The token returned by the API when the user logs in!</param>
         public static void AddToken(string token)
         {
             ApiClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
+        /// <summary>
+        /// This deletes the previously stored token!
+        /// </summary>
         public static void RemoveToken()
         {
             ApiClient.DefaultRequestHeaders.Authorization = null;
