@@ -6,7 +6,7 @@ namespace BPR_Blazor.Data
 {
     public class ChatService : IChatService
     {
-        private string URL = "http://localhost:7000";
+        private string URL = "https://localhost:7000";
 
         public async Task<string> GetChat(string Username, int Id)
         {
