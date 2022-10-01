@@ -1,4 +1,8 @@
-@page "/UserProfile"
+@page "/UserProfile/{id}"
+@inject NavigationManager navManager
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
 <div>
 <div class="profilePic">
   <img class="profile" src="images/Picture.png" alt="profilepic">
@@ -20,3 +24,9 @@
     </div>
   </div>
 </div>
+@code{
+
+  int id= 0;
+
+ 
+}

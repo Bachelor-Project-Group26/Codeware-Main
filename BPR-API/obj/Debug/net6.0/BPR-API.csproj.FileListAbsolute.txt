@@ -168,3 +168,7 @@ C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\bin\Debug\net6.0\Microsoft.AspNet
 C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\bin\Debug\net6.0\Scrutor.dll
 C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
 C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
+C:\Users\javic\source\repos\BPR-Blazor\BPR-API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\javic\source\repos\BPR-Blazor\BPR-API\bin\Debug\net6.0\Scrutor.dll
+C:\Users\javic\source\repos\BPR-Blazor\BPR-API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\javic\source\repos\BPR-Blazor\BPR-API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
