@@ -70,6 +70,20 @@ namespace BPR_API.Controllers
 
             return Ok("User created!");
         }
+        [HttpGet]
+        public async Task<ActionResult<string>> GetUserByUsername([FromQuery] string username)
+        {
+            try
+            {
+                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == username);
+                if (user == null) return BadRequest("User not found!");
+                return Ok(user);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
+        }
 
         [HttpPut("update_details"), Authorize]
         public async Task<ActionResult<string>> UpdateDetails([FromBody] UserDTO user)

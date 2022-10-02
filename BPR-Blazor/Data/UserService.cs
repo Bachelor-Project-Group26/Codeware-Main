@@ -51,7 +51,15 @@ namespace BPR_Blazor.Data
                 return response.StatusCode + str;
             }
         }
-
+        public async Task<string> GetUserByUsername(string username)
+        {
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync($"{URL}/User/{username}"))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return response.StatusCode + str;
+            }
+        }
         public async Task<string> UpdateDetails(string username, int securityLevel, string firstName, 
             string lastName, string email, string country, string bio, byte[] profilePicture, DateTime birthday)
         {
