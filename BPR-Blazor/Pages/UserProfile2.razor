@@ -1,8 +1,10 @@
-@page "/UserProfile/{id}"
+@page "/UserProfile/{username}"
 @inject NavigationManager navManager
 @inject HttpClient Http
 @inject AuthenticationStateProvider AuthStateProvider
 @inject ILocalStorageService LocalStorage
+@inject IUserService UserService
+@using BPR_Blazor.Data
 <div>
 <div class="profilePic">
   <img class="profile" src="images/Picture.png" alt="profilepic">
@@ -26,7 +28,12 @@
 </div>
 @code{
 
-  int id= 0;
+  private string username = "";
 
+  protected override async Task OnInitializedAsync()
+  {
+   
+    
+  }
  
 }

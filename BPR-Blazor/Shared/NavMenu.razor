@@ -1,4 +1,6 @@
-﻿
+﻿@attribute [Authorize]
+@inject ILocalStorageService LocalStorage
+<AuthorizeView>
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav>
         <ul>
@@ -15,7 +17,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href= "/UserProfile/{@context.User.Identity.Name} ">
                     <i class="fas fa-user"></i>
                     <span class="nav-item">Profile</span>
                 </a>
@@ -47,7 +49,7 @@
         </ul>
     </nav>
 </div>
-
+</AuthorizeView>
 
 <!-- 
     <nav class="flex-column">
@@ -111,9 +113,12 @@
 -->
 @code {
     private bool collapseNavMenu = true;
-
+    private string username = "";
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
+    protected override async Task OnInitializedAsync()
+    {
+        username = await LocalStorage.GetItemAsync<string>("username");
+    }
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
