@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ygIiEKst0jaD14f2APyl0njKGvHgnRkm6YMifRRYiYFYfV1Ab7lXywMrvLkHZsWsq/2X1wFUL8w9WNL3wPZDyg==",
+  "dgSpecHash": "4j7r/+KGBt5OhnmhOFte5ztCBKKgz3Q66zo7l6jWFTVHP/AYAVE/Gw8ed7HQbyRWP2ELdgcn1twVLYucA+XVhw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\javic\\source\\repos\\BPR-Main\\BPR-API\\BPR-API.csproj",
+  "projectFilePath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-api\\BPR-API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\javic\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\javic\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.7\\microsoft.aspnetcore.authentication.jwtbearer.6.0.7.nupkg.sha512",

@@ -4,11 +4,12 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @inject ILocalStorageService LocalStorage
 @inject IUserService UserService
+@inject NavigationManager MyNavigationManager
 @using BPR_Blazor.Data
 <div>
 <div class="profilePic">
   <img class="profile" src="images/Picture.png" alt="profilepic">
-    <h1>Javier Candeira</h1>
+    <h1>@user.FirstName @user.LastName</h1>
     <p>I'm a software engineer from the 7th Semester bla bla bla</p>
     <div>
       <p>Aarhus</p>
@@ -27,13 +28,13 @@
   </div>
 </div>
 @code{
-
-  private string username = "";
-
+  [Parameter]
+  public string username { get; set; }
+  public UserDTO user = new UserDTO();
   protected override async Task OnInitializedAsync()
   {
-   
-    
+    user = await UserService.GetUserByUsername(username);
+    Console.WriteLine(user.Username);
   }
- 
+
 }

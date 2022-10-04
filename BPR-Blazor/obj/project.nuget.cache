@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1sDiMKn3QIbTnma4q2HIXviAbFZHj6kLb3R7leY7FIBSUwVG426MWSvIRZ/trUISA4WdX+G3Ch7eem1MSPoM5w==",
+  "dgSpecHash": "3AyoHp3XUmX5uY6199ym9AFe7PIqfA/SIdWwqBwo7MpHF7rHUgX6I5+bjwi7lg+EDYO7x3VWjg4EEvOZCjsb5A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj",
+  "projectFilePath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-blazor\\BPR-Blazor.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\javic\\.nuget\\packages\\blazored.localstorage\\4.2.0\\blazored.localstorage.4.2.0.nupkg.sha512",
     "C:\\Users\\javic\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.0\\microsoft.aspnetcore.authorization.6.0.0.nupkg.sha512",

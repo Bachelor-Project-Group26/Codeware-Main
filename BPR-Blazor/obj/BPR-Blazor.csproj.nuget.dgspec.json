@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj": {}
+    "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-blazor\\BPR-Blazor.csproj": {}
   },
   "projects": {
-    "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj": {
+    "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-blazor\\BPR-Blazor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj",
+        "projectUniqueName": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-blazor\\BPR-Blazor.csproj",
         "projectName": "BPR-Blazor",
-        "projectPath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\BPR-Blazor.csproj",
+        "projectPath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-blazor\\BPR-Blazor.csproj",
         "packagesPath": "C:\\Users\\javic\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\BPR-Blazor\\obj\\",
+        "outputPath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-blazor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\javic\\AppData\\Roaming\\NuGet\\NuGet.Config",

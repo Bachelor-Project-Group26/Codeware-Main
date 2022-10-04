@@ -20,7 +20,7 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         string token = await _localStorageService.GetItemAsStringAsync("token");
-
+        string username = await _localStorageService.GetItemAsStringAsync("username");
         var identity = new ClaimsIdentity();
         _client.DefaultRequestHeaders.Authorization = null;
 
@@ -30,7 +30,7 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
             _client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
         }
-
+        
         var user = new ClaimsPrincipal(identity);
         var state = new AuthenticationState(user);
         

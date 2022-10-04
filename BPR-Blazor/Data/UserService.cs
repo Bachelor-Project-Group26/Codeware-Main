@@ -51,13 +51,16 @@ namespace BPR_Blazor.Data
                 return response.StatusCode + str;
             }
         }
-        public async Task<string> GetUserByUsername(string username)
+        public async Task<UserDTO> GetUserByUsername(string username)
         {
+            UserDTO user = new UserDTO();
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
             using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync($"{URL}/User/{username}"))
             {
                 var json = await response.Content.ReadAsStringAsync();
-                var str = JsonConvert.DeserializeObject<string>(json);
-                return response.StatusCode + str;
+                user = JsonConvert.DeserializeObject<UserDTO>(json);
+                return user;
             }
         }
         public async Task<string> UpdateDetails(string username, int securityLevel, string firstName, 
