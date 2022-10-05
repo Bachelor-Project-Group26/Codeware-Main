@@ -6,7 +6,7 @@
 
 <section class="login-form-1 register">
         <h1>Codeware</h1>
-        <div class="container">
+        <div class="container" style=@myStyle1>
             <!-- /form -->
             <div class="login-form-grid">
                 <div class="login-main">
@@ -30,16 +30,79 @@
             </div>
             <!-- //form -->
         </div>
+        <div class="container-signup" style=@myStyle>
+            <!-- /form -->
+            <div class="login-form-grid">
+                <div class="login-main">
+                    <div class="login-content">
+                        <h2>Create your User Profile</h2>
+                        <EditForm Model="@_userWithPassword" OnValidSubmit="SubmitProfile">
+                            <DataAnnotationsValidator/>
+                            <div class="txt_field">
+                                <InputText @bind-Value="@_userWithPassword.FirstName" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <span></span>
+                                <label>First Name</label>
+                            </div>
+                            <div class="txt_field">
+                                <InputText @bind-Value="@_userWithPassword.LastName" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <span></span>
+                                <label>Last Name</label>
+                            </div>
+                            <div class="txt_field">
+                                <InputText @bind-Value="@_userWithPassword.Email" id="input" type="email" class="input" name="text" required="" autofocus/>
+                                <span></span>
+                                <label>Email</label>
+                            </div>
+                            <div class="txt_field">
+                                <InputText @bind-Value="@_userWithPassword.Country" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <span></span>
+                                <label>Country</label>
+                            </div>
+                            <div class="txt_field">
+                                <InputTextArea @bind-Value="@_userWithPassword.Bio" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <span></span>
+                                <label>Bio</label>
+                            </div>
+                            <InputDate @bind-Value="@_userWithPassword.Birthday" class="input" TValue="DateTime"/>
+                            
+                               
+                            <button class="btn" type="submit">Log In</button>
+                        </EditForm>
+                        <p class="account">Don't have an account? <a href="register">Register</a></p>
+                    </div>
+                    <div class="login_form align-self">
+                        <div class="left_grid_info">
+                            <img src="images/signup.webp" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- //form -->
+        </div>
     </section>
 @code {
     UserDTO _userWithPassword = new UserDTO();
-
+    public string myStyle, myStyle1;
     private async void OnValidSubmit()
     {
         try
         {
+            myStyle = "display: block";
+            myStyle1 = "display: none";
             var result =  await UserService.Register(_userWithPassword.Username, _userWithPassword.Password);
             Console.WriteLine(result);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+    private async void SubmitProfile()
+    {
+        try{
+        var result = await UserService.UpdateDetails(_userWithPassword.Username, 0, _userWithPassword.FirstName, _userWithPassword.LastName, _userWithPassword.Email, _userWithPassword.Country, _userWithPassword.Bio, null, _userWithPassword.Birthday);
+        Console.WriteLine(result);
+        navManager.NavigateTo("/");
         }
         catch (Exception e)
         {

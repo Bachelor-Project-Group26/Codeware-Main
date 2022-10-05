@@ -67,6 +67,13 @@ a, .btn-link {
 .container {
     max-width: 890px;
     margin: 0 auto;
+    display: '';
+}
+.container-signup{
+
+    max-width: 890px;
+    margin: 0 auto;
+    display: none;
 }
 .login_form {
     flex-basis: 50%;
