@@ -100,10 +100,10 @@ namespace BPR_API.Controllers
             }
         }
 
-        [HttpPut("update_details")]
+        [HttpPut("update_details"), Authorize]
         public async Task<ActionResult<string>> UpdateDetails([FromBody] UserDTO user)
         {
-            //if (!(user.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            if (!(user.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
                 var dbUserDetails = _dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username);

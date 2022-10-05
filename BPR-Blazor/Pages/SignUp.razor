@@ -1,45 +1,51 @@
 ﻿@page "/SignUp"
+@inject NavigationManager navManager
 @using BPR_Blazor.Models
+@using BPR_Blazor.Data
+@inject IUserService UserService
+@inject AuthenticationStateProvider _authStateProvider;
+@attribute [Authorize]
 <section class="login-form-1 signup">
     <div class="container">
             <!-- /form -->
             <div class="login-form-grid">
                 <div class="login-main">
                     <div class="login-content">
-                        <h2>Create your User Profile</h2>
+                        <h2>Update your User Profile</h2>
                         <EditForm Model="@_userDetails" OnValidSubmit="SubmitProfile">
                             <DataAnnotationsValidator/>
                             <div class="txt_field">
-                                <InputText @bind-Value="@_userDetails.FirstName" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <InputText @bind-Value="@_userDetails.Username" id="input" type="text" class="input" name="text" autofocus/>
+                                <span></span>
+                                <label>Username</label>
+                            </div>
+                            <div class="txt_field">
+                                <InputText @bind-Value="@_userDetails.FirstName" id="input" type="text" class="input" name="text" autofocus/>
                                 <span></span>
                                 <label>First Name</label>
                             </div>
                             <div class="txt_field">
-                                <InputText @bind-Value="@_userDetails.LastName" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <InputText @bind-Value="@_userDetails.LastName" id="input" type="text" class="input" name="text"  autofocus/>
                                 <span></span>
                                 <label>Last Name</label>
                             </div>
                             <div class="txt_field">
-                                <InputText @bind-Value="@_userDetails.Email" id="input" type="email" class="input" name="text" required="" autofocus/>
+                                <InputText @bind-Value="@_userDetails.Email" id="input" type="email" class="input" name="text"  autofocus/>
                                 <span></span>
                                 <label>Email</label>
                             </div>
                             <div class="txt_field">
-                                <InputText @bind-Value="@_userDetails.Country" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <InputText @bind-Value="@_userDetails.Country" id="input" type="text" class="input" name="text"  autofocus/>
                                 <span></span>
                                 <label>Country</label>
                             </div>
                             <div class="txt_field">
-                                <InputTextArea @bind-Value="@_userDetails.Bio" id="input" type="text" class="input" name="text" required="" autofocus/>
+                                <InputTextArea @bind-Value="@_userDetails.Bio" id="input" type="text" class="input" name="text"  autofocus/>
                                 <span></span>
                                 <label>Bio</label>
                             </div>
-                            <InputDate @bind-Value="@_userDetails.Birthday" class="input" TValue="DateTime"/>
-                            
-                               
-                            <button class="btn" type="submit">Log In</button>
+                            <button class="btn" type="submit">Update your profile</button>
                         </EditForm>
-                        <p class="account">Don't have an account? <a href="register">Register</a></p>
                     </div>
                     <div class="login_form align-self">
                         <div class="left_grid_info">
@@ -53,9 +59,24 @@
     </section>
 @code {
     private UserDTO _userDetails = new UserDTO();
-
-    private void SubmitProfile()
+    private string username = "";
+    protected async override void OnInitialized()
     {
-        Console.Write(_userDetails.Birthday);
+        var authState  = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        username = user.Identity.Name;
+       Console.WriteLine(username);
+    }
+    private async void SubmitProfile()
+    {
+        try{
+        var result = await UserService.UpdateDetails(username, 0, _userDetails.FirstName, _userDetails.LastName, _userDetails.Email, _userDetails.Country, _userDetails.Bio, null, DateTime.Now);
+        Console.WriteLine(result);
+        navManager.NavigateTo("/userprofile/" + username);
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 }
