@@ -108,14 +108,14 @@ namespace BPR_API.Controllers
             {
                 var dbUserDetails = _dbContext.UserDetails.FirstOrDefault(u => u.Username == user.Username);
 
-                dbUserDetails.SecurityLevel = user.SecurityLevel;
-                dbUserDetails.FirstName = user.FirstName;
-                dbUserDetails.LastName = user.LastName;
-                dbUserDetails.Email = user.Email;
-                dbUserDetails.Country = user.Country;
-                dbUserDetails.Bio = user.Bio;
+                if (user.SecurityLevel != null) dbUserDetails.SecurityLevel = user.SecurityLevel;
+                if (user.FirstName != null) dbUserDetails.FirstName = user.FirstName;
+                if (user.LastName != null) dbUserDetails.LastName = user.LastName;
+                if (user.Email != null) dbUserDetails.Email = user.Email;
+                if (user.Country != null) dbUserDetails.Country = user.Country;
+                if (user.Bio != null) dbUserDetails.Bio = user.Bio;
                 // Add picture missing
-                dbUserDetails.Birthday = user.Birthday;
+                if (user.Birthday != null) dbUserDetails.Birthday = user.Birthday;
 
                 _dbContext.UserDetails.Update(dbUserDetails);
                 _dbContext.SaveChanges();

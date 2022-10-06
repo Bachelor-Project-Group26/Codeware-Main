@@ -10,6 +10,7 @@ namespace BPR_API.DataAccess
         public DbSet<UserChat> UserChats { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

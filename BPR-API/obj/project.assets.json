@@ -2723,19 +2723,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\javic\\.nuget\\packages\\": {}
+    "C:\\Users\\joaob\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-api\\BPR-API.csproj",
+      "projectUniqueName": "C:\\Users\\joaob\\source\\repos\\BPR-Blazor\\BPR-API\\BPR-API.csproj",
       "projectName": "BPR-API",
-      "projectPath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-api\\BPR-API.csproj",
-      "packagesPath": "C:\\Users\\javic\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\javic\\source\\repos\\BPR-Blazor\\bpr-api\\obj\\",
+      "projectPath": "C:\\Users\\joaob\\source\\repos\\BPR-Blazor\\BPR-API\\BPR-API.csproj",
+      "packagesPath": "C:\\Users\\joaob\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\joaob\\source\\repos\\BPR-Blazor\\BPR-API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\javic\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\joaob\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
