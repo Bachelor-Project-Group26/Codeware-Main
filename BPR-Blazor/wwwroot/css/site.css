@@ -283,7 +283,7 @@ form .txt_field{
     transition: .5s;
 }
 .txt_field input:focus ~ label,
-.txt_field input:valid ~ label{
+.txt_field input:active ~ label{
     top: -9px;
     color: #2691d9;
 }

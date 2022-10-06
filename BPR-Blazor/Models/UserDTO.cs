@@ -11,6 +11,6 @@
         public string? Email { get; set; }
         public string? Country { get; set; }
         public string? Bio { get; set; }
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
     }
 }
