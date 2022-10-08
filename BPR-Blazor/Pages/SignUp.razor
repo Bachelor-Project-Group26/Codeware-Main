@@ -14,32 +14,28 @@
                         <h2>Update your User Profile</h2>
                         <EditForm Model="@_userDetails" OnValidSubmit="SubmitProfile">
                             <DataAnnotationsValidator/>
-                            <div class="txt_field">
-                                <InputText @bind-Value="@_userDetails.Username" id="input" type="text" class="input" name="text" autofocus/>
-                                <span></span>
-                                <label>Username</label>
-                            </div>
-                            <div class="txt_field">
-                                <InputText @bind-Value="@_userDetails.FirstName" id="input" type="text" class="input" name="text" autofocus/>
-                                <span></span>
+                            <div class="signup">
                                 <label>First Name</label>
+                                <InputText @bind-Value="@_userDetails.FirstName" id="input" type="text" class="input"  name="text" autofocus/>
+                                <span></span>
+                                
                             </div>
-                            <div class="txt_field">
-                                <InputText @bind-Value="@_userDetails.LastName" id="input" type="text" class="input" name="text"  autofocus/>
+                            <div class="signup">
+                                <InputText @bind-Value="@_userDetails.LastName" id="input" type="text" class="input"  name="text"  autofocus/>
                                 <span></span>
                                 <label>Last Name</label>
                             </div>
-                            <div class="txt_field">
-                                <InputText @bind-Value="@_userDetails.Email" id="input" type="email" class="input" name="text"  autofocus/>
+                            <div class="signup">
+                                <InputText @bind-Value="@_userDetails.Email" id="input" type="email" class="input"  name="text"  autofocus/>
                                 <span></span>
                                 <label>Email</label>
                             </div>
-                            <div class="txt_field">
+                            <div class="signup">
                                 <InputText @bind-Value="@_userDetails.Country" id="input" type="text" class="input" name="text"  autofocus/>
                                 <span></span>
                                 <label>Country</label>
                             </div>
-                            <div class="txt_field">
+                            <div class="signup">
                                 <InputTextArea @bind-Value="@_userDetails.Bio" id="input" type="text" class="input" name="text"  autofocus/>
                                 <span></span>
                                 <label>Bio</label>

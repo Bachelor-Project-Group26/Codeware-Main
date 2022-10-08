@@ -9,6 +9,7 @@ namespace BPR_Blazor.Data
 {
     public class UserService : IUserService
     {
+        
         private string URL = "https://localhost:7000";
 
         public async Task<string> Login(string username, string password)
@@ -29,10 +30,10 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public string Logout(string username)
+        public void Logout()
         {
             ApiHelper.RemoveToken();
-            return "User logged out!";
+            Console.WriteLine("Logged out!");
         }
 
         public async Task<string> Register(string username, string password)

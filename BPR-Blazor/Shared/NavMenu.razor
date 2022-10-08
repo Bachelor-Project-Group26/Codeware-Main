@@ -1,54 +1,48 @@
 ﻿@attribute [Authorize]
+@using BPR_Blazor.Data
+@inject IUserService UserService
+@inject AuthenticationStateProvider _authStateProvider
 @inject ILocalStorageService LocalStorage
+@inject NavigationManager navManager
 <AuthorizeView>
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav>
-        <ul>
-            <li>
-                <a href="#" class="logo">
-                    <img src="indie4.jpg" alt="">
-                    <span class="nav-item">CodeWare</span>
+    <nav class="navbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="index" class="nav-link">
+                    <img src="images/home.png" class="icon">
+                    
+                    <span class="link-text">Home</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-home"></i>
-                    <span class="nav-item">Home</span>
+             <li class="nav-item">
+                <a href="userprofile/@username" class="nav-link">
+                    <img src="images/dj.png" class="icon">
+                    <span class="link-text">Profile</span>
                 </a>
             </li>
-            <li>
-                <a href= "/UserProfile/{@context.User.Identity.Name} ">
-                    <i class="fas fa-user"></i>
-                    <span class="nav-item">Profile</span>
+             <li class="nav-item">
+                <a href="chats" class="nav-link">
+                    <img src="images/speech-bubble.png" class="icon">
+                    <span class="link-text">Chats</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-comments"></i>
-                    <span class="nav-item">Chat</span>
+             <li class="nav-item">
+                <a href="files" class="nav-link">
+                    <img src="images/folder.png" class="icon">
+                    <span class="link-text">Files</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-tasks"></i>
-                    <span class="nav-item">Tasks</span>
+             <li class="nav-item">
+                <a href="" class="nav-link" @onclick="Logout">
+                    <img src="images/exit.png" class="icon">
+                    <span class="link-text">Logout</span>
                 </a>
+                
             </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-cog"></i>
-                    <span class="nav-item">Settings</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span class="nav-item">Log out</span>
-                </a>
-            </li>
+
         </ul>
     </nav>
-</div>
+   
 </AuthorizeView>
 
 <!-- 
@@ -111,16 +105,69 @@
         </ul>
     </nav>
 -->
+ <!--
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav>
+        <ul>
+            <li>
+                <a href="#" class="logo">
+                    <img src="indie4.jpg" alt="">
+                    <span class="nav-item">CodeWare</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-item">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href= "/UserProfile/{@context.User.Identity.Name} ">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-item">Profile</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-comments"></i>
+                    <span class="nav-item">Chat</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-tasks"></i>
+                    <span class="nav-item">Tasks</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-cog"></i>
+                    <span class="nav-item">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <button class="nav-item" @onclick="Logout">Log out</button>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+-->
 @code {
-    private bool collapseNavMenu = true;
     private string username = "";
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
     protected override async Task OnInitializedAsync()
     {
-        username = await LocalStorage.GetItemAsync<string>("username");
+        var authState  = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        username = user.Identity.Name;
     }
-    private void ToggleNavMenu()
+    
+    private async void Logout()
     {
-        collapseNavMenu = !collapseNavMenu;
+        //_authStateProvider.Logout();
+        await LocalStorage.RemoveItemAsync("token");
+        navManager.NavigateTo("/");
     }
 }

@@ -1,5 +1,12 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
+:root{
+    font-size: 16px;
+    --text-primary: #b6b6b6;
+    --text-secondary: #ececec;
+    --bg-primary : #23232e;
+    --bg-secondary: #141418;
+    --transition-speed: 600ms;
+}
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -62,6 +69,10 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+/*Nav Bar*/
+
+
+
  /* Login Style*/   
     
 .container {
@@ -181,6 +192,7 @@ a, .btn-link {
     -ms-transition: .3s ease;
     -o-transition: .3s ease;
 }
+
 .login-form-1 input:focus {
     background:transparent;
     border: 1px solid #0568C1;
@@ -247,7 +259,12 @@ a, .btn-link {
     padding: 0 40px;
     box-sizing: border-box;
 }
-form .txt_field{
+form .txt_field {
+    position: relative;
+    margin: 30px 0;
+    border-bottom: 2px solid #adadad;
+}
+form .signup{
     position: relative;
     margin: 30px 0;
     border-bottom: 2px solid #adadad;
@@ -283,7 +300,7 @@ form .txt_field{
     transition: .5s;
 }
 .txt_field input:focus ~ label,
-.txt_field input:active ~ label{
+.txt_field input:valid ~ label{
     top: -9px;
     color: #2691d9;
 }
@@ -291,3 +308,46 @@ form .txt_field{
 .txt_field input:valid ~ span::before{
     width: 100%;
 }
+.signup input{
+    width: 100%;
+    padding: 0 5px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.signup label{
+    position: absolute;
+    top: -9px;
+    left: 5px;
+    color: #2691d9;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.signup span::before{
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #2691d9;
+    transition: .5s;
+}
+.signup textarea{
+    width: 100%;
+    padding: 0 5px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+
+

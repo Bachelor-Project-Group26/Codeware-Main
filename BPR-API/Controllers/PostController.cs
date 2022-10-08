@@ -118,7 +118,7 @@ namespace BPR_API.Controllers
             */
             return Ok("Not implemented!");
         }
-
+        /*
         public async Task<ActionResult<string>> follow([FromBody] PostDTO postDTO)
         {
             return Ok("Not implemented!");
@@ -127,6 +127,6 @@ namespace BPR_API.Controllers
         public async Task<ActionResult<string>> unfollow([FromBody] PostDTO postDTO)
         {
             return Ok("Not implemented!");
-        }
+        }*/
     }
 }

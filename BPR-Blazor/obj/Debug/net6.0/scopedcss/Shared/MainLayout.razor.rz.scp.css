@@ -1,15 +1,13 @@
+
+main[b-g3itadbxea] {
+    flex: 1;
+    
+}
+
 .page[b-g3itadbxea] {
     position: relative;
     display: flex;
     flex-direction: column;
-}
-
-main[b-g3itadbxea] {
-    flex: 1;
-}
-
-.sidebar[b-g3itadbxea] {
-    
 }
 
 .top-row[b-g3itadbxea] {

@@ -16,7 +16,10 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         _localStorageService = localStorageService;
         _client = client;
     }
-   
+    /// <summary>
+    /// This method is used to get the authentication state of the user.
+    /// </summary>
+    /// <returns>The authentication state of the user.</returns>
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         string token = await _localStorageService.GetItemAsStringAsync("token");
@@ -38,7 +41,10 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         
         return state;
     }
-    public void MarkUserAsLoggedOut()
+    /// <summary>
+    /// This method is used to log the user out.
+    /// </summary>
+    public void Logout()
     {
         var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
         var authState = Task.FromResult(new AuthenticationState(anonymousUser));
