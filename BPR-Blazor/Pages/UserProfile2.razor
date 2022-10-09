@@ -11,6 +11,14 @@
   <img class="profile" src="images/Picture.png" alt="profilepic">
     <h1>@user.FirstName @user.LastName</h1>
     <p>@user.Bio</p>
+    @if (user.Email == null)
+    {
+      <p></p>
+    }
+    else
+    {
+      <p>You can contact me at @user.Email</p>
+    }
     <div>
       <p>@user.Country</p>
     </div>
@@ -34,7 +42,6 @@
   protected override async Task OnInitializedAsync()
   {
     user = await UserService.GetUserByUsername(username);
-    Console.WriteLine(user.Username);
   }
   
   

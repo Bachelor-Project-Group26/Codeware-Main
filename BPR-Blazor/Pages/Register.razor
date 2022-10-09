@@ -46,7 +46,7 @@
         try
         {
             var result =  await UserService.Register(_userWithPassword.Username, _userWithPassword.Password);
-            Console.WriteLine(result);
+           navManager.NavigateTo("/");
         }
         catch (Exception e)
         {

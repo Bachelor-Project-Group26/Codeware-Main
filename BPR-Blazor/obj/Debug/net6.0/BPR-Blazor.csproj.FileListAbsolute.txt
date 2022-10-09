@@ -51,7 +51,6 @@ C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\bin\Debug\net6.0\BPR-Blazor.dl
 C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\bin\Debug\net6.0\BPR-Blazor.pdb
 C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\bin\Debug\net6.0\Blazored.LocalStorage.dll
 C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\bin\Debug\net6.0\Newtonsoft.Json.dll
-C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\scopedcss\Pages\UserProfile.razor.rz.scp.css
 C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
 C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
 C:\Users\javic\source\repos\BPR-Blazor\BPR-Blazor\obj\Debug\net6.0\scopedcss\bundle\BPR-Blazor.styles.css

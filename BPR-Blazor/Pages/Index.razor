@@ -6,7 +6,7 @@
 @using BPR_Blazor.Data
 
 <PageTitle>Index</PageTitle>
-
+<div class="index">
 <h1>Hello, world! </h1>
 
 Welcome to your new app.
@@ -14,9 +14,7 @@ Welcome to your new app.
     <h3>Hi @context.User.Identity.Name</h3>
     <h4>Go to see your new profile <a href="/UserProfile/@context.User.Identity.Name">Click me</a> </h4>
 </AuthorizeView>
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-
+</div>
 @code{
    public string username = "";
     

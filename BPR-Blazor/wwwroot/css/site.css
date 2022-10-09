@@ -70,7 +70,9 @@ a, .btn-link {
         content: "An error has occurred."
     }
 /*Nav Bar*/
-
+.index{
+    margin-left: 6rem;
+}
 
 
  /* Login Style*/   
