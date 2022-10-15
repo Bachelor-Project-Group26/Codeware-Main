@@ -66,7 +66,7 @@ namespace BPR_API.Controllers
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
                 var post = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-                _dbContext.UserChats.Add(new UserChat { ChatId = (int) post.Id, UserId = user.Id, Reaction = postDTO.Reaction });
+                _dbContext.Reactions.Add(new Reaction { PostId = (int) post.Id, UserId = user.Id, ReactionNumber = postDTO.Reaction });
                 _dbContext.SaveChanges();
                 return Ok("Reaction added!");
             }
@@ -83,7 +83,7 @@ namespace BPR_API.Controllers
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == chatDTO.Username);
+                var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == postDTO.Username);
                 var ChatList = _dbContext.UserChats.Where(p => p.UserId == user.Id);
                 return Ok(ChatList); // I need to find how to serialize this!
             }
@@ -101,8 +101,8 @@ namespace BPR_API.Controllers
             try
             {
                 var Following = _dbContext.FollowingList.Where(u => u.UserId == postDTO.Id);
-                var Posts = _dbContext.Posts.Where(p => p.FollowedId in Following);
-                return Ok(MessageList);
+                // var Posts = _dbContext.Posts.Where(p => p.FollowedId == Following.Contains FollowedId);
+                // return Ok(Posts);
             }
             catch (Exception)
             {
@@ -110,12 +110,8 @@ namespace BPR_API.Controllers
             }
             return Ok("Not implemented!");
         }
-<<<<<<< Updated upstream
-        /*
-=======
 
         [HttpPost("follow"), Authorize]
->>>>>>> Stashed changes
         public async Task<ActionResult<string>> follow([FromBody] PostDTO postDTO)
         {
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
@@ -136,24 +132,17 @@ namespace BPR_API.Controllers
             }
             return Ok("User followed!");
         }
+        
         [HttpPut("unfollow"), Authorize]
         public async Task<ActionResult<string>> unfollow([FromBody] PostDTO postDTO)
         {
-<<<<<<< Updated upstream
-            return Ok("Not implemented!");
-        }*/
-=======
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-            Following follower = new Following()
-            {
-                UserId = user.Id,
-                FollowedId = "US1234"
-            };
             var followedId = "US1234";
             try
             {
-                await _dbContext.FollowingList.Remove(_dbContext.FollowingList.FirstOrDefault(f => f.UserId == user.Id && f.FollowedId == followedId));
+                var following = _dbContext.FollowingList.FirstOrDefault(f => f.UserId == user.Id && f.FollowedId == followedId);
+                _dbContext.FollowingList.Remove(following);
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception)
@@ -162,6 +151,5 @@ namespace BPR_API.Controllers
             }
             return Ok("User unfollowed!");
         }
->>>>>>> Stashed changes
     }
 }
