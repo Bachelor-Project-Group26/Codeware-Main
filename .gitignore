@@ -1,4 +1,5 @@
 .vs
+.idea
 BPR-API/bin/*
 BPR-API/obj/*
 BPR-Blazor/bin/*
