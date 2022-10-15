@@ -3,9 +3,6 @@ using BPR_API.DataAccess;
 using BPR_API.DBModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace BPR_API.Controllers
 {
@@ -65,7 +62,6 @@ namespace BPR_API.Controllers
         [HttpPost("react_post"), Authorize]
         public async Task<ActionResult<string>> ReactToPost([FromBody] PostDTO postDTO)
         {
-            /*
             try
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
@@ -78,14 +74,12 @@ namespace BPR_API.Controllers
             {
                 return BadRequest("Something went wrong!");
             }
-            */
             return Ok("Not implemented!");
         }
 
         [HttpPost("get_post"), Authorize]
         public async Task<ActionResult<string>> GetPost([FromBody] PostDTO postDTO)
         {
-            /*
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
@@ -97,36 +91,77 @@ namespace BPR_API.Controllers
             {
                 return BadRequest("Something went wrong!");
             }
-            */
             return Ok("Not implemented!");
         }
 
         [HttpPost("get_post_list"), Authorize]
         public async Task<ActionResult<string>> GetPostList([FromBody] PostDTO postDTO)
         {
-            /*
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var MessageList = _dbContext.Posts.Where(p => p.Title == postDTO.Id);
+                var Following = _dbContext.FollowingList.Where(u => u.UserId == postDTO.Id);
+                var Posts = _dbContext.Posts.Where(p => p.FollowedId in Following);
                 return Ok(MessageList);
             }
             catch (Exception)
             {
                 return BadRequest("Something went wrong!");
             }
-            */
             return Ok("Not implemented!");
         }
+<<<<<<< Updated upstream
         /*
+=======
+
+        [HttpPost("follow"), Authorize]
+>>>>>>> Stashed changes
         public async Task<ActionResult<string>> follow([FromBody] PostDTO postDTO)
         {
-            return Ok("Not implemented!");
+            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
+            Following follower = new Following()
+            {
+                UserId = user.Id,
+                FollowedId = "US1234"
+            };
+            try
+            {
+                await _dbContext.FollowingList.AddAsync(follower);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong with following the user!");
+            }
+            return Ok("User followed!");
         }
-
+        [HttpPut("unfollow"), Authorize]
         public async Task<ActionResult<string>> unfollow([FromBody] PostDTO postDTO)
         {
+<<<<<<< Updated upstream
             return Ok("Not implemented!");
         }*/
+=======
+            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
+            Following follower = new Following()
+            {
+                UserId = user.Id,
+                FollowedId = "US1234"
+            };
+            var followedId = "US1234";
+            try
+            {
+                await _dbContext.FollowingList.Remove(_dbContext.FollowingList.FirstOrDefault(f => f.UserId == user.Id && f.FollowedId == followedId));
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong with unfollowing the user!");
+            }
+            return Ok("User unfollowed!");
+        }
+>>>>>>> Stashed changes
     }
 }

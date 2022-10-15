@@ -1,5 +1,5 @@
 .vs
-BPR-API/bin/Debug/*
-BPR-API/obj/Debug/*
-BPR-Blazor/bin/Debug/*
-BPR-Blazor/obj/Debug/*
+BPR-API/bin/*
+BPR-API/obj/*
+BPR-Blazor/bin/*
+BPR-Blazor/obj/*

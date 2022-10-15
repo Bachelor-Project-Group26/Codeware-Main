@@ -2,7 +2,6 @@
 
 namespace BPR_API.DBModels
 {
-    [Serializable]
     public class UserPassword
     {
         [Key]

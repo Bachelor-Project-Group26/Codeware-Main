@@ -18,7 +18,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/create_post", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -35,7 +35,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/delete_post", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -52,7 +52,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/react_post", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -69,7 +69,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -85,7 +85,39 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post_list", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return str;
+            }
+        }
+
+        public async Task<string> Follow(string username)
+        {
+            PostDTO user = new PostDTO
+            {
+                Username = username
+            };
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/follow", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return str;
+            }
+        }
+
+        public async Task<string> Unfollow(string username)
+        {
+            PostDTO user = new PostDTO
+            {
+                Username = username
+            };
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/unfollow", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
