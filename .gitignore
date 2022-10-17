@@ -2,5 +2,7 @@
 .idea
 BPR-API/bin/*
 BPR-API/obj/*
+BPR-API-Tests/bin/*
+BPR-API-Tests/obj/*
 BPR-Blazor/bin/*
 BPR-Blazor/obj/*

@@ -83,9 +83,8 @@ namespace BPR_API.Controllers
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == postDTO.Username);
-                var ChatList = _dbContext.UserChats.Where(p => p.UserId == user.Id);
-                return Ok(ChatList); // I need to find how to serialize this!
+                var post = _dbContext.Posts.FirstOrDefault(p => p.Id == postDTO.Id);
+                return Ok(post);
             }
             catch (Exception)
             {
@@ -101,7 +100,7 @@ namespace BPR_API.Controllers
             try
             {
                 var Following = _dbContext.FollowingList.Where(u => u.UserId == postDTO.Id);
-                // var Posts = _dbContext.Posts.Where(p => p.FollowedId == Following.Contains FollowedId);
+                // var Posts = _dbContext.Posts.Where(p => p.FollowedId == Following. FollowedId);
                 // return Ok(Posts);
             }
             catch (Exception)
