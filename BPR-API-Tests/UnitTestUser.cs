@@ -24,9 +24,11 @@ namespace BPR_API_Tests
         {
             // Arrange
             var userController = new UserController(null);
+            var username = "";
+            var password = "";
 
             // Act
-            userController.Login(new UserDTO { Username = "", Password = "" });
+            var response = userController.Login(new UserDTO { Username = username, Password = password });
 
             // Assert
         }

@@ -100,8 +100,16 @@ namespace BPR_API.Controllers
             try
             {
                 var Following = _dbContext.FollowingList.Where(u => u.UserId == postDTO.Id);
-                // var Posts = _dbContext.Posts.Where(p => p.FollowedId == Following. FollowedId);
-                // return Ok(Posts);
+                var Posts = new List<Post>();
+                foreach (var follow in Following)
+                {
+                    var postList = _dbContext.Posts.Where(p => p.FollowedId == follow.FollowedId);
+                    foreach (var post in postList)
+                    {
+                        Posts.Add(post);
+                    }
+                }
+                return Ok(Posts);
             }
             catch (Exception)
             {
