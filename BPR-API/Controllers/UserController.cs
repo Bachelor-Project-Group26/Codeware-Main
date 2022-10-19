@@ -21,6 +21,12 @@ namespace BPR_API.Controllers
             _dbContext = new DatabaseContext();
         }
 
+        [HttpGet("test")]
+        public async Task<ActionResult<string>> test()
+        {
+            return Ok("The API works!");
+        }
+
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login([FromBody] UserDTO user)
         {

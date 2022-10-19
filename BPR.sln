@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BPR-Blazor", "BPR-Blazor\BP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BPR-API", "BPR-API\BPR-API.csproj", "{32F3AD06-0BDB-499D-885A-C2C5A2291441}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BPR-API-Tests", "BPR-API-Tests\BPR-API-Tests.csproj", "{F2A2745B-5C4F-43F3-B175-1E0C26635E80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{32F3AD06-0BDB-499D-885A-C2C5A2291441}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32F3AD06-0BDB-499D-885A-C2C5A2291441}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32F3AD06-0BDB-499D-885A-C2C5A2291441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2A2745B-5C4F-43F3-B175-1E0C26635E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2A2745B-5C4F-43F3-B175-1E0C26635E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2A2745B-5C4F-43F3-B175-1E0C26635E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2A2745B-5C4F-43F3-B175-1E0C26635E80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
