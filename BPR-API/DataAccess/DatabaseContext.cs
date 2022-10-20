@@ -18,11 +18,12 @@ namespace BPR_API.DataAccess
         {
             modelBuilder.Entity<UserChat>().HasKey(c => new { c.UserId, c.ChatId });
             modelBuilder.Entity<Following>().HasKey(c => new { c.UserId, c.FollowedId });
+            modelBuilder.Entity<Reaction>().HasKey(c => new { c.UserId, c.PostId });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source = BPR-DB.db");
+            optionsBuilder.UseSqlite("Data Source = ./BPR-DB.db");
         }
     }
 }

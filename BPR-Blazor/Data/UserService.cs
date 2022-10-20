@@ -9,9 +9,6 @@ namespace BPR_Blazor.Data
 {
     public class UserService : IUserService
     {
-        
-        private string URL = "https://codeware-backend-bpr.azurewebsites.net/";
-
         public async Task<string> Login(string username, string password)
         {
             UserDTO user = new UserDTO {
@@ -20,7 +17,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/login", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync("/User/login", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -45,7 +42,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/User/register", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync("/User/register", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -57,7 +54,7 @@ namespace BPR_Blazor.Data
             UserDTO user = new UserDTO();
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync($"{URL}/User/{username}"))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync($"/User/{username}"))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 user = JsonConvert.DeserializeObject<UserDTO>(json);
@@ -81,7 +78,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/update_details", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync("/User/update_details", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -98,7 +95,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/delete", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync("/User/delete", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
@@ -131,7 +128,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/delete", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync("/User/delete", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);

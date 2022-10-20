@@ -14,7 +14,8 @@ namespace BPR_Blazor.Data
         /// </summary>
         public static void InitializeClient()
         {
-            ApiClient = new HttpClient();
+            ApiClient = new HttpClient(); 
+            ApiClient.BaseAddress = new Uri("https://codeware-backend-bpr.azurewebsites.net/");
             ApiClient.DefaultRequestHeaders.Accept.Clear();
             ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }

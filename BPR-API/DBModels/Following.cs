@@ -7,6 +7,6 @@ namespace BPR_API.DBModels
         [Key]
         public int UserId { get; set; }
         [Key]
-        public string FollowedId { get; set; } // US{id} for users | SU{id} for subjects
+        public string FollowedId { get; set; } // US{userId} for users | SU{subjectId} for subjects
     }
 }

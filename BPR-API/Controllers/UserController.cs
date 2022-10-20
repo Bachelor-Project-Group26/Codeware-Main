@@ -85,9 +85,9 @@ namespace BPR_API.Controllers
                 if (user == null) return BadRequest("User not found!");
                 return Ok(user);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong! Error:" + e.Message);
             }
         }
         
@@ -100,9 +100,9 @@ namespace BPR_API.Controllers
                 if (users == null) return BadRequest("No users found!");
                 return Ok(users);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong! Error:" + e.Message);
             }
         }
 
