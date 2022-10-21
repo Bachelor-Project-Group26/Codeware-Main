@@ -9,6 +9,7 @@ namespace BPR_Blazor.Data
 {
     public class UserService : IUserService
     {
+        private string URL = "https://localhost:7000";
         public async Task<string> Login(string username, string password)
         {
             UserDTO user = new UserDTO {
@@ -59,6 +60,15 @@ namespace BPR_Blazor.Data
                 var json = await response.Content.ReadAsStringAsync();
                 user = JsonConvert.DeserializeObject<UserDTO>(json);
                 return user;
+            }
+        }
+        public async Task<List<UserDTO>> GetUsers(){
+            List<UserDTO> users = new List<UserDTO>();
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync($"{URL}/User"))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+                return users;
             }
         }
         public async Task<string> UpdateDetails(string username, int securityLevel, string firstName, 

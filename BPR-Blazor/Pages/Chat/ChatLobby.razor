@@ -1,0 +1,66 @@
+@page "/Chats"
+@inject NavigationManager navManager;
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IUserService UserService
+<section class="index">
+    <h2><b>Contacts</b></h2>
+    <hr/>
+    <div class="col-12 row">
+        <input type="text" class="col-12 form-control dark-theme-textbox" @oninput ="@((arg) =>FilterByUsername(arg))" placeholder="search"/>
+    </div>
+    <br/>
+
+    @if (@allUsers.Count > 0)
+    {
+            @foreach (var user in toShow)
+            {
+                <div>
+                    <a href = "/chat/@user.Username" class="position-static list-group-item ">
+                        @if (@user.FirstName != null)
+                        {
+                            @user.FirstName <span> </span> @user.LastName <span> / </span> @user.Username
+                        }
+                        else
+                        {
+                            @user.Username
+                        }
+                    </a>
+                </div>
+            }   
+    }
+    else{
+        <div style="height: 50px">
+                <p>Loading...</p>
+            </div>
+    }
+</section>
+
+@code{
+    private List<UserDTO> allUsers = new List<UserDTO>();
+    private List<UserDTO> toShow;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allUsers = await UserService.GetUsers();
+        toShow = allUsers;
+    }
+
+     private void FilterByUsername(ChangeEventArgs args)
+    {
+        string filterByUsername = null;
+        try
+        {
+            filterByUsername = args.Value.ToString();
+        }
+        catch (Exception e) { }
+        if (filterByUsername != null)
+        {
+            toShow = allUsers.Where(t => t.Username.Contains(filterByUsername)).ToList();
+        }
+        else
+        {
+            toShow = allUsers;
+        }
+    }
+}
