@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BPR_API.Controllers
 {
+    /// <summary>
+    /// This is where all the endpoints for the methods related to the post are located and implemented.
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class PostController : ControllerBase
@@ -19,6 +22,11 @@ namespace BPR_API.Controllers
             _dbContext = new DatabaseContext();
         }
 
+        /// <summary>
+        /// Creates a post.
+        /// </summary>
+        /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("create_post"), Authorize]
         public async Task<ActionResult<string>> CreatePost([FromBody] PostDTO postDTO)
         {
@@ -42,6 +50,11 @@ namespace BPR_API.Controllers
             return Ok("Post created!");
         }
 
+        /// <summary>
+        /// Deletes a post.
+        /// </summary>
+        /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("delete_post"), Authorize]
         public async Task<ActionResult<string>> DeletePost([FromBody] PostDTO postDTO)
         {
@@ -59,6 +72,11 @@ namespace BPR_API.Controllers
             return Ok("Post deleted successfully!");
         }
 
+        /// <summary>
+        /// Creates a reaction to a post.
+        /// </summary>
+        /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("react_post"), Authorize]
         public async Task<ActionResult<string>> ReactToPost([FromBody] PostDTO postDTO)
         {
@@ -77,6 +95,11 @@ namespace BPR_API.Controllers
             return Ok("Not implemented!");
         }
 
+        /// <summary>
+        /// Gets a post object and returns it.
+        /// </summary>
+        /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
+        /// <returns>Action result with a post object inside if successful or an error message.</returns>
         [HttpPost("get_post"), Authorize]
         public async Task<ActionResult<string>> GetPost([FromBody] PostDTO postDTO)
         {
@@ -93,6 +116,11 @@ namespace BPR_API.Controllers
             return Ok("Not implemented!");
         }
 
+        /// <summary>
+        /// Gets a list of post objects and returns it.
+        /// </summary>
+        /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
+        /// <returns>Action result with a post list object inside if successful or an error message.</returns>
         [HttpPost("get_post_list"), Authorize]
         public async Task<ActionResult<string>> GetPostList([FromBody] PostDTO postDTO)
         {
@@ -118,6 +146,11 @@ namespace BPR_API.Controllers
             return Ok("Not implemented!");
         }
 
+        /// <summary>
+        /// Follows a user or a subject.
+        /// </summary>
+        /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("follow"), Authorize]
         public async Task<ActionResult<string>> follow([FromBody] PostDTO postDTO)
         {
@@ -139,7 +172,12 @@ namespace BPR_API.Controllers
             }
             return Ok("User followed!");
         }
-        
+
+        /// <summary>
+        /// Unollows a user or a subject.
+        /// </summary>
+        /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPut("unfollow"), Authorize]
         public async Task<ActionResult<string>> unfollow([FromBody] PostDTO postDTO)
         {

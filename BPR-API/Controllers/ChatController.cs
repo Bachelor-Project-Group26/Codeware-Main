@@ -9,6 +9,9 @@ using System.Security.Claims;
 
 namespace BPR_API.Controllers
 {
+    /// <summary>
+    /// This is where all the endpoints for the methods related to the chat are located and implemented.
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class ChatController : ControllerBase
@@ -22,6 +25,11 @@ namespace BPR_API.Controllers
             _dbContext = new DatabaseContext();
         }
 
+        /// <summary>
+        /// Gets a chat object and returns it.
+        /// </summary>
+        /// <param name="chatDTO">Carries data related to the chat between the client and the API.</param>
+        /// <returns>Action result with a chat object inside if successful or an error message.</returns>
         [HttpPost("get_chat"), Authorize]
         public async Task<ActionResult<string>> GetChat([FromBody] ChatDTO chatDTO)
         {
@@ -36,7 +44,7 @@ namespace BPR_API.Controllers
                     if (chat.ChatId == chatDTO.Id) 
                     { 
                         var dbChat = _dbContext.Chats.FirstOrDefault(p => p.Id == chatDTO.Id);
-                        return Ok(chat); // I need to find how to serialize this!
+                        return Ok(chat);
                     }
                 }
                 return BadRequest("No chat found!");
@@ -47,6 +55,11 @@ namespace BPR_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a list of chats and returns it.
+        /// </summary>
+        /// <param name="chatDTO">Carries data related to the chat between the client and the API.</param>
+        /// <returns>Action result with a chat list object inside if successful or an error message.</returns>
         [HttpPost("get_chat_list"), Authorize]
         public async Task<ActionResult<string>> GetChatList([FromBody] ChatDTO chatDTO)
         {
@@ -55,7 +68,7 @@ namespace BPR_API.Controllers
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == chatDTO.Username);
                 var ChatList = _dbContext.UserChats.Where(p => p.UserId == user.Id);
-                return Ok(ChatList); // I need to find how to serialize this!
+                return Ok(ChatList); 
             }
             catch (Exception)
             {
@@ -63,6 +76,11 @@ namespace BPR_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a chat.
+        /// </summary>
+        /// <param name="chatDTO">Carries data related to the chat between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("create_chat"), Authorize]
         public async Task<ActionResult<string>> CreateChat([FromBody] ChatDTO chatDTO)
         {
@@ -104,6 +122,11 @@ namespace BPR_API.Controllers
             return Ok("Chat created!");
         }
 
+        /// <summary>
+        /// Updates the chat.
+        /// </summary>
+        /// <param name="chatDTO">Carries data related to the chat between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPut("update_chat"), Authorize]
         public async Task<ActionResult<string>> UpdateChat([FromBody] ChatDTO chatDTO)
         {
@@ -127,7 +150,12 @@ namespace BPR_API.Controllers
                 return BadRequest("Something went wrong!");
             }
         }
-        
+
+        /// <summary>
+        /// Deletes the chat.
+        /// </summary>
+        /// <param name="chatDTO">Carries data related to the chat between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("delete_chat"), Authorize]
         public async Task<ActionResult<string>> DeleteChat([FromBody] ChatDTO chatDTO)
         {
@@ -146,6 +174,11 @@ namespace BPR_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a user to the chat.
+        /// </summary>
+        /// <param name="chatDTO">Carries data related to the chat between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPut("add_user_chat"), Authorize]
         public async Task<ActionResult<string>> AddUsers([FromBody] ChatDTO chatDTO)
         {
@@ -163,6 +196,11 @@ namespace BPR_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Removes a user from the chat.
+        /// </summary>
+        /// <param name="chatDTO">Carries data related to the chat between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPut("rem_user_chat"), Authorize]
         public async Task<ActionResult<string>> RemoveUsers([FromBody] ChatDTO chatDTO)
         {
@@ -180,6 +218,11 @@ namespace BPR_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a list of messages from the chat.
+        /// </summary>
+        /// <param name="chatDTO">Carries data related to the chat between the client and the API.</param>
+        /// <returns>Action result with a list of message object inside if successful or an error message.</returns>
         [HttpPost("get_msg_chat"), Authorize]
         public async Task<ActionResult<string>> GetMessages([FromBody] ChatDTO chatDTO)
         {
@@ -195,6 +238,11 @@ namespace BPR_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Sends a message to the chat.
+        /// </summary>
+        /// <param name="chatDTO">Carries data related to the chat between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("snd_msg_chat"), Authorize]
         public async Task<ActionResult<string>> SendMessage([FromBody] MessageDTO messageDTO)
         {

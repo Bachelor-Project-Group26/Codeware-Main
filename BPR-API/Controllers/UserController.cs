@@ -9,6 +9,9 @@ using System.Security.Claims;
 
 namespace BPR_API.Controllers
 {
+    /// <summary>
+    /// This is where all the endpoints for the methods related to the user are located and implemented.
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
