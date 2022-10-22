@@ -1,0 +1,63 @@
+@page "/createChat"
+@attribute [Authorize]
+@inject IChatService ChatService
+@inject IUserService UserService
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider _authStateProvider;
+@using BPR_Blazor.Models
+@using BPR_Blazor.Data
+<section class="login-form-1 login">
+        <h1>Create a Chat</h1>
+        <div class="container">
+            <!-- /form -->
+            <div class="login-form-grid">
+                <div class="login-main">
+                    <div class="login-content">
+                        <EditForm Model="@newChat" OnValidSubmit="OnValidSubmit">
+                            <DataAnnotationsValidator />
+                            <div class="txt_field">
+                                <InputText @bind-Value="newChat.ChatName" type="text" class="text" name="text" required="" autofocus />
+                                <span></span>
+                                <label>Chat Name</label>
+                            </div>
+                            <div class="txt_field">
+                            <InputText @bind-Value="newChat.Bio" type="text" class="text" name="text" required="" autofocus/>
+                                 <span></span>
+                                <label>Chat Bio</label>
+                                </div>
+                            <button class="btn" type="submit">Create Chat</button>
+                        </EditForm>
+                        
+                        <p class="account"><a href="chats">Go Back</a></p>
+                    </div>
+                    <div class="login_form align-self">
+                        <div class="left_grid_info">
+                            <img src="images/1.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- //form -->
+        </div>
+    </section>
+@code{
+    private ChatDTO newChat = new ChatDTO();
+    private string username = "";
+    protected override async Task OnInitializedAsync()
+    {
+        var authState  = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User; 
+        username = user.Identity.Name;
+        Console.WriteLine(username);
+    }
+    private async void OnValidSubmit()
+    {
+        var result = await ChatService.CreateChat(username, newChat.ChatName, newChat.Bio, null);
+        Console.WriteLine(result);
+        if (result != null)
+        {
+            navManager.NavigateTo("/chats");
+        }
+    }
+
+}

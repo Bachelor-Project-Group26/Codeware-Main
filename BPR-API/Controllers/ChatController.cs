@@ -67,7 +67,7 @@ namespace BPR_API.Controllers
             try
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == chatDTO.Username);
-                var ChatList = _dbContext.UserChats.Where(p => p.UserId == user.Id);
+                var ChatList = _dbContext.UserChats.Where(p => p.UserId == user.Id).ToList();
                 return Ok(ChatList); 
             }
             catch (Exception)
