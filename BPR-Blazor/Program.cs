@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddHttpClient();
 ApiHelper.InitializeClient();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
