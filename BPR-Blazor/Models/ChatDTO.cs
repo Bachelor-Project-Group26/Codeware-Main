@@ -6,6 +6,7 @@
         public string Username { get; set; }
         public string Username2 { get; set; }
         public int? Id { get; set; }
+        public int chatId { get; set; }
         public string? ChatName { get; set; }
         public string? Bio { get; set; }
         public byte[]? ProfilePicture { get; set; }

@@ -90,7 +90,7 @@ namespace BPR_API.Controllers
                 Username = chatDTO.Username,
                 ChatName = chatDTO.ChatName,
                 Bio = chatDTO.Bio,
-                // Add picture missing
+                ProfilePicture = new byte[0]
             };
             UserChat userChat;
             try
@@ -98,26 +98,26 @@ namespace BPR_API.Controllers
                 await _dbContext.Chats.AddAsync(newChat);
                 await _dbContext.SaveChangesAsync();
                 var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == chatDTO.Username);
-                var dbChat = _dbContext.UserPasswords.FirstOrDefault(p => p.Username == user.Username);
+                var dbChat = _dbContext.Chats.FirstOrDefault(p => p.ChatName == chatDTO.ChatName);
                 userChat = new UserChat()
                 {
                     UserId = user.Id,
                     ChatId = dbChat.Id
                 };
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong with creating the chat!");
+                return BadRequest("Something went wrong with creating the chat! Error:" + e.Message + "Inner Exception:" + e.InnerException);
             }
             try
             {
                 await _dbContext.UserChats.AddAsync(userChat);
                 await _dbContext.SaveChangesAsync();
             } 
-            catch (Exception)
+            catch (Exception e)
             {
                 await DeleteChat(chatDTO);
-                return BadRequest("Something went wrong with adding the user!");
+                return BadRequest("Something went wrong with adding the user! Error:" + e.Message + "Inner Exception:" + e.InnerException + "chat" + userChat.ChatId + "user" + userChat.UserId);
             }
             return Ok("Chat created!");
         }

@@ -9,8 +9,9 @@ namespace BPR_Blazor.Data
        // private string URL = "https://codeware-backend-bpr.azurewebsites.net/";
         private string URL = "https://localhost:7000";
 
-        public async Task<string> GetChat(string Username, int Id)
-        {
+        public async Task<ChatDTO> GetChat(string Username, int Id)
+        {   
+            ChatDTO chat = new ChatDTO();
             ChatDTO chatDTO = new ChatDTO
             {
                 Username = Username,
@@ -21,8 +22,8 @@ namespace BPR_Blazor.Data
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Chat/get_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
-                var str = JsonConvert.DeserializeObject<string>(json);
-                return response.StatusCode + str;
+                chat = JsonConvert.DeserializeObject<ChatDTO>(json);
+                return chat;
             }
         }
 
@@ -134,8 +135,9 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> GetMessages(string Username, int Id)
+        public async Task<List<MessageDTO>> GetMessages(string Username, int Id)
         {
+            List<MessageDTO> messageDTOs = new List<MessageDTO>();
             ChatDTO chatDTO = new ChatDTO
             {
                 Username = Username,
@@ -146,8 +148,8 @@ namespace BPR_Blazor.Data
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Chat/get_msg_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
-                var str = JsonConvert.DeserializeObject<string>(json);
-                return response.StatusCode + str;
+                messageDTOs = JsonConvert.DeserializeObject<List<MessageDTO>>(json);
+                return messageDTOs;
             }
         }
 

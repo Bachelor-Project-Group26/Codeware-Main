@@ -41,7 +41,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chats");
+                    b.ToTable("Chats", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Following", b =>
@@ -54,7 +54,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("UserId", "FollowedId");
 
-                    b.ToTable("FollowingList");
+                    b.ToTable("FollowingList", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Message", b =>
@@ -79,7 +79,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Post", b =>
@@ -109,7 +109,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Reaction", b =>
@@ -125,7 +125,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("UserId", "PostId");
 
-                    b.ToTable("Reactions");
+                    b.ToTable("Reactions", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.UserChat", b =>
@@ -138,7 +138,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("UserId", "ChatId");
 
-                    b.ToTable("UserChats");
+                    b.ToTable("UserChats", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.UserDetails", b =>
@@ -185,7 +185,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserDetails");
+                    b.ToTable("UserDetails", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.UserPassword", b =>
@@ -211,7 +211,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserPasswords");
+                    b.ToTable("UserPasswords", (string)null);
                 });
 #pragma warning restore 612, 618
         }

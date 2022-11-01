@@ -34,6 +34,7 @@ namespace BPR_API.Controllers
             Post newPost = new Post()
             {
                 Creator = postDTO.Username,
+                FollowedId = postDTO.followedId,
                 Title = "Test",
                 Content = postDTO.Content,
                 CreatedDate = postDTO.CreatedDate
@@ -43,9 +44,9 @@ namespace BPR_API.Controllers
                 await _dbContext.Posts.AddAsync(newPost);
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong with creating the post!");
+                return BadRequest("Something went wrong with creating the post! Error:" + e.Message + "Inner Exception:" + e.InnerException);
             }
             return Ok("Post created!");
         }

@@ -12,3 +12,8 @@
 @using Blazored.LocalStorage
 @using BPR_Blazor.Data
 @using BPR_Blazor.Models
+@using MudBlazor
+@inject AuthenticationStateProvider _authStateProvider;
+@inject IChatService ChatService
+@inject IUserService UserService
+@inject NavigationManager navManager

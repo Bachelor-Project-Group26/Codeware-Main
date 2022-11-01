@@ -1,0 +1,107 @@
+@page "/chat/{chatId}"
+<section class="index">
+<div class="d-flex flex-grow-1 flex-row">
+    <MudPaper Elevation = "25" Class = "py-4 flex-grow-1">
+        <MudToolBar Dense = "true">
+            @if (id == 0)
+            {
+               <MudIcon Icon="@Icons.Material.Outlined.Person" Style="  width: 35px"></MudIcon> <MudText Typo="Typo.h6">chat</MudText>
+              
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.ChatBubble" Style="width: 35px"></MudIcon>
+                <MudText Typo="Typo.h6">Chat with @chatId</MudText>
+            }
+
+        </MudToolBar>
+        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+            @foreach (var message in messages)
+            {
+                <div class="d-flex flex-row my-4">
+                    <div class="mr-4">
+                        <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@message.Username.ToUpper().FirstOrDefault()</MudAvatar>
+                    </div>
+                    <div>
+                        <MudText Typo="Typo.body1">@message.Username</MudText>
+                        <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.CreatedDate.ToString("dd MMM, yyyy hh:mm tt")</MudText>
+                        <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">@message.Content</MudText>
+                    </div>
+                </div>
+            }
+        </div>
+        <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
+            <MudTextField T="string" Placeholder="Enter your message..."DisableUnderLine="true" Class="mt-n2 mx-4"
+                @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
+                <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten2}" ButtonType="ButtonType.Button">Send</MudButton>
+        </MudPaper>
+    </MudPaper>
+    <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
+            <MudToolBar Dense="true">
+                <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
+                <MudText Typo="Typo.h6">Chats</MudText>
+            </MudToolBar>
+            <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
+                <MudList Clickable="true">
+                    @foreach (var chat in chats)
+                    {
+                        <MudListItem Class="pa-0 px-2">
+                            <div class="d-flex flex-row mt-n1 mb-n1">
+                                <div class="mr-4">
+                                    <a href="/chat/@chat.chatId"><MudBadge Class="my-2">
+                                        @if (chat.chatId == id)
+                                        {
+                                           // <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.ChatName.ToUpper().FirstOrDefault()</MudAvatar>
+                                           <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.chatId</MudAvatar>
+                                        }
+                                        else
+                                        {
+                                           // <MudAvatar Color="Color.Dark" Style="height:50px; width:50px;">@chat.ChatName.ToUpper().FirstOrDefault()</MudAvatar>
+                                            <MudAvatar Color="Color.Dark" Style="height:50px; width:50px;">@chat.chatId</MudAvatar>
+                                        }
+                                    </MudBadge>
+                                    </a>
+                                </div>
+                                <div>
+                                    <MudText Typo="Typo.body2" Class="mt-3 mb-n2">@chat.Username</MudText>
+                                    <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@chat.chatId</MudText>
+                                </div>
+                            </div>
+                        </MudListItem>
+                    }
+                </MudList>
+            </div>
+        </MudPaper>
+</div>
+</section>
+@code{
+     [Parameter] 
+     public string chatId{get; set;}
+     public int id = 0;
+    [Parameter] 
+    public string CurrentMessage { get; set; }
+    //private ChatDTO chat = new ChatDTO();
+    private List<ChatDTO> chats = new List<ChatDTO>();
+    private List<MessageDTO> messages = new List<MessageDTO>();
+    private string username = "";
+    protected override async Task OnInitializedAsync()
+    {
+        id = int.Parse(chatId);
+        var authState  = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        username = user.Identity.Name.ToString();
+        Console.WriteLine(id);
+        //chat = await ChatService.GetChat(username,chatId);
+        chats = await ChatService.GetChatList(user.Identity.Name);
+        messages = await ChatService.GetMessages(username,id);
+    }
+
+    private void SubmitAsync()
+    {
+        ChatService.SendMessage(username, id, CurrentMessage);
+        CurrentMessage = "";
+        
+        //add here possible javascript method
+        
+    }
+}

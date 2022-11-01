@@ -7,7 +7,7 @@
 @using BPR_Blazor.Models
 @using BPR_Blazor.Data
 
-<!--Chat list  -->
+<!--Chat list  
 <section class="index">
 <div class="col-4">
     <h1>Chats</h1><a href="createChat">Create a chat</a>
@@ -16,7 +16,7 @@
        @foreach (var chat in chats)
         {
         <div>
-            <h4>@chat.Id</h4>
+            <a href="/chat/@chat.chatId"><h4>@chat.chatId</h4></a>
             
         </div>
         } 
@@ -27,8 +27,45 @@
     }
     
 </div>
+</section>-->
+<section class="index">
+<div class="d-flex flex-grow-1 flex-row">
+    <MudPaper Elevation = "25" Class = "py-4 flex-grow-1">
+        <MudToolBar Dense = "true">
+               <MudIcon Icon="@Icons.Material.Outlined.Person" Style="  width: 35px">Chat</MudIcon> <MudText Typo="Typo.h6">chat</MudText>
+        </MudToolBar>
+        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+        </div>
+        <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
+            <MudTextField T="string" Placeholder="Enter your message..."DisableUnderLine="true" Class="mt-n2 mx-4"/>
+                <MudButton StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+        </MudPaper>
+    </MudPaper>
+    <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
+            <MudToolBar Dense="true">
+                <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
+                <MudText Typo="Typo.h6">Chats</MudText>
+            </MudToolBar>
+            <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
+                <MudList Clickable="true">
+                    @foreach (var chat in chats)
+                    {
+                        <MudListItem Class="pa-0 px-2">
+                            <div class="d-flex flex-row mt-n1 mb-n1">
+                                <div class="mr-4">
+                                    <a href="/chat/@chat.chatId"><MudBadge Class="my-2">
+                                           <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.chatId</MudAvatar>
+                                    </MudBadge>
+                                    </a>
+                                </div>
+                            </div>
+                        </MudListItem>
+                    }
+                </MudList>
+            </div>
+        </MudPaper>
+    </div>
 </section>
-
 @code{
     private List<ChatDTO> chats = new List<ChatDTO>();
     protected override async Task OnInitializedAsync()
@@ -39,4 +76,5 @@
         chats = await ChatService.GetChatList(user.Identity.Name);
         Console.WriteLine(chats);
     }
+
 }
