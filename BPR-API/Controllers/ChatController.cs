@@ -44,7 +44,7 @@ namespace BPR_API.Controllers
                     if (chat.ChatId == chatDTO.Id) 
                     { 
                         var dbChat = _dbContext.Chats.FirstOrDefault(p => p.Id == chatDTO.Id);
-                        return Ok(chat);
+                        return Ok(dbChat);
                     }
                 }
                 return BadRequest("No chat found!");
@@ -68,7 +68,16 @@ namespace BPR_API.Controllers
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == chatDTO.Username);
                 var ChatList = _dbContext.UserChats.Where(p => p.UserId == user.Id).ToList();
-                return Ok(ChatList); 
+                var listToReturn = new List<List<Object>>();
+                foreach (UserChat chat in ChatList)
+                {
+                    var Chat = _dbContext.Chats.FirstOrDefault(c => c.Id == chat.ChatId);
+                    var temporaryChat = new List<Object>();
+                    temporaryChat.Append(Chat.Id);
+                    temporaryChat.Append(Chat.ChatName);
+                    listToReturn.Append(temporaryChat);
+                }
+                return Ok(listToReturn); 
             }
             catch (Exception)
             {
