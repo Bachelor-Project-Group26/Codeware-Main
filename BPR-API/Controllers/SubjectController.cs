@@ -41,9 +41,29 @@ namespace BPR_API.Controllers
                 await _dbContext.Subjects.AddAsync(newSubject);
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception)
+            catch 
+            { 
+                return BadRequest("Something went wrong with creating the subject!"); 
+            }
+            var own = new SubjectOwner()
             {
-                return BadRequest("Something went wrong with creating the subject!");
+                UserId = 1,
+                SubjectId = 1
+            };
+            var follow = new Following()
+            {
+                UserId = 1,
+                FollowedId = ""
+            };
+            try
+            {
+                _dbContext.SubjectOwners.Add(own);
+                _dbContext.FollowingList.Add(follow);
+                _dbContext.SaveChanges();
+            }
+            catch
+            {
+                return BadRequest("Something went wrong with adding user to subject!");
             }
             return Ok("Subject created!");
         }
@@ -59,16 +79,41 @@ namespace BPR_API.Controllers
             if (!(subjectDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
+                var followingList = _dbContext.FollowingList.Where(f => f.FollowedId == subjectDTO.SubjectId.ToString());
+                foreach (var follow in followingList)
+                {
+                    var to_remove = new Following()
+                    {
+                        UserId = follow.UserId,
+                        FollowedId = follow.FollowedId
+                    };
+                    _dbContext.FollowingList.Remove(to_remove);
+                }
+                var ownerList = _dbContext.SubjectOwners.Where(f => f.UserId == subjectDTO.UserId);
+                foreach (var owner in ownerList)
+                {
+                    var to_remove = new SubjectOwner()
+                    {
+                        UserId = owner.UserId,
+                        SubjectId = owner.SubjectId
+                    };
+                    _dbContext.SubjectOwners.Remove(to_remove);
+                }
+            }
+            catch
+            {
+                return BadRequest("Something went wrong with deleting the users from the subject!");
+            }
+            try
+            {
                 _dbContext.Subjects.Remove(_dbContext.Subjects.FirstOrDefault(u => u.Id == subjectDTO.SubjectId));
                 _dbContext.SaveChanges();
-                return Ok("Subject deleted successfully!");
             }
-            catch (Exception)
+            catch
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong with deleting the subject!");
             }
-            // Delete the users
-            // Delete the owners
+            return Ok("Subject deleted successfully!");
         }
 
         /// <summary>
@@ -96,7 +141,7 @@ namespace BPR_API.Controllers
                 await _dbContext.FollowingList.AddAsync(follower);
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception)
+            catch
             {
                 return BadRequest("Something went wrong with adding the owner!");
             }
@@ -111,7 +156,15 @@ namespace BPR_API.Controllers
         [HttpPut("del_owner"), Authorize]
         public async Task<ActionResult<string>> DeleteOwner(SubjectDTO subjectDTO)
         {
-            // Delete from owner table.
+            try
+            {
+                var owner_to_delete = _dbContext.SubjectOwners.FirstOrDefault(o => o.SubjectId == subjectDTO.SubjectId);
+                _dbContext.SubjectOwners.Remove(owner_to_delete);
+            }
+            catch
+            {
+                return BadRequest("Something went wrong with deleting the owner!");
+            }
             return Ok("Not implemented!");
         }
     }
