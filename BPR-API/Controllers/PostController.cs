@@ -153,7 +153,7 @@ namespace BPR_API.Controllers
         /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
         /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("follow"), Authorize]
-        public async Task<ActionResult<string>> follow([FromBody] PostDTO postDTO)
+        public async Task<ActionResult<string>> Follow([FromBody] PostDTO postDTO)
         {
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
@@ -180,7 +180,7 @@ namespace BPR_API.Controllers
         /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
         /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPut("unfollow"), Authorize]
-        public async Task<ActionResult<string>> unfollow([FromBody] PostDTO postDTO)
+        public async Task<ActionResult<string>> Unfollow([FromBody] PostDTO postDTO)
         {
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);

@@ -10,6 +10,8 @@ namespace BPR_API.DataAccess
         public DbSet<UserChat> UserChats { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<SubjectOwner> SubjectOwners { get; set; }
         public DbSet<Following> FollowingList { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
@@ -17,6 +19,7 @@ namespace BPR_API.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserChat>().HasKey(c => new { c.UserId, c.ChatId });
+            modelBuilder.Entity<SubjectOwner>().HasKey(c => new { c.UserId, c.SubjectId });
             modelBuilder.Entity<Following>().HasKey(c => new { c.UserId, c.FollowedId });
             modelBuilder.Entity<Reaction>().HasKey(c => new { c.UserId, c.PostId });
         }
