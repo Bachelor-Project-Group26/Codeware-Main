@@ -68,13 +68,15 @@ namespace BPR_API.Controllers
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(p => p.Username == chatDTO.Username);
                 var ChatList = _dbContext.UserChats.Where(p => p.UserId == user.Id).ToList();
-                var listToReturn = new List<List<Object>>();
+                var listToReturn = new List<ChatDTO>();
                 foreach (UserChat chat in ChatList)
                 {
                     var Chat = _dbContext.Chats.FirstOrDefault(c => c.Id == chat.ChatId);
-                    var temporaryChat = new List<Object>();
-                    temporaryChat.Append(Chat.Id);
-                    temporaryChat.Append(Chat.ChatName);
+                    var temporaryChat = new ChatDTO()
+                    {
+                        Id = Chat.Id,
+                        ChatName = Chat.ChatName
+                    };
                     listToReturn.Append(temporaryChat);
                 }
                 return Ok(listToReturn); 
