@@ -72,7 +72,7 @@ namespace BPR_Blazor.Data
             }
         }
         public async Task<string> UpdateDetails(string username, int securityLevel, string firstName, 
-            string lastName, string email, string country, string bio, byte[] profilePicture, DateTime birthday)
+            string lastName, string email, string country, string bio, byte[] profilePicture, DateTime? birthday)
         {
             UserDTO user = new UserDTO
             {

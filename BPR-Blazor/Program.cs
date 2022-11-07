@@ -12,6 +12,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddHttpClient();
 ApiHelper.InitializeClient();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();

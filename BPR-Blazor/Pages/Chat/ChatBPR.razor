@@ -1,8 +1,8 @@
 @page "/chat/{chatId}"
 <section class="index">
-<div class="d-flex flex-grow-1 flex-row">
-    <MudPaper Elevation = "25" Class = "py-4 flex-grow-1">
-        <MudToolBar Dense = "true">
+<div class="d-flex flex-grow-1 flex-row" style="margin-top: 50px;">
+    <MudPaper Elevation = "25" Class = "py-16 flex-grow-1">
+        <MudToolBar Dense = "true" style="margin-top: -68px;">
             @if (id == 0)
             {
                <MudIcon Icon="@Icons.Material.Outlined.Person" Style="  width: 35px"></MudIcon> <MudText Typo="Typo.h6">chat</MudText>
@@ -13,12 +13,28 @@
                 <MudIcon Icon="@Icons.Material.Outlined.ChatBubble" Style="width: 35px"></MudIcon>
                 <MudText Typo="Typo.h6">Chat with @chatId</MudText>
             }
-
+            @if (chat.Username == username)
+               {
+                     <MudButton Variant="Variant.Filled" style="display: absolute; left:10px;" Color="Color.Primary" OnClick="@ToggleOpen">
+		             @(_isOpen? "Close" : "Manage")
+	                 </MudButton>
+                <MudPopover Open="@_isOpen" Fixed="true" Class="px-1 pt-1">
+			  <MudTextField T="string" Placeholder="Enter a user..."DisableUnderLine="true" Class="mt-n2 mx-4"
+                     @bind-Value="usernameToAdd" For="@(()=> usernameToAdd)" />
+                      <MudButton OnClick="addUser" StartIcon="@Icons.Filled.Add" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten2}" ButtonType="ButtonType.Button">Add</MudButton>
+                           <MudDivider />
+                     <MudTextField T="string" Placeholder="Enter a user..."DisableUnderLine="true" Class="mt-n2 mx-4"
+                      @bind-Value="usernameToDelete" For="@(()=> usernameToDelete)" />
+                        <MudButton OnClick="deleteUser" StartIcon="@Icons.Filled.HorizontalRule" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten2}" ButtonType="ButtonType.Button">Delete</MudButton>
+                    </MudPopover>
+             }
         </MudToolBar>
         <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
             @foreach (var message in messages)
             {
-                <div class="d-flex flex-row my-4">
+                @if (message.Username != @username)
+                {
+                  <div class="d-flex flex-row my-4">
                     <div class="mr-4">
                         <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@message.Username.ToUpper().FirstOrDefault()</MudAvatar>
                     </div>
@@ -27,7 +43,22 @@
                         <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.CreatedDate.ToString("dd MMM, yyyy hh:mm tt")</MudText>
                         <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">@message.Content</MudText>
                     </div>
-                </div>
+                </div>  
+                }
+                else
+                {
+                    <div class="d-flex flex-row-reverse my-4">
+                        <div class="ml-4">
+                            <MudAvatar Color="Color.Primary" Style="height:50px; width:50px;">@message.Username.ToUpper().FirstOrDefault()</MudAvatar>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.body1">@message.Username</MudText>
+                            <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.CreatedDate.ToString("dd MMM, yyyy hh:mm tt")</MudText>
+                            <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">@message.Content</MudText>
+                        </div>
+                    </div>
+                }
+                
             }
         </div>
         <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
@@ -40,11 +71,14 @@
             <MudToolBar Dense="true">
                 <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
                 <MudText Typo="Typo.h6">Chats</MudText>
+
+                    
+                
             </MudToolBar>
             <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
                 <MudList Clickable="true">
                     @foreach (var chat in chats)
-                    {
+                    {    
                         <MudListItem Class="pa-0 px-2">
                             <div class="d-flex flex-row mt-n1 mb-n1">
                                 <div class="mr-4">
@@ -72,7 +106,13 @@
                 </MudList>
             </div>
         </MudPaper>
+        
+        
 </div>
+        @if (showAlert)
+        {
+            <MudAlert Severity="Severity.Success" style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+        }
 </section>
 @code{
      [Parameter] 
@@ -80,20 +120,32 @@
      public int id = 0;
     [Parameter] 
     public string CurrentMessage { get; set; }
-    //private ChatDTO chat = new ChatDTO();
+    private ChatDTO chat = new ChatDTO();
     private List<ChatDTO> chats = new List<ChatDTO>();
     private List<MessageDTO> messages = new List<MessageDTO>();
     private string username = "";
+    public bool _isOpen, showAlert = false;
+    private string usernameToAdd, usernameToDelete = "";
+    private string response = "";
+    private string result = "";
+	public void ToggleOpen()
+	{
+		if (_isOpen)
+			_isOpen = false;
+		else
+			_isOpen = true;
+	}
     protected override async Task OnInitializedAsync()
     {
         id = int.Parse(chatId);
         var authState  = await _authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         username = user.Identity.Name.ToString();
-        Console.WriteLine(id);
-        //chat = await ChatService.GetChat(username,chatId);
+        
+        chat = await ChatService.GetChat(username,id);
         chats = await ChatService.GetChatList(user.Identity.Name);
         messages = await ChatService.GetMessages(username,id);
+        Console.WriteLine(chat.Id + " " + chat.Username + " " + chat.ChatName);
     }
 
     private void SubmitAsync()
@@ -103,5 +155,24 @@
         
         //add here possible javascript method
         
+    }
+    private async Task addUser(){
+        id = int.Parse(chatId);
+        result = await ChatService.AddUsers(username,usernameToAdd, id);
+        usernameToAdd = "";
+        ShowAlert(result);
+    }
+    private async Task deleteUser(){
+        id = int.Parse(chatId);
+        result = await ChatService.RemoveUsers(username,usernameToDelete, id);
+        usernameToDelete = "";
+        ShowAlert(result);
+    }
+    private async Task ShowAlert(string result){
+        showAlert = true;
+        response = result;
+        await Task.Delay(2000);
+        showAlert = false;
+        response = "";
     }
 }

@@ -40,6 +40,7 @@
                                 <span></span>
                                 <label>Bio</label>
                             </div>
+                            <MudDatePicker Label="Show week number" ShowWeekNumbers="true" @bind-Date="@date" />
                             <button class="btn" type="submit">Update your profile</button>
                         </EditForm>
                     </div>
@@ -56,6 +57,7 @@
 @code {
     private UserDTO _userDetails = new UserDTO();
     private string username = "";
+    public DateTime? date = DateTime.Today;
     protected async override void OnInitialized()
     {
         var authState  = await _authStateProvider.GetAuthenticationStateAsync();
@@ -66,7 +68,7 @@
     private async void SubmitProfile()
     {
         try{
-        var result = await UserService.UpdateDetails(username, 0, _userDetails.FirstName, _userDetails.LastName, _userDetails.Email, _userDetails.Country, _userDetails.Bio, null, DateTime.Now);
+        var result = await UserService.UpdateDetails(username, 0, _userDetails.FirstName, _userDetails.LastName, _userDetails.Email, _userDetails.Country, _userDetails.Bio, null, date);
         
         navManager.NavigateTo("/userprofile/" + username);
         }

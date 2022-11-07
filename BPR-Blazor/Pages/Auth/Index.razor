@@ -1,8 +1,5 @@
 ﻿@page "/index"
 @attribute [Authorize]
-@inject ILocalStorageService LocalStorage
-@inject AuthenticationStateProvider _authStateProvider;
-@inject IUserService UserService
 @using BPR_Blazor.Data
 
 <PageTitle>Index</PageTitle>
@@ -13,19 +10,56 @@ Welcome to your new app.
 <AuthorizeView>
     <h3>Hi @context.User.Identity.Name</h3>
     <h4>Go to see your new profile <a href="/profile/@context.User.Identity.Name">Click me</a> </h4>
-    <h4>Go to see your chats <a href="/chat">Click me</a> </h4>
+    <h4>Go to see your chats <a href="/chat/28">Click me</a> </h4>
+    
 </AuthorizeView>
+<div class="row border-bottom border-secondary p-3">
+            <div class="col-8">
+                <div class="container">
+                    <EditForm Model="@newPost" OnValidSubmit="@OnValidSubmit">
+                        <textarea class="form-control bg-dark text-light shadow-none border-0" rows="1"
+                                  style="resize: none; overflow: hidden; font-size: large;"
+                                  oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                                  @bind="@(newPost.Content)" maxlength="256" placeholder="What's happening?"></textarea>
+
+                        <button type="submit" class="btn btn-primary mt-2 float-left">Tweet</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-3">
+    <div class="col-auto">
+        <a class="mr-1" style="color: white;" href="@(editPost.Username)">@(editPost.Username)</a>
+        <span class="mr-1" style="color: gray">@("@" + editPost.Username)</span>
+        <span class="mr-1" style="color: gray">@(" - " + editPost.CreatedDate.ToString("dd MMM, yyyy hh:mm tt"))</span>
+        <span class="mr-1" style="color: gray">@(editPost.Content)</span>
+        <button onclick="@seePost">Click me</button>
+    </div>
 </div>
+</div>
+
+
 @code{
    public string username = "";
-    
+    PostDTO newPost = new PostDTO();
+
+    PostDTO editPost = new PostDTO();
     
     protected async override void OnInitialized()
     {
         var authState  = await _authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         username = user.Identity.Name.ToString();
+        editPost = await PostService.GetPost(username, 5);
+        Console.WriteLine(editPost.Username + editPost.Content);
        
+    }
+    private async void seePost(){
+        editPost = await PostService.GetPost(username, 5);
+        Console.WriteLine(editPost.Username+ " + " + editPost.Content);
+    }
+    private async void OnValidSubmit(){
+       await PostService.CreatePost(username,newPost.Content);
     }
    
 }

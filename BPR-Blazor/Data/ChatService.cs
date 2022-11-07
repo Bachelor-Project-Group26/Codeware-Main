@@ -23,7 +23,7 @@ namespace BPR_Blazor.Data
             {
                 var json = await response.Content.ReadAsStringAsync();
                 chat = JsonConvert.DeserializeObject<ChatDTO>(json);
-                return chat;
+                return chat; 
             }
         }
 
