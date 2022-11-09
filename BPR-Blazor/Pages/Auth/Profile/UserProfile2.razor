@@ -1,12 +1,12 @@
 @page "/profile/{username}"
-@inject NavigationManager navManager
-@inject HttpClient Http
-@inject AuthenticationStateProvider AuthStateProvider
-@inject IUserService UserService
-@inject NavigationManager MyNavigationManager
-@using BPR_Blazor.Data
-@using BPR_Blazor.Models
 <div>
+  @if (user.FirstName == null || user.FirstName == "")
+  {
+    
+    <FourOFourPR />
+    
+  }
+  else{
 <div class="profilePic">
   <img class="profile" src="images/Picture.png" alt="profilepic">
     <h1>@user.FirstName @user.LastName</h1>
@@ -24,25 +24,80 @@
     </div>
     </div>
     <div class="skills">
-      <div class="skill">
-        <p>Chef</p>
-      </div>
-      <div class="skill">
-        <p>Gamer</p>
-      </div>
-      <div class="skill">
-        <p>Cat lover</p>
-    </div>
+      @if (loggedUser != username )
+      {
+        @if (!_alreadyFollows)
+        {
+          <MudButton Disabled="@_processing" OnClick="FollowUser" Variant="Variant.Filled" Color="Color.Primary">
+        @if (_processing)
+          {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+           <MudText Class="ms-2">Processing</MudText>
+          }
+        else
+           {
+             <MudText>Follow</MudText>
+           }
+    </MudButton>
+        }
+        else{
+          <MudButton Disabled="@_processing" OnClick="UnFollowUser" Variant="Variant.Filled" Color="Color.Primary">
+        @if (_processing)
+          {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+           <MudText Class="ms-2">Processing</MudText>
+          }
+        else
+           {
+             <MudText>UnFollow</MudText>
+           }
+    </MudButton>
+        }
+        
+      }
   </div>
+  }
 </div>
 @code{
   [Parameter]
   public string username { get; set; }
+
+  public string loggedUser = "";
   public UserDTO user = new UserDTO();
+  private bool _processing, _alreadyFollows = false;
   protected override async Task OnInitializedAsync()
   {
-    user = await UserService.GetUserByUsername(username);
+    var authState  = await _authStateProvider.GetAuthenticationStateAsync();
+    var loggeduserObj = authState.User;
+    loggedUser = loggeduserObj.Identity.Name;
+    try{
+      user = await UserService.GetUserByUsername(username);
+      Console.WriteLine(user.Username);
+    }catch(Exception e){
+      Console.WriteLine(e);
+      navManager.NavigateTo("/404");
+    }
+    
+    if(await PostService.Follow(username) == "UnauthorizedToken invalid!"){
+      _alreadyFollows = true;
+    }
   }
-  
-  
+  private async Task FollowUser()
+  {
+    _processing = true;
+    var result = await PostService.Follow(username);
+    Console.WriteLine("Follow result = " + result);
+    await Task.Delay(1000);
+    _processing = false;
+   
+  }
+  private async Task UnFollowUser()
+  {
+    _processing = true;
+    var result = await PostService.Unfollow(username);
+    Console.WriteLine("Follow result = " + result);
+    await Task.Delay(1000);
+    _processing = false;
+   
+  }
 }

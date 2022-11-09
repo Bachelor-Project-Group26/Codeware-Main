@@ -69,6 +69,7 @@ namespace BPR_Blazor.Data
             {
                 Username = username,
                 Id = id
+                
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
@@ -100,15 +101,18 @@ namespace BPR_Blazor.Data
         {
             PostDTO user = new PostDTO
             {
-                Username = username
+                Username = username,
+                Content = "",
+                followedId = ""
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/follow", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(json);
                 var str = JsonConvert.DeserializeObject<string>(json);
-                return str;
+                return response.StatusCode + str;
             }
         }
 
@@ -123,8 +127,9 @@ namespace BPR_Blazor.Data
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/unfollow", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(json);
                 var str = JsonConvert.DeserializeObject<string>(json);
-                return str;
+                return response.StatusCode + str;
             }
         }
     }

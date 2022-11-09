@@ -13,8 +13,10 @@
 @using BPR_Blazor.Data
 @using BPR_Blazor.Models
 @using MudBlazor
+@using BlazorAnimate
 @inject AuthenticationStateProvider _authStateProvider;
 @inject IChatService ChatService
 @inject IUserService UserService
 @inject IPostService PostService
 @inject NavigationManager navManager
+@inject ILocalStorageService LocalStorage

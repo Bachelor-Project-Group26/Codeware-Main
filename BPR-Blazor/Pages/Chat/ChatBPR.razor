@@ -1,24 +1,26 @@
 @page "/chat/{chatId}"
 <section class="index">
 <div class="d-flex flex-grow-1 flex-row" style="margin-top: 50px;">
-    <MudPaper Elevation = "25" Class = "py-16 flex-grow-1">
-        <MudToolBar Dense = "true" style="margin-top: -68px;">
+    <MudPaper Elevation = "25"  Class = "py-16 flex-grow-1 static">
+        <h3>trest</h3>
+        <MudToolBar Class="static" style="margin-top: -68px;">
+            
             @if (id == 0)
             {
-               <MudIcon Icon="@Icons.Material.Outlined.Person" Style="  width: 35px"></MudIcon> <MudText Typo="Typo.h6">chat</MudText>
+               <MudIcon Icon="@Icons.Material.Outlined.Person"  Style="width: 35px"></MudIcon> <MudText  Typo="Typo.h6">chat</MudText>
               
             }
             else
             {
-                <MudIcon Icon="@Icons.Material.Outlined.ChatBubble" Style="width: 35px"></MudIcon>
-                <MudText Typo="Typo.h6">Chat with @chatId</MudText>
+                <MudIcon Icon="@Icons.Material.Outlined.ChatBubble"  Style="width: 35px"></MudIcon>
+                <MudText  Typo="Typo.h6">Chat with @chatId</MudText>
             }
             @if (chat.Username == username)
                {
                      <MudButton Variant="Variant.Filled" style="display: absolute; left:10px;" Color="Color.Primary" OnClick="@ToggleOpen">
 		             @(_isOpen? "Close" : "Manage")
 	                 </MudButton>
-                <MudPopover Open="@_isOpen" Fixed="true" Class="px-1 pt-1">
+                <MudPopover Open="@_isOpen" Fixed="true" Class="px-1 pt-1" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.BottomLeft">
 			  <MudTextField T="string" Placeholder="Enter a user..."DisableUnderLine="true" Class="mt-n2 mx-4"
                      @bind-Value="usernameToAdd" For="@(()=> usernameToAdd)" />
                       <MudButton OnClick="addUser" StartIcon="@Icons.Filled.Add" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten2}" ButtonType="ButtonType.Button">Add</MudButton>
@@ -29,14 +31,14 @@
                     </MudPopover>
              }
         </MudToolBar>
-        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll; display: static;" id="chatContainer">
             @foreach (var message in messages)
             {
                 @if (message.Username != @username)
                 {
                   <div class="d-flex flex-row my-4">
                     <div class="mr-4">
-                        <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@message.Username.ToUpper().FirstOrDefault()</MudAvatar>
+                        <MudAvatar Class="static" Color="Color.Secondary" Style="height:50px; width:50px;">@message.Username.ToUpper().FirstOrDefault()</MudAvatar>
                     </div>
                     <div>
                         <MudText Typo="Typo.body1">@message.Username</MudText>
@@ -61,10 +63,10 @@
                 
             }
         </div>
-        <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
-            <MudTextField T="string" Placeholder="Enter your message..."DisableUnderLine="true" Class="mt-n2 mx-4"
+        <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4 static" Style="margin-top: 50px;">
+            <MudTextField Style="display : static;" Class="mt-n2 mx-4 static" T="string" Placeholder="Enter your message here..." DisableUnderLine="true" 
                 @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
-                <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten2}" ButtonType="ButtonType.Button">Send</MudButton>
+                <MudButton Class="static" OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten2}" ButtonType="ButtonType.Button">Send</MudButton>
         </MudPaper>
     </MudPaper>
     <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
@@ -109,11 +111,17 @@
         
         
 </div>
-        @if (showAlert)
-        {
-            <MudAlert Severity="Severity.Success" style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+        @if(showAlert){
+         @if (isSuccess)
+            {
+            <MudAlert Severity="Severity.Success"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+            }
+            else{
+                <MudAlert Severity="Severity.Error"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+            }
         }
 </section>
+
 @code{
      [Parameter] 
      public string chatId{get; set;}
@@ -124,10 +132,11 @@
     private List<ChatDTO> chats = new List<ChatDTO>();
     private List<MessageDTO> messages = new List<MessageDTO>();
     private string username = "";
-    public bool _isOpen, showAlert = false;
-    private string usernameToAdd, usernameToDelete = "";
-    private string response = "";
-    private string result = "";
+    public bool _isOpen, showAlert, isSuccess = false;
+    private string usernameToAdd, usernameToDelete, result, response = "";
+    private string sampleText = "Type your message here";
+    
+
 	public void ToggleOpen()
 	{
 		if (_isOpen)
@@ -158,15 +167,48 @@
     }
     private async Task addUser(){
         id = int.Parse(chatId);
-        result = await ChatService.AddUsers(username,usernameToAdd, id);
-        usernameToAdd = "";
-        ShowAlert(result);
+        try{
+            var answer = await ChatService.AddUsers(username,usernameToAdd, id);
+            usernameToAdd = "";
+            if(answer.ToString() == "BadRequestSomething went wrong!"){
+                showAlert = true;
+                isSuccess = false;
+                ShowAlert("Something went wrong");
+            }
+            else{
+                showAlert = true;
+                isSuccess = true;
+                ShowAlert("User added successfully");
+            }
+        }
+        catch(Exception e){
+            Console.WriteLine(e);
+            isSuccess = false;
+            ShowAlert("Something went wrong");
+        }
+        
     }
     private async Task deleteUser(){
         id = int.Parse(chatId);
-        result = await ChatService.RemoveUsers(username,usernameToDelete, id);
-        usernameToDelete = "";
-        ShowAlert(result);
+        try{
+            var answer = await ChatService.RemoveUsers(username,usernameToDelete, id);
+            usernameToDelete = "";
+            if(answer.ToString() == "BadRequestSomething went wrong!"){
+                showAlert = true;
+                isSuccess = false;
+                ShowAlert("Something went wrong");
+
+            }else{
+                showAlert = true;
+                isSuccess = true;
+                ShowAlert("User deleted successfully");
+            }
+        }
+        catch(Exception e){
+            Console.WriteLine(e);
+            isSuccess = false;
+            ShowAlert("Something went wrong");
+        }   
     }
     private async Task ShowAlert(string result){
         showAlert = true;
@@ -174,5 +216,9 @@
         await Task.Delay(2000);
         showAlert = false;
         response = "";
+    }
+    private void hide(){
+
+        sampleText = "";
     }
 }

@@ -1,7 +1,4 @@
 ﻿@page "/logout"
-@using BPR_Blazor.Data
-@inject IUserService UserService
-@inject NavigationManager _navManager;
 
 <PageTitle>logout</PageTitle>
 
@@ -9,6 +6,6 @@
     protected override async Task OnInitializedAsync()
     {
         //await UserService.Logout();
-        _navManager.NavigateTo("/");
+        navManager.NavigateTo("/");
     }
 }

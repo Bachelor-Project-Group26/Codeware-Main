@@ -1,12 +1,4 @@
 ﻿@page "/"
-@inject IUserService UserService
-@inject NavigationManager navManager
-@inject HttpClient Http
-@inject AuthenticationStateProvider AuthStateProvider
-@inject ILocalStorageService LocalStorage
-@using BPR_Blazor.Models
-@using BPR_Blazor.Data
-@using Microsoft.AspNetCore.Mvc
 <section class="login-form-1 login">
         <h1>Codeware</h1>
         <div class="container">
@@ -53,7 +45,7 @@
             if (true)//!result.Equals(""))
             {
                 await LocalStorage.SetItemAsync("token", result);
-                await AuthStateProvider.GetAuthenticationStateAsync();
+                await _authStateProvider.GetAuthenticationStateAsync();
                 StateHasChanged();
                 navManager.NavigateTo("index");
             }

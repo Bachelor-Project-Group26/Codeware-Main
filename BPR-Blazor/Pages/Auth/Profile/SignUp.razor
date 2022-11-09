@@ -1,9 +1,4 @@
 ﻿@page "/SignUp"
-@inject NavigationManager navManager
-@using BPR_Blazor.Models
-@using BPR_Blazor.Data
-@inject IUserService UserService
-@inject AuthenticationStateProvider _authStateProvider;
 @attribute [Authorize]
 <section class="login-form-1 signup">
     <div class="container">
@@ -40,8 +35,8 @@
                                 <span></span>
                                 <label>Bio</label>
                             </div>
-                            <MudDatePicker Label="Show week number" ShowWeekNumbers="true" @bind-Date="@date" />
-                            <button class="btn" type="submit">Update your profile</button>
+                            <MudDatePicker Label="Enter your birthday" Style="color:{Colors.Blue.Lighten4}" IconSize="Size.Small" Adornment="Adornment.None" ShowWeekNumbers="true" @bind-Date="@date" />
+                            <button class="btn" style="margin-top: 15px;" type="submit">Update your profile</button>
                         </EditForm>
                     </div>
                     <div class="login_form align-self">
@@ -70,7 +65,7 @@
         try{
         var result = await UserService.UpdateDetails(username, 0, _userDetails.FirstName, _userDetails.LastName, _userDetails.Email, _userDetails.Country, _userDetails.Bio, null, date);
         
-        navManager.NavigateTo("/userprofile/" + username);
+        navManager.NavigateTo("/profile/" + username);
         }
         catch(Exception e)
         {
