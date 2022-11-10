@@ -64,15 +64,14 @@ namespace BPR_Blazor.Data
 
         public async Task<PostDTO> GetPost(string username, int id)
         {
-            PostDTO post = new PostDTO();
-            PostDTO user = new PostDTO
+            PostDTO post = new PostDTO
             {
                 Username = username,
                 Id = id
                 
             };
-            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
+            StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
@@ -83,30 +82,31 @@ namespace BPR_Blazor.Data
 
         public async Task<string> GetPostList(string username)
         {
-            PostDTO user = new PostDTO
-            {
-                Username = username
-            };
-            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post_list", content))
-            {
-                var json = await response.Content.ReadAsStringAsync();
-                var str = JsonConvert.DeserializeObject<string>(json);
-                return str;
-            }
+            return ""; 
+            //PostDTO post = new PostDTO
+            //{
+            //    Username = username
+            //};
+            //string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
+            //StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
+            //using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post_list", content))
+            //{
+            //    var json = await response.Content.ReadAsStringAsync();
+            //    var str = JsonConvert.DeserializeObject<string>(json);
+            //    return str;
+            //}
         }
 
         public async Task<string> Follow(string username)
         {
-            PostDTO user = new PostDTO
+            PostDTO post = new PostDTO
             {
                 Username = username,
                 Content = "",
                 followedId = ""
             };
-            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
+            StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/follow", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
