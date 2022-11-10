@@ -62,27 +62,31 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<PostDTO> GetPost(string username, int id)
+        public async Task<string> GetPost(string username, int id)
         {
-            PostDTO post = new PostDTO
-            {
-                Username = username,
-                Id = id
-                
-            };
-            string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
-            StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post", content))
-            {
-                var json = await response.Content.ReadAsStringAsync();
-                post = JsonConvert.DeserializeObject<PostDTO>(json);
-                return post;
-            }
+            return "{\"Id\":1,\"Creator\":\"Bernardo\",\"FollowedId\":1,\"Content\":\"Testing\",\"CreatedDate\": \"2022-11-10T15:43:07.120Z\"}";
+            //PostDTO post = new PostDTO
+            //{
+            //    Username = username,
+            //    Id = id
+            //    
+            //};
+            //string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
+            //StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
+            //using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post", content))
+            //{
+            //    var json = await response.Content.ReadAsStringAsync();
+            //    post = JsonConvert.DeserializeObject<PostDTO>(json);
+            //    return post;
+            //}
         }
 
         public async Task<string> GetPostList(string username)
         {
-            return ""; 
+            return "{\"PostList\":[" +
+                "{\"Id\":1,\"Creator\":\"Bernardo\",\"FollowedId\":1,\"Content\":\"Testing\",\"CreatedDate\": \"2022-11-10T15:43:07.120Z\"}," +
+                "{\"Id\":2,\"Creator\":\"Bernardo\",\"FollowedId\":2,\"Content\":\"Testing\",\"CreatedDate\": \"2022-11-10T15:43:07.120Z\"}" +
+                "]}";
             //PostDTO post = new PostDTO
             //{
             //    Username = username
