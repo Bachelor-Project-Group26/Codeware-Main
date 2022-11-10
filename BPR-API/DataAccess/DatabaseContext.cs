@@ -15,6 +15,7 @@ namespace BPR_API.DataAccess
         public DbSet<Following> FollowingList { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
