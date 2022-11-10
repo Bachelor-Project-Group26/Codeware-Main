@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BPR_Blazor.Data
 {
-    public class PostService : IPostService
+    public class PostService
     {
         private string URL = "https://localhost:7000";
         public async Task<string> CreatePost(string username, string postContent)
