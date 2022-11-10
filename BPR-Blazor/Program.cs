@@ -13,6 +13,7 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddHttpClient();
 ApiHelper.InitializeClient();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();

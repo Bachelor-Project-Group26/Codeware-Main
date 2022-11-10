@@ -52,7 +52,10 @@ namespace BPR_Blazor.Data
         }
         public async Task<UserDTO> GetUserByUsername(string username)
         {
-            UserDTO user = new UserDTO();
+            UserDTO user = new UserDTO{
+                Username = username
+            };
+            
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
             using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync($"{URL}/User/{username}"))
