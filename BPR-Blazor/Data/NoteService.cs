@@ -11,6 +11,7 @@ namespace BPR_Blazor.Data
             NoteDTO note = new NoteDTO
             {
                 Username = username,
+                NoteId = 0,
                 Title = title,
                 Content = noteContent,
                 CreatedDate = DateTime.Now
@@ -80,7 +81,6 @@ namespace BPR_Blazor.Data
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Note/get_notes", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(json);
                 notes = JsonConvert.DeserializeObject<List<NoteDTO>>(json);
                 return notes;
             }
@@ -98,9 +98,10 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(note);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/Post/update_note", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/Note/update_note", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Json: " + json);
                 var str = JsonConvert.DeserializeObject<string>(json);
                 return response.StatusCode + str;
             }

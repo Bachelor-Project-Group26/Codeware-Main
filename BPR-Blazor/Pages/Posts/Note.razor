@@ -1,0 +1,63 @@
+@page "/note/{noteId}"
+<div class="index">
+    <div class="note">
+        <MudCard Style= "width : auto; " >
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">@note.Title</MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                 <MudIconButton Icon="@Icons.Material.Filled.Settings" OnClick="openPopOver" Color="Color.Default" />
+                 @if (_isOpen)
+                    {
+                     <MudPopover  Open="@_isOpen" Fixed="true" Class="px-1 pt-1" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.BottomLeft">
+                        <MudTextField T="string" Placeholder="Enter a title..."DisableUnderLine="true" Class="mt-n2 mx-4"
+                     @bind-Value="title" For="@(()=> title)" />
+                           <MudDivider />
+                     <MudTextField T="string" Placeholder="Enter a content..."DisableUnderLine="true" Class="mt-n2 mx-4"
+                      @bind-Value="content" For="@(()=> content)" />
+                        <MudButton OnClick="updateNote" StartIcon="@Icons.Filled.HorizontalRule" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten2}" ButtonType="ButtonType.Button">Update</MudButton>
+                    </MudPopover>
+                    }
+                 </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>@note.Content</MudText>
+                <MudText Typo="Typo.caption">@note.CreatedDate</MudText>
+            </MudCardContent>
+            </MudCard>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public string noteId { get; set; }
+    public int id = 0;
+     public string username, title, content = "";
+    public bool _isOpen= false;
+    private NoteDTO note = new NoteDTO();
+    protected async override Task OnInitializedAsync()
+    {
+        id = int.Parse(noteId);
+        var authState  = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        username = user.Identity.Name.ToString();
+        note = await NoteService.GetNote(username, id);
+        if (note == null)
+        {
+            navManager.NavigateTo("/404");
+        }
+    } 
+    private async Task updateNote(){
+        id = int.Parse(noteId);
+       var answer =  await NoteService.UpdateNote(username, id, title, content);
+       Console.WriteLine("Answer : " + answer);
+    }
+    public void openPopOver()
+	{
+		if (_isOpen)
+			_isOpen = false;
+		else
+			_isOpen = true;
+	}
+}

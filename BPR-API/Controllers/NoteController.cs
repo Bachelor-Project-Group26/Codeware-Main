@@ -59,27 +59,27 @@ namespace BPR_API.Controllers
             return Ok("Post deleted successfully!");
         }
 
-        [HttpPost("update_note"), Authorize]
+        [HttpPut("update_note"), Authorize]
         public async Task<ActionResult<string>> UpdatePost([FromBody] NoteDTO noteDTO)
         {
             if (!(noteDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
                 var to_update = _dbContext.Notes.FirstOrDefault(u => u.NoteId == noteDTO.NoteId);
-                if (noteDTO.Title != null) to_update.Title = noteDTO.Title;
-                if (noteDTO.Content != null) to_update.Content = noteDTO.Content;
+                if (noteDTO.Title != "") to_update.Title = noteDTO.Title;
+                if (noteDTO.Content != "") to_update.Content = noteDTO.Content;
                 to_update.CreatedDate = noteDTO.CreatedDate;
                  _dbContext.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong! + Inner Exception : " + e.InnerException + "Message : " + e.Message);
             }
             return Ok("Post updated successfully!");
         }
 
         [HttpGet("{id}"), Authorize]
-        public async Task<ActionResult<NoteDTO>> GetPost(string username, int id)
+        public async Task<ActionResult<NoteDTO>> GetNote(string username, int id)
         {
             if (!(username== User?.Identity?.Name)) return Unauthorized("Token invalid!");
             NoteDTO noteDTO = new NoteDTO();
@@ -87,6 +87,7 @@ namespace BPR_API.Controllers
             {
                 var note = _dbContext.Notes.Where(u => u.Username == username).FirstOrDefault(u => u.NoteId == id);
                 noteDTO.Username = note.Username;
+                noteDTO.NoteId = note.NoteId;
                 noteDTO.Title = note.Title;
                 noteDTO.Content = note.Content;
                 noteDTO.CreatedDate = note.CreatedDate;

@@ -1,0 +1,52 @@
+@page "/notes"
+
+<div class="index">
+    <MudButton OnClick="loadNotes"> Load Notes</MudButton>
+    @foreach (var note in notes)
+    {
+        <MudCard Style= "width : 150px; margin : 20px;">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">@note.Title </MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                 <a href="/note/@note.NoteId"><MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" /></a>
+                 </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>@note.Content</MudText>
+                <MudText Typo="Typo.caption">@note.CreatedDate</MudText>
+            </MudCardContent>
+        </MudCard>
+        
+    }
+
+</div>
+@code{
+    public string username, title, content = "";
+    public List<NoteDTO> notes = new List<NoteDTO>();
+    public NoteDTO noteDTO = new NoteDTO();
+     public bool _isOpen= false;
+    protected async override void OnInitialized()
+    {
+        var authState  = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        username = user.Identity.Name.ToString();
+        await Task.Delay(1);
+        notes = await NoteService.GetNoteList(username);
+    }
+    private async Task loadNotes(){
+         await Task.Delay(1);
+         notes = await NoteService.GetNoteList(username);
+    }
+    private async Task updateNote(){
+        await NoteService.UpdateNote(username, noteDTO.NoteId, title, content);
+    }
+    public void openPopOver()
+	{
+		if (_isOpen)
+			_isOpen = false;
+		else
+			_isOpen = true;
+	}
+}

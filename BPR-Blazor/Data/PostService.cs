@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BPR_Blazor.Data
 {
-    public class PostService
+    public class PostService : IPostService
     {
         private string URL = "https://localhost:7000";
         public async Task<string> CreatePost(string username, string postContent)
@@ -135,6 +135,11 @@ namespace BPR_Blazor.Data
                 var str = JsonConvert.DeserializeObject<string>(json);
                 return response.StatusCode + str;
             }
+        }
+
+        Task<PostDTO> IPostService.GetPost(string username, int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

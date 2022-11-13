@@ -9,6 +9,7 @@
 }
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f9c5bd;
 }
 
 h1:focus {
@@ -72,6 +73,7 @@ a, .btn-link {
 /*Nav Bar*/
 .index{
     margin-left: 6rem;
+    
 }
 
 
@@ -374,7 +376,10 @@ form .signup{
         display: none;
     }
 }
-#sendMessage::-webkit-input-placeholder::before {
-    color:#666;
-    content:"Send your message";
-  }
+.note{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 250px;
+}

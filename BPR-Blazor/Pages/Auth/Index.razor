@@ -3,56 +3,21 @@
 
 <PageTitle>Index</PageTitle>
 <div class="index">
-<h1>Hello, world! </h1>
-
-Welcome to your new app.
-    <h3>@title</h3>
-    <h4>@content</h4>
 <AuthorizeView>
     <h3>Hi @context.User.Identity.Name</h3>
     <h4>Go to see your new profile <a href="/profile/@context.User.Identity.Name">Click me</a> </h4>
     <h4>Go to see your chats <a href="/chat/28">Click me</a> </h4>
     <h3>@getNoteDTO.Title</h3>
     <h4>@getNoteDTO.Content</h4>
+    <MudButton OnClick="loadNotes">Load notes</MudButton>
+
 </AuthorizeView>
-<div class="row border-bottom border-secondary p-3">
-            <div class="col-8">
-                <div class="container">
-                    <EditForm Model="@noteDTO" OnValidSubmit="@OnValidSubmit">
-                        <textarea class="form-control bg-dark text-light shadow-none border-0" 
-                        style="resize: none; overflow: hidden; font-size: large;" type="text" @bind="@(noteDTO.Title)" placeholder="What's happening?"/>
-                        <textarea class="form-control bg-dark text-light shadow-none border-0" rows="1"
-                                  style="resize: none; overflow: hidden; font-size: large;"
-                                  oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-                                  @bind="@(noteDTO.Content)" maxlength="256" placeholder="What's happening?"></textarea>
-
-                        <button type="submit" class="btn btn-primary mt-2 float-left">Tweet</button>
-                    </EditForm>
-                </div>
-            </div>
-        </div>
-        <div class="row pt-3">
-        <a class="mr-1" style="color: white;" href="@(getNoteDTO.Username)">@getNoteDTO.Username</a>
-        <span class="mr-1" style="color: gray">@getNoteDTO.Username</span>
-        <span class="mr-1" style="color: gray">@getNoteDTO.CreatedDate.ToString("dd MMM, yyyy hh:mm tt")</span>
-        <span class="mr-1" style="color: gray">@getNoteDTO.Title</span>
-        <span class="mr-1" style="color: gray">@getNoteDTO.Content</span>
-    @foreach (var note in notes)
-    {
-        <div class="col-auto">
-        <a class="mr-1" style="color: white;" href="@(note.Username)">@(note.Username)</a>
-        <span class="mr-1" style="color: gray">@("@" + note.Username)</span>
-        <span class="mr-1" style="color: gray">@(" - " + note.CreatedDate.ToString("dd MMM, yyyy hh:mm tt"))</span>
-        <span class="mr-1" style="color: gray">@(note.Title)</span>
-        <span class="mr-1" style="color: gray">@(note.Content)</span>
-        </div>
-    }
+   
 </div>
-</div>
-
 
 @code{
-   public string username, title, content = "";
+   public string username = "";
+    private MudCarousel<NoteDTO> _carousel;
     public PostDTO newPost = new PostDTO();
     public List<NoteDTO> notes = new List<NoteDTO>();
     public NoteDTO noteDTO = new NoteDTO();
@@ -64,17 +29,15 @@ Welcome to your new app.
         var authState  = await _authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         username = user.Identity.Name.ToString();
-        getNoteDTO = await NoteService.GetNote(username, 1);
-        title = getNoteDTO.Title;
-        content = getNoteDTO.Content;
-        noteDTO = getNoteDTO;
-        Console.WriteLine(getNoteDTO.Title + " " + getNoteDTO.Content);
-        Console.WriteLine(title + " " + content);
-        notes = await NoteService.GetNoteList(username);
+        loadNotes();
     }
     
     private async void OnValidSubmit(){
        await NoteService.CreateNote(username, noteDTO.Title, noteDTO.Content);
     }
+    private async void loadNotes(){
+         notes = await NoteService.GetNoteList(username);
+    }
    
 }
+
