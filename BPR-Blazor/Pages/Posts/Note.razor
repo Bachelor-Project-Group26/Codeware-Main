@@ -1,7 +1,7 @@
 @page "/note/{noteId}"
 <div class="index">
     <div class="note">
-        <MudCard Style= "width : auto; " >
+        <MudCard Style= "width : auto; background-color: #fac070" >
             <MudCardHeader>
                 <CardHeaderContent>
                     <MudText Typo="Typo.h6">@note.Title</MudText>
@@ -42,11 +42,21 @@
         var authState  = await _authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         username = user.Identity.Name.ToString();
-        note = await NoteService.GetNote(username, id);
-        if (note == null)
+        try{
+            note = await NoteService.GetNote(username, id);
+            if (note.ToString() == "BadRequestSomething went wrong!")
         {
             navManager.NavigateTo("/404");
         }
+        }
+        catch(Exception ex){
+                
+            navManager.NavigateTo("/404");
+            Console.WriteLine(ex.Message);
+        }
+        
+        Console.WriteLine(note.ToString());
+        
     } 
     private async Task updateNote(){
         id = int.Parse(noteId);

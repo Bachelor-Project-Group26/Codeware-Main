@@ -1,52 +1,81 @@
 @page "/notes"
 
 <div class="index">
-    <MudButton OnClick="loadNotes"> Load Notes</MudButton>
-    @foreach (var note in notes)
+    <MudButton OnClick="OpenPopOver" Style="float : right; margin: 15px;">Create a note</MudButton>
+    @if (_isOpen)
     {
-        <MudCard Style= "width : 150px; margin : 20px;">
+        <MudCard class="create-note" Style="background-color: #fcd297;">
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h6">@note.Title </MudText>
+                    <MudTextField Style="width: 250px; background-color: #fcd297;" @bind-Value="noteDTO.Title" HelperText="Title" Variant="Variant.Outlined"
+                    Margin="Margin.Dense"> </MudTextField>
+                    <MudButton Style="float : right; margin-top : -75px;" OnClick="OpenPopOver">Close</MudButton>
                 </CardHeaderContent>
-                <CardHeaderActions>
-                 <a href="/note/@note.NoteId"><MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" /></a>
-                 </CardHeaderActions>
             </MudCardHeader>
             <MudCardContent>
-                <MudText>@note.Content</MudText>
-                <MudText Typo="Typo.caption">@note.CreatedDate</MudText>
+                <textarea @bind="noteDTO.Content" style="width: 450px; height: 230px; background-color: #fcd297; border-width: 1px;" placeholder="Content"></textarea>
+                <MudButton OnClick="CreateNote">Create</MudButton>
             </MudCardContent>
         </MudCard>
-        
     }
-
+    <div class="card-notes">
+        @foreach (var note in notes)
+        {
+            <div class="card-note">
+                <MudCard Style="width : 150px; margin : 20px; background-color: #fac070">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@note.Title </MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <a href="/note/@note.NoteId">
+                                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                            </a>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText>@note.Content</MudText>
+                        <MudText Typo="Typo.caption">@note.CreatedDate</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </div>
+        }
+    </div>
 </div>
-@code{
+@code {
     public string username, title, content = "";
     public List<NoteDTO> notes = new List<NoteDTO>();
     public NoteDTO noteDTO = new NoteDTO();
-     public bool _isOpen= false;
+    public bool _isOpen = false;
+
     protected async override void OnInitialized()
     {
-        var authState  = await _authStateProvider.GetAuthenticationStateAsync();
+        var authState = await _authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         username = user.Identity.Name.ToString();
+
+        notes = await NoteService.GetNoteList(username);
+        StateHasChanged();
+    }
+    private async Task loadNotes()
+    {
         await Task.Delay(1);
         notes = await NoteService.GetNoteList(username);
     }
-    private async Task loadNotes(){
-         await Task.Delay(1);
-         notes = await NoteService.GetNoteList(username);
-    }
-    private async Task updateNote(){
+    private async Task updateNote()
+    {
         await NoteService.UpdateNote(username, noteDTO.NoteId, title, content);
     }
-    public void openPopOver()
-	{
-		if (_isOpen)
-			_isOpen = false;
-		else
-			_isOpen = true;
-	}
+    private async Task CreateNote(){
+        await NoteService.CreateNote(username, noteDTO.Title, noteDTO.Content);
+        _isOpen = false;
+        await loadNotes();
+    }
+    public void OpenPopOver()
+    {
+        if (_isOpen)
+            _isOpen = false;
+        else
+            _isOpen = true;
+    }
 }

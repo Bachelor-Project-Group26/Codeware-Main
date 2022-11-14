@@ -1,6 +1,7 @@
 @page "/chat/{chatId}"
 <section class="index">
-<div class="d-flex flex-grow-1 flex-row" style="margin-top: 50px;">
+   
+<div class="d-flex flex-grow-1 flex-row" style="margin-top: 50px; margin-left: 10px;">
     <MudPaper Elevation = "25"  Class = "py-16 flex-grow-1 static">
         <MudToolBar Class="static" style="margin-top: -68px;">
             
@@ -72,34 +73,20 @@
             <MudToolBar Dense="true">
                 <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
                 <MudText Typo="Typo.h6">Chats</MudText>
-
-                    
-                
+                 <MudButton Style="float:right;">Create Chat</MudButton>
             </MudToolBar>
             <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
                 <MudList Clickable="true">
                     @foreach (var chat in chats)
                     {    
-                        <MudListItem Class="pa-0 px-2">
+                        <MudListItem Style="margin-top : 10px;" Class="pa-0 px-2">
                             <div class="d-flex flex-row mt-n1 mb-n1">
                                 <div class="mr-4">
-                                    <a href="/chat/@chat.chatId"><MudBadge Class="my-2">
-                                        @if (chat.chatId == id)
-                                        {
-                                           // <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.ChatName.ToUpper().FirstOrDefault()</MudAvatar>
-                                           <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.chatId</MudAvatar>
-                                        }
-                                        else
-                                        {
-                                           // <MudAvatar Color="Color.Dark" Style="height:50px; width:50px;">@chat.ChatName.ToUpper().FirstOrDefault()</MudAvatar>
-                                            <MudAvatar Color="Color.Dark" Style="height:50px; width:50px;">@chat.chatId</MudAvatar>
-                                        }
-                                    </MudBadge>
+                                    <a href="/chat/@chat.chatId" style="text-decoration: none;">
+                                     <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.ChatName.ToUpper().FirstOrDefault()</MudAvatar>
+                                     <MudText Style="float: right; margin-left: 20px; margin-top : 15px;" Typo="Typo.body1" >@chat.ChatName</MudText>
+                                    
                                     </a>
-                                </div>
-                                <div>
-                                    <MudText Typo="Typo.body2" Class="mt-3 mb-n2">@chat.Username</MudText>
-                                    <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@chat.chatId</MudText>
                                 </div>
                             </div>
                         </MudListItem>
@@ -149,20 +136,25 @@
         var authState  = await _authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         username = user.Identity.Name.ToString();
-        
+        try{
         chat = await ChatService.GetChat(username,id);
         chats = await ChatService.GetChatList(user.Identity.Name);
         messages = await ChatService.GetMessages(username,id);
-        Console.WriteLine(chat.Id + " " + chat.Username + " " + chat.ChatName);
+        }catch(Exception e){
+            Console.WriteLine(e);
+
+        }
+        
+        StateHasChanged();
     }
 
-    private void SubmitAsync()
+    private async void SubmitAsync()
     {
         ChatService.SendMessage(username, id, CurrentMessage);
         CurrentMessage = "";
-        
+        messages = await ChatService.GetMessages(username,id);
         //add here possible javascript method
-        
+        StateHasChanged();
     }
     private async Task addUser(){
         id = int.Parse(chatId);

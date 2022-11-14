@@ -382,4 +382,27 @@ form .signup{
     justify-content: center;
     align-items: center;
     margin-top: 250px;
+    margin-right: 20px;
+}
+.card-notes{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.card-note{
+    flex-wrap: wrap;
+    width: auto;
+    overflow: auto;
+    max-height: 250px;
+    
+}
+.lastNote{
+    float: left;
+}
+.create-note{
+    float: right;
+    width: 500px;
+    height: 400px;
+    margin-top: 25px;
+    background-color: #fcd297;
 }

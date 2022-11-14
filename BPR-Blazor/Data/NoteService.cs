@@ -58,9 +58,9 @@ namespace BPR_Blazor.Data
             using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync($"{URL}/Note/{id}" + "?username" + "=" + username))
             {
                 var json = await response.Content.ReadAsStringAsync();
-
+                Console.WriteLine(json);
                 note = JsonConvert.DeserializeObject<NoteDTO>(json);
-
+                Console.WriteLine(note);
                 return note;
             }
         }
@@ -81,6 +81,7 @@ namespace BPR_Blazor.Data
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Note/get_notes", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
+                
                 notes = JsonConvert.DeserializeObject<List<NoteDTO>>(json);
                 return notes;
             }

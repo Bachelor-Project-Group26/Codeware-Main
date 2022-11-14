@@ -103,7 +103,6 @@ namespace BPR_API.Controllers
         public async Task<ActionResult<List<NoteDTO>>> GetAllNotes([FromBody] NoteDTO noteDTO)
         {
             if (!(noteDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
-            List<NoteDTO> notes = new List<NoteDTO>();
             try
             {
                 var all_notes = _dbContext.Notes.ToList().Where(u => u.Username == noteDTO.Username);

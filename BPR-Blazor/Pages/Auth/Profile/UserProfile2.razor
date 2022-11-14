@@ -1,15 +1,25 @@
 @page "/profile/{username}"
 <div>
-  @if (user.FirstName == null || user.FirstName == "")
+  @if (user.FirstName == "" && user.Username == loggedUser )
   {
     
     <FourOFourPR />
-    
+  }
+  else if (user.FirstName == "" && user.Username != loggedUser){
+    <FourOFour/>
   }
   else{
+    
 <div class="profilePic">
   <img class="profile" src="images/Picture.png" alt="profilepic">
-    <h1>@user.FirstName @user.LastName</h1>
+  
+    <h1>@user.FirstName @user.LastName
+      @if (user.Username == loggedUser)
+    {
+      <a href="/signup"><MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" /></a>
+    }
+
+    </h1>
     <p>@user.Bio</p>
     @if (user.Email == null)
     {
@@ -54,6 +64,25 @@
     </MudButton>
         }
         
+      }else{
+        <div class="lastNote">
+        <h4>Last Note:</h4>
+         <MudCard Style= "width : auto;  " >
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">@lastNote.Title</MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                 <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+        
+                 </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>@lastNote.Content</MudText>
+                <MudText Typo="Typo.caption">@lastNote.CreatedDate</MudText>
+            </MudCardContent>
+            </MudCard>
+            </div>
       }
   </div>
   }
@@ -64,6 +93,8 @@
 
   public string loggedUser = "";
   public UserDTO user = new UserDTO();
+  public List<NoteDTO> notes = new List<NoteDTO>();
+  public NoteDTO lastNote = new NoteDTO();
   private bool _processing, _alreadyFollows = false;
   protected override async Task OnInitializedAsync()
   {
@@ -81,6 +112,16 @@
     if(await PostService.Follow(username) == "UnauthorizedToken invalid!"){
       _alreadyFollows = true;
     }
+    try{
+      if(user.Username == loggedUser){
+        notes = await NoteService.GetNoteList(username);
+        lastNote = notes[^1];
+      }
+    }catch(Exception e){
+      Console.WriteLine(e);
+    }
+     
+        StateHasChanged();
   }
   private async Task FollowUser()
   {
