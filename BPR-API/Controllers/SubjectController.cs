@@ -47,13 +47,14 @@ namespace BPR_API.Controllers
             }
             var own = new SubjectOwner()
             {
-                UserId = 1,
-                SubjectId = 1
+                UserId = subjectDTO.UserId,
+                SubjectId = subjectDTO.SubjectId
             };
             var follow = new Following()
             {
-                UserId = 1,
-                FollowedId = ""
+                UserId = subjectDTO.UserId,
+                FollowedId = subjectDTO.SubjectId,
+                IsUser = false
             };
             try
             {
@@ -79,13 +80,14 @@ namespace BPR_API.Controllers
             if (!(subjectDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var followingList = _dbContext.FollowingList.Where(f => f.FollowedId == subjectDTO.SubjectId.ToString());
+                var followingList = _dbContext.FollowingList.Where(f => f.FollowedId == subjectDTO.SubjectId);
                 foreach (var follow in followingList)
                 {
                     var to_remove = new Following()
                     {
                         UserId = follow.UserId,
-                        FollowedId = follow.FollowedId
+                        FollowedId = follow.FollowedId,
+                        IsUser = false
                     };
                     _dbContext.FollowingList.Remove(to_remove);
                 }
@@ -133,7 +135,8 @@ namespace BPR_API.Controllers
             Following follower = new Following()
             {
                 UserId = subjectDTO.UserId,
-                FollowedId = "US1234"
+                FollowedId = subjectDTO.SubjectId,
+                IsUser = false
             };
             try
             {

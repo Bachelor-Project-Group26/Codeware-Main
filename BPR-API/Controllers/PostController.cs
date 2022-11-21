@@ -35,7 +35,8 @@ namespace BPR_API.Controllers
             {
                 Creator = postDTO.Username,
                 FollowedId = postDTO.followedId,
-                Title = "Test",
+                IsUser = postDTO.isUser,
+                Title = postDTO.Title,
                 Content = postDTO.Content,
                 CreatedDate = postDTO.CreatedDate
             };
@@ -160,7 +161,8 @@ namespace BPR_API.Controllers
             Following follower = new Following()
             {
                 UserId = user.Id,
-                FollowedId = "US1234"
+                FollowedId = 1,
+                IsUser = true
             };
             try
             {
@@ -184,10 +186,9 @@ namespace BPR_API.Controllers
         {
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-            var followedId = "US1234";
             try
             {
-                var following = _dbContext.FollowingList.FirstOrDefault(f => f.UserId == user.Id && f.FollowedId == followedId);
+                var following = _dbContext.FollowingList.FirstOrDefault(f => f.UserId == user.Id && f.FollowedId == postDTO.followedId && f.IsUser == true);
                 _dbContext.FollowingList.Remove(following);
                 await _dbContext.SaveChangesAsync();
             }
