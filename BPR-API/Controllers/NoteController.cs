@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace BPR_API.Controllers
 {
+    /// <summary>
+    /// This is where all the endpoints for the methods related to the notes are located and implemented.
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
-
     public class NoteController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -19,6 +21,11 @@ namespace BPR_API.Controllers
             _dbContext = new DatabaseContext();
         }
 
+        /// <summary>
+        /// Creates a note.
+        /// </summary>
+        /// <param name="noteDTO">Carries data related to the note between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("create_note"), Authorize]
         public async Task<ActionResult<string>> CreateNote([FromBody] NoteDTO noteDTO)
         {
@@ -42,6 +49,11 @@ namespace BPR_API.Controllers
             return Ok("Note created!");
         }
 
+        /// <summary>
+        /// Deletes a note.
+        /// </summary>
+        /// <param name="noteDTO">Carries data related to the note between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("delete_note"), Authorize]
         public async Task<ActionResult<string>> DeleteNote([FromBody] NoteDTO noteDTO)
         {
@@ -59,6 +71,11 @@ namespace BPR_API.Controllers
             return Ok("Post deleted successfully!");
         }
 
+        /// <summary>
+        /// Updates a note.
+        /// </summary>
+        /// <param name="noteDTO">Carries data related to the note between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPut("update_note"), Authorize]
         public async Task<ActionResult<string>> UpdateNote([FromBody] NoteDTO noteDTO)
         {
@@ -78,6 +95,12 @@ namespace BPR_API.Controllers
             return Ok("Post updated successfully!");
         }
 
+        /// <summary>
+        /// Gets a note object and returns it.
+        /// </summary>
+        /// <param name="username">Username of the user.</param>
+        /// <param name="id">The id of the note.</param>
+        /// <returns>Action result with a note object inside if successful or an error message.</returns>
         [HttpGet("{id}"), Authorize]
         public async Task<ActionResult<NoteDTO>> GetNote(string username, int id)
         {
@@ -99,6 +122,11 @@ namespace BPR_API.Controllers
             return Ok(noteDTO);
         }
 
+        /// <summary>
+        /// Gets a list of note objects and returns it.
+        /// </summary>
+        /// <param name="noteDTO">Carries data related to the note between the client and the API.</param>
+        /// <returns>Action result with a note list object inside if successful or an error message.</returns>
         [HttpPost("get_notes"), Authorize]
         public async Task<ActionResult<List<NoteDTO>>> GetAllNotes([FromBody] NoteDTO noteDTO)
         {
