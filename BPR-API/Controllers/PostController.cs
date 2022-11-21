@@ -85,8 +85,7 @@ namespace BPR_API.Controllers
             try
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-                var post = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-                _dbContext.Reactions.Add(new Reaction { PostId = (int) post.Id, UserId = user.Id, ReactionNumber = postDTO.Reaction });
+                _dbContext.Reactions.Add(new Reaction { PostId = postDTO.Id, UserId = user.Id, ReactionNumber = postDTO.Reaction });
                 _dbContext.SaveChanges();
                 return Ok("Reaction added!");
             }
@@ -133,7 +132,7 @@ namespace BPR_API.Controllers
                 var Posts = new List<Post>();
                 foreach (var follow in Following)
                 {
-                    var postList = _dbContext.Posts.Where(p => p.FollowedId == follow.FollowedId);
+                    var postList = _dbContext.Posts.Where(p => p.FollowedId == follow.FollowedId && p.IsUser == follow.IsUser);
                     foreach (var post in postList)
                     {
                         Posts.Add(post);
@@ -161,7 +160,7 @@ namespace BPR_API.Controllers
             Following follower = new Following()
             {
                 UserId = user.Id,
-                FollowedId = 1,
+                FollowedId = postDTO.followedId,
                 IsUser = true
             };
             try
