@@ -43,7 +43,7 @@ namespace BPR_API.Controllers
         }
 
         [HttpPost("delete_note"), Authorize]
-        public async Task<ActionResult<string>> DeletePost([FromBody] NoteDTO noteDTO)
+        public async Task<ActionResult<string>> DeleteNote([FromBody] NoteDTO noteDTO)
         {
             if (!(noteDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
@@ -60,7 +60,7 @@ namespace BPR_API.Controllers
         }
 
         [HttpPut("update_note"), Authorize]
-        public async Task<ActionResult<string>> UpdatePost([FromBody] NoteDTO noteDTO)
+        public async Task<ActionResult<string>> UpdateNote([FromBody] NoteDTO noteDTO)
         {
             if (!(noteDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
