@@ -11,26 +11,23 @@ namespace BPR_API_Tests
     [TestClass]
     public class UnitTestUser
     {
-        // Z - Zero
-        // O - One
-        // M - Many
-        // B - Boundary Behaviors
-        // I - Interface Definition
-        // E - Exceptional Behavior
-        // S - Simple Scenarios, Simple Solutions
-        // Z - Zero
         [TestMethod]
-        public void TestLogin()
+        public void TestRegisterLoginDelete()
         {
             // Arrange
             var userController = new UserController(null);
-            var username = "";
-            var password = "";
+            var username = "TestUser5803";
+            var password = "58037493";
 
             // Act
-            var response = userController.Login(new UserDTO { Username = username, Password = password });
+            var registerResponse = userController.Register(new UserDTO { Username = username, Password = password });
+            var loginResponse = userController.Login(new UserDTO { Username = username, Password = password });
+            var deleteResponse = userController.DeleteUser(new UserDTO { Username = username });
 
             // Assert
+            Assert.IsTrue(registerResponse.IsCompletedSuccessfully);
+            Assert.IsTrue(loginResponse.IsCompletedSuccessfully);
+            Assert.IsTrue(deleteResponse.IsCompletedSuccessfully);
         }
     }
 }
