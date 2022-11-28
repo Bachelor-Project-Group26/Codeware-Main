@@ -13,7 +13,7 @@
             else
             {
                 <MudIcon Icon="@Icons.Material.Outlined.ChatBubble"  Style="width: 35px"></MudIcon>
-                <MudText  Typo="Typo.h6">Chat with @chatId</MudText>
+                <MudText  Typo="Typo.h6">Chat with @chat.ChatName</MudText>
             }
             @if (chat.Username == username)
                {
@@ -73,7 +73,7 @@
             <MudToolBar Dense="true">
                 <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
                 <MudText Typo="Typo.h6">Chats</MudText>
-                 <MudButton Style="float:right;">Create Chat</MudButton>
+                 <MudButton Style="float:right;" OnClick="ToCreateChat">Create Chat</MudButton>
             </MudToolBar>
             <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
                 <MudList Clickable="true">
@@ -82,7 +82,7 @@
                         <MudListItem Style="margin-top : 10px;" Class="pa-0 px-2">
                             <div class="d-flex flex-row mt-n1 mb-n1">
                                 <div class="mr-4">
-                                    <a href="/chat/@chat.chatId" style="text-decoration: none;">
+                                    <a href="/chat/@chat.Id" style="text-decoration: none;">
                                      <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.ChatName.ToUpper().FirstOrDefault()</MudAvatar>
                                      <MudText Style="float: right; margin-left: 20px; margin-top : 15px;" Typo="Typo.body1" >@chat.ChatName</MudText>
                                     
@@ -140,12 +140,13 @@
         chat = await ChatService.GetChat(username,id);
         chats = await ChatService.GetChatList(user.Identity.Name);
         messages = await ChatService.GetMessages(username,id);
+        StateHasChanged();
         }catch(Exception e){
             Console.WriteLine(e);
 
         }
         
-        StateHasChanged();
+        
     }
 
     private async void SubmitAsync()
@@ -211,5 +212,8 @@
     private void hide(){
 
         sampleText = "";
+    }
+    private void ToCreateChat(){
+        navManager.NavigateTo("/createchat");
     }
 }

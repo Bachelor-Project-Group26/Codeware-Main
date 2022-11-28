@@ -7,13 +7,14 @@ namespace BPR_Blazor.Data
     public class PostService : IPostService
     {
         private string URL = "https://localhost:7000";
-        public async Task<string> CreatePost(string username, string postContent)
+        public async Task<string> CreatePost(string username, string title,string postContent)
         {
             PostDTO user = new PostDTO
             {
-                Username = username,
+                Creator = username,
+                Title = title,
                 Content = postContent,
-                followedId = "",
+                followedId = 0,
                 CreatedDate = DateTime.Now
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
@@ -32,7 +33,7 @@ namespace BPR_Blazor.Data
         {
             PostDTO user = new PostDTO
             {
-                Username = username,
+                Creator = username,
                 Id = id
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
@@ -49,7 +50,7 @@ namespace BPR_Blazor.Data
         {
             PostDTO user = new PostDTO
             {
-                Username = username,
+                Creator = username,
                 Reaction = reaction
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
@@ -62,52 +63,61 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> GetPost(string username, int id)
+        public async Task<PostDTO> GetPost(string username, int id)
         {
-            return "{\"Id\":1,\"Creator\":\"Bernardo\",\"FollowedId\":1,\"Content\":\"Testing\",\"CreatedDate\": \"2022-11-10T15:43:07.120Z\"}";
-            //PostDTO post = new PostDTO
-            //{
-            //    Username = username,
-            //    Id = id
-            //    
-            //};
-            //string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
-            //StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
-            //using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post", content))
-            //{
-            //    var json = await response.Content.ReadAsStringAsync();
-            //    post = JsonConvert.DeserializeObject<PostDTO>(json);
-            //    return post;
-            //}
+            PostDTO post = new PostDTO();
+            PostDTO user = new PostDTO
+            {
+                Creator = username,
+                Id = id,
+                followedId = 0,
+                isUser = true,
+                Reaction = 0,
+                Title = "",
+                Content = "",
+                CreatedDate = DateTime.Now,
+            };
+            string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                post = JsonConvert.DeserializeObject<PostDTO>(json);
+                return post;
+            }
         }
 
-        public async Task<string> GetPostList(string username)
+        public async Task<List<PostDTO>> GetPostList(string username)
         {
-            return "{\"PostList\":[" +
-                "{\"Id\":1,\"Creator\":\"Bernardo\",\"FollowedId\":1,\"Content\":\"Testing\",\"CreatedDate\": \"2022-11-10T15:43:07.120Z\"}," +
-                "{\"Id\":2,\"Creator\":\"Bernardo\",\"FollowedId\":2,\"Content\":\"Testing\",\"CreatedDate\": \"2022-11-10T15:43:07.120Z\"}" +
-                "]}";
-            //PostDTO post = new PostDTO
-            //{
-            //    Username = username
-            //};
-            //string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
-            //StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
-            //using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post_list", content))
-            //{
-            //    var json = await response.Content.ReadAsStringAsync();
-            //    var str = JsonConvert.DeserializeObject<string>(json);
-            //    return str;
-            //}
+            List<PostDTO> posts = new List<PostDTO>();
+            PostDTO post = new PostDTO
+            {
+                Creator = username,
+                Id = 0,
+                followedId = 0,
+                isUser = true,
+                Reaction = 0,
+                Title = "",
+                Content = "",
+                CreatedDate = DateTime.Now,
+            };
+            string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
+            StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post_list", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                posts = JsonConvert.DeserializeObject<List<PostDTO>>(json);
+                return posts;
+            }
         }
 
         public async Task<string> Follow(string username)
         {
             PostDTO post = new PostDTO
             {
-                Username = username,
+                Creator = username,
                 Content = "",
-                followedId = ""
+                followedId = 0
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
@@ -124,7 +134,7 @@ namespace BPR_Blazor.Data
         {
             PostDTO user = new PostDTO
             {
-                Username = username
+                Creator = username
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");

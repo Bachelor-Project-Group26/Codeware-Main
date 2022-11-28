@@ -23,7 +23,7 @@
 </div>
 </section>-->
 <section class="index">
-<div class="d-flex flex-grow-1 flex-row">
+<div class="d-flex flex-grow-1 flex-row" style="margin-top: 50px; margin-left: 10px;">
     <MudPaper Elevation = "25" Class = "py-4 flex-grow-1">
         <MudToolBar Dense = "true">
                <MudIcon Icon="@Icons.Material.Outlined.Person" Style="  width: 35px">Chat</MudIcon> <MudText Typo="Typo.h6">chat</MudText>
@@ -43,13 +43,14 @@
             <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
                 <MudList Clickable="true">
                     @foreach (var chat in chats)
-                    {
-                        <MudListItem Class="pa-0 px-2">
+                    {    
+                        <MudListItem Style="margin-top : 10px;" Class="pa-0 px-2">
                             <div class="d-flex flex-row mt-n1 mb-n1">
                                 <div class="mr-4">
-                                    <a href="/chat/@chat.chatId"><MudBadge Class="my-2">
-                                           <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.chatId</MudAvatar>
-                                    </MudBadge>
+                                    <a href="/chat/@chat.Id" style="text-decoration: none;">
+                                     <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.ChatName.ToUpper().FirstOrDefault()</MudAvatar>
+                                     <MudText Style="float: right; margin-left: 20px; margin-top : 15px;" Typo="Typo.body1" >@chat.ChatName</MudText>
+                                    
                                     </a>
                                 </div>
                             </div>

@@ -30,10 +30,10 @@ namespace BPR_API.Controllers
         [HttpPost("create_post"), Authorize]
         public async Task<ActionResult<string>> CreatePost([FromBody] PostDTO postDTO)
         {
-            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            if (!(postDTO.Creator == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             Post newPost = new Post()
             {
-                Creator = postDTO.Username,
+                Creator = postDTO.Creator,
                 FollowedId = postDTO.followedId,
                 IsUser = postDTO.isUser,
                 Title = postDTO.Title,
@@ -60,7 +60,7 @@ namespace BPR_API.Controllers
         [HttpPost("delete_post"), Authorize]
         public async Task<ActionResult<string>> DeletePost([FromBody] PostDTO postDTO)
         {
-            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            if (!(postDTO.Creator == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
                 var to_delete = _dbContext.Posts.FirstOrDefault(u => u.Id == postDTO.Id);
@@ -84,7 +84,7 @@ namespace BPR_API.Controllers
         {
             try
             {
-                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
+                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Creator);
                 _dbContext.Reactions.Add(new Reaction { PostId = postDTO.Id, UserId = user.Id, ReactionNumber = postDTO.Reaction });
                 _dbContext.SaveChanges();
                 return Ok("Reaction added!");
@@ -104,7 +104,7 @@ namespace BPR_API.Controllers
         [HttpPost("get_post"), Authorize]
         public async Task<ActionResult<string>> GetPost([FromBody] PostDTO postDTO)
         {
-            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            if (!(postDTO.Creator == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
                 var post = _dbContext.Posts.FirstOrDefault(p => p.Id == postDTO.Id);
@@ -125,9 +125,9 @@ namespace BPR_API.Controllers
         [HttpPost("get_post_list"), Authorize]
         public async Task<ActionResult<string>> GetPostList([FromBody] PostDTO postDTO)
         {
-            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            if (!(postDTO.Creator == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
-            {
+            { /*
                 var Following = _dbContext.FollowingList.Where(u => u.UserId == postDTO.Id);
                 var Posts = new List<Post>();
                 foreach (var follow in Following)
@@ -138,13 +138,14 @@ namespace BPR_API.Controllers
                         Posts.Add(post);
                     }
                 }
-                return Ok(Posts);
+                return Ok(Posts);*/
+                var posts = _dbContext.Posts.ToList().Where(p => p.FollowedId == postDTO.followedId && p.Creator == postDTO.Creator);
+                return Ok(posts);
             }
             catch (Exception)
             {
                 return BadRequest("Something went wrong!");
             }
-            return Ok("Not implemented!");
         }
 
         /// <summary>
@@ -155,8 +156,8 @@ namespace BPR_API.Controllers
         [HttpPost("follow"), Authorize]
         public async Task<ActionResult<string>> Follow([FromBody] PostDTO postDTO)
         {
-            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
-            var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
+            if (!(postDTO.Creator == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Creator);
             Following follower = new Following()
             {
                 UserId = user.Id,
@@ -183,8 +184,8 @@ namespace BPR_API.Controllers
         [HttpPut("unfollow"), Authorize]
         public async Task<ActionResult<string>> Unfollow([FromBody] PostDTO postDTO)
         {
-            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
-            var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
+            if (!(postDTO.Creator == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Creator);
             try
             {
                 var following = _dbContext.FollowingList.FirstOrDefault(f => f.UserId == user.Id && f.FollowedId == postDTO.followedId && f.IsUser == true);

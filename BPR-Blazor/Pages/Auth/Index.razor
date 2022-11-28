@@ -4,9 +4,18 @@
 <PageTitle>Index</PageTitle>
 <div class="index">
 <AuthorizeView>
-    <h3>Hi @context.User.Identity.Name</h3>
-    <h4>Go to see your new profile <a href="/profile/@context.User.Identity.Name">Click me</a> </h4>
-    <h4>Go to see your chats <a href="/chat/28">Click me</a> </h4>
+    <section class="section-1">
+        <div class="hero d-flex align-items-center">
+            <div class="gradient"></div>
+            <div class="container-fluid content">
+                <h1>Welcome to Codeware.</h1>
+                <h2>Bachelor Project made by:</h2>
+                <h4>Javier Candeira and Joao Bernardo</h4>
+                <p><a href="/posts" class="btn btn-success">Get Started</a></p>
+            </div>
+            <!--container-fluid end-->
+        </div>
+    </section>
 </AuthorizeView>
    
 </div>
@@ -18,9 +27,7 @@
     
     protected async override void OnInitialized()
     {
-        var authState  = await _authStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        username = user.Identity.Name.ToString();
+        
     }
     
    

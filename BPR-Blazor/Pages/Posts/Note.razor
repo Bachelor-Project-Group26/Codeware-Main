@@ -62,6 +62,7 @@
         id = int.Parse(noteId);
        var answer =  await NoteService.UpdateNote(username, id, title, content);
        Console.WriteLine("Answer : " + answer);
+       StateHasChanged();
     }
     public void openPopOver()
 	{

@@ -73,7 +73,7 @@
                     <MudText Typo="Typo.h6">@lastNote.Title</MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
-                 <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                 <a href="/note/@lastNote.NoteId"><MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" /></a>
         
                  </CardHeaderActions>
             </MudCardHeader>
@@ -109,9 +109,9 @@
       navManager.NavigateTo("/404");
     }
     
-    if(await PostService.Follow(username) == "UnauthorizedToken invalid!"){
-      _alreadyFollows = true;
-    }
+    //if(await PostService.Follow(username) == "UnauthorizedToken invalid!"){
+    //  _alreadyFollows = true;
+    //}
     try{
       if(user.Username == loggedUser){
         notes = await NoteService.GetNoteList(username);

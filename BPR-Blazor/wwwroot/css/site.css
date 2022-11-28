@@ -9,7 +9,7 @@
 }
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #f9c5bd;
+    background-color: #eaebe5;
 }
 
 h1:focus {
@@ -72,9 +72,92 @@ a, .btn-link {
     }
 /*Nav Bar*/
 .index{
-    margin-left: 6rem;
+    margin-left: 5.5rem;
     
 }
+/*Index*/
+
+
+.hero {
+    width: 100%;
+    height:1040px;
+    position: static;
+    background-image: url(../images/index.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    
+    z-index: -1;
+}
+
+.hero h1,
+.hero h2,
+.hero h4 {
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.hero h4 {
+    font-size: 16px;
+    background: #000;
+    display: inline;
+    letter-spacing: 5px;
+    padding: 15px 40px;
+}
+
+.hero a {
+    margin-top: 60px;
+}
+
+.hero .btn-success,
+.hero .btn-success:not(:disabled):not(.disabled):active {
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 100px;
+    padding: 8px 35px;
+    background-color: #b4dc2d;
+    border-color: #b4dc2d;
+    border: 2px solid #b4dc2d;
+}
+
+.hero .btn-success:hover {
+    color: #fff;
+    background-color: transparent;
+    border: 2px solid #b4dc2d;
+}
+
+.hero h2 {
+    font-size: 22px;
+    margin-top: 0;
+    font-weight: 500;
+    padding-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: 51px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.content {
+    position: relative;
+    text-align: center;
+}
+
+.gradient {
+    position: absolute;
+    width: 95.85%;
+    height: 100%;
+    top: 0;
+    left: 80px;
+    background: -moz-linear-gradient(-45deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%);
+    background: -webkit-linear-gradient(-45deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3000000', endColorstr='#b3000000', GradientType=1);
+}
+
+
 
 
  /* Login Style*/   
@@ -238,11 +321,9 @@ a, .btn-link {
 }
 .login-form-1.signup{
     position: relative;
-    min-height: 100vh;
     z-index: 0;
     background: linear-gradient(270deg, #eeaeca, #75aced);
-    background-size: 400% 400%;
-
+    background-size: 100% 100%;
     -webkit-animation: AnimationName 29s ease infinite;
     -moz-animation: AnimationName 29s ease infinite;
     animation: AnimationName 29s ease infinite;
@@ -405,4 +486,12 @@ form .signup{
     height: 400px;
     margin-top: 25px;
     background-color: #fcd297;
+}
+
+
+.post-container{
+    border: 1px solid #000;
+    min-width: 200px;
+    width: 100px;
+    margin-top: 10px;
 }
