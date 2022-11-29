@@ -64,8 +64,9 @@
 <div class="row border-bottom border-secondary">
     <div class="col-sm-1"></div>
     <div class="col-8">
-            <p>
-                <a class="mb-2" style="color: black; word-wrap: break-word; text-decoration: none;" href="post/@post.Id">@(post.Content)</a>
+        <h5 style="margin-left: -83px; margin-top: -15px;"><b>@post.Title</b></h5>
+            <p style="margin-left: -60px;">
+                <a class="mb-1" style="color: black; word-wrap: break-word; text-decoration: none;" href="post/@post.Id">@(post.Content)</a>
             </p>
         <div class="btn-group">
             <button class="btn shadow-none ml-3" style="color: gray" @onclick="() => ReactToPost()">
@@ -74,6 +75,7 @@
         </div>
     </div>
 </div>
+      
     }
     
 </div>
@@ -83,6 +85,7 @@
     private PostDTO _post= new PostDTO();
     private string username, response = "";
     public bool showAlert, isSuccess = false;
+    
    
     protected override async Task OnInitializedAsync()
     {
@@ -130,6 +133,7 @@
             showAlert = true;
             isSuccess = true;
             ShowAlert("Post deleted successfully");
+            
             StateHasChanged();
             }
         }else{

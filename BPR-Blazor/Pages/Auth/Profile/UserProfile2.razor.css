@@ -48,7 +48,10 @@
   }
   .lastPost{
     
-    margin-top: 20px;
-    margin-left : 6rem;
-    max-width: 500px;
+    float: right;
   }
+  .lastPost1{
+    
+    margin-top: 10px;
+  }
+  

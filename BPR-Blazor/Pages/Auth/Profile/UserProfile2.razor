@@ -1,128 +1,137 @@
 @page "/profile/{username}"
 <div>
-  @if (user.FirstName == "" && user.Username == loggedUser )
+  @if (user.FirstName == "" && user.Username == loggedUser)
   {
-    
+
     <FourOFourPR />
   }
-  else if (user.FirstName == "" && user.Username != loggedUser){
-    <FourOFour/>
+  else if (user.FirstName == "" && user.Username != loggedUser)
+  {
+    <FourOFour />
   }
-  else{
-    
-<div class="profilePic">
-  <img class="profile" src="images/Picture.png" alt="profilepic">
-  
-    <h1>@user.FirstName @user.LastName
-      @if (user.Username == loggedUser)
-    {
-      <a href="/signup"><MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" /></a>
-    }
+  else
+  {
 
-    </h1>
-    <p>@user.Bio</p>
-    @if (user.Email == null)
-    {
-      <p></p>
-    }
-    else
-    {
-      <p>You can contact me at @user.Email</p>
-    }
-    <div>
-      <p>@user.Country</p>
-    </div>
+    <div class="profilePic">
+      <img class="profile" src="images/Picture.png" alt="profilepic">
+
+      <h1>@user.FirstName @user.LastName
+        @if (user.Username == loggedUser)
+        {
+          <a href="/signup">
+            <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+          </a>
+        }
+
+      </h1>
+      <p>@user.Bio</p>
+      @if (user.Email == null)
+      {
+        <p></p>
+      }
+      else
+      {
+        <p>You can contact me at @user.Email</p>
+      }
+      <div>
+        <p>@user.Country</p>
+      </div>
     </div>
     <div class="skills">
-      @if (loggedUser != username )
+      @if (loggedUser != username)
       {
         @if (!_alreadyFollows)
         {
           <MudButton Disabled="@_processing" OnClick="FollowUser" Variant="Variant.Filled" Color="Color.Primary">
-        @if (_processing)
-          {
-            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-           <MudText Class="ms-2">Processing</MudText>
-          }
-        else
-           {
-             <MudText>Follow</MudText>
-           }
-    </MudButton>
-          
+            @if (_processing)
+            {
+              <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+              <MudText Class="ms-2">Processing</MudText>
+            }
+            else
+            {
+              <MudText>Follow</MudText>
+            }
+          </MudButton>
+
         }
-        else{
+        else
+        {
           <MudButton Disabled="@_processing" OnClick="UnFollowUser" Variant="Variant.Filled" Color="Color.Primary">
-        @if (_processing)
-          {
-            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-           <MudText Class="ms-2">Processing</MudText>
-          }
-        else
-           {
-             <MudText>UnFollow</MudText>
-           }
-    </MudButton>
-        <div class="lastPost">
-              <h4>Last Post:</h4>
-              <MudCard Style= "width : auto;  " >
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">@lastPost.Title</MudText>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                 <a href="/note/@lastPost.Id"><MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" /></a>
-        
-                 </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText>@lastPost.Content</MudText>
-                <MudText Typo="Typo.caption">@lastPost.CreatedDate</MudText>
-            </MudCardContent>
-            </MudCard>
-            </div>
+            @if (_processing)
+            {
+              <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+              <MudText Class="ms-2">Processing</MudText>
+            }
+            else
+            {
+              <MudText>UnFollow</MudText>
+            }
+          </MudButton>
         }
-        
-      }else{
-        <div class="lastNote">
-        <h4>Last Note:</h4>
-         <MudCard Style= "width : auto;  " >
-            <MudCardHeader>
+
+      }
+      @if (loggedUser == username)
+      {
+        <div style="width: 100%; margin-left: 6rem">
+          <div class="lastNote">
+            <h4>Last Note:</h4>
+            <MudCard Style="width : auto;  ">
+              <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h6">@lastNote.Title</MudText>
+                  <MudText Typo="Typo.h6">@lastNote.Title</MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
-                 <a href="/note/@lastNote.NoteId"><MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" /></a>
-        
-                 </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent>
+                  <a href="/note/@lastNote.NoteId">
+                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                  </a>
+
+                </CardHeaderActions>
+              </MudCardHeader>
+              <MudCardContent>
                 <MudText>@lastNote.Content</MudText>
                 <MudText Typo="Typo.caption">@lastNote.CreatedDate</MudText>
-            </MudCardContent>
+              </MudCardContent>
             </MudCard>
-            </div>
-            
-    
-      }
-  </div>
-  <div class="lastPost">
-              <h4>Last Post:</h4>
-              <MudCard Style= "width : auto;  " >
-            <MudCardHeader>
+          </div>
+          <div class="lastPost">
+            <h4>Last Post:</h4>
+            <MudCard Style="width : auto;  ">
+              <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h6">@lastPost.Title</MudText>
+                  <MudText Typo="Typo.h6">@lastPost.Title</MudText>
                 </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
+              </MudCardHeader>
+              <MudCardContent>
                 <MudText>@lastPost.Content</MudText>
                 <MudText Typo="Typo.caption">@lastPost.CreatedDate</MudText>
-            </MudCardContent>
+              </MudCardContent>
             </MudCard>
-            </div>
+          </div>
+        </div>
+      }
+      else if(lastPost.Content != "")
+      {
+        <div class="lastPost1">
+          <h4>Last Post:</h4>
+          <MudCard Style="width : auto;  ">
+            <MudCardHeader>
+              <CardHeaderContent>
+                <MudText Typo="Typo.h6">@lastPost.Title</MudText>
+              </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+              <MudText>@lastPost.Content</MudText>
+              <MudText Typo="Typo.caption">@lastPost.CreatedDate</MudText>
+            </MudCardContent>
+          </MudCard>
+        </div>
+      }
+    </div>
   }
 </div>
-@code{
+
+@code {
   [Parameter]
   public string username { get; set; }
 
@@ -135,31 +144,38 @@
   private bool _processing, _alreadyFollows = false;
   protected override async Task OnInitializedAsync()
   {
-    var authState  = await _authStateProvider.GetAuthenticationStateAsync();
+    var authState = await _authStateProvider.GetAuthenticationStateAsync();
     var loggeduserObj = authState.User;
     loggedUser = loggeduserObj.Identity.Name;
-    try{
+    try
+    {
       user = await UserService.GetUserByUsername(username);
       posts = await PostService.GetPostListFromUser(loggedUser, username);
       lastPost = posts[^1];
-    }catch(Exception e){
+    }
+    catch (Exception e)
+    {
       Console.WriteLine(e);
       navManager.NavigateTo("/404");
     }
-    
+
     //if(await PostService.Follow(username) == "UnauthorizedToken invalid!"){
-    //  _alreadyFollows = true;
+    // _alreadyFollows = true;
     //}
-    try{
-      if(user.Username == loggedUser){
+    try
+    {
+      if (user.Username == loggedUser)
+      {
         notes = await NoteService.GetNoteList(username);
         lastNote = notes[^1];
       }
-    }catch(Exception e){
+    }
+    catch (Exception e)
+    {
       Console.WriteLine(e);
     }
-     
-        StateHasChanged();
+
+    StateHasChanged();
   }
   private async Task FollowUser()
   {
@@ -168,16 +184,16 @@
     Console.WriteLine("Follow result = " + result);
     await Task.Delay(1000);
     _processing = false;
-   
+
   }
   private async Task UnFollowUser()
   {
     _processing = true;
-    var result = await PostService.Unfollow(username,1);
+    var result = await PostService.Unfollow(username, 1);
     Console.WriteLine("Follow result = " + result);
     await Task.Delay(1000);
     _processing = false;
-   
+
   }
-  
+
 }
