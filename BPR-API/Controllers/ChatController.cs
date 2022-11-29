@@ -178,15 +178,15 @@ namespace BPR_API.Controllers
             if (!(chatDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var to_delete = _dbContext.Chats.FirstOrDefault(u => u.Username == chatDTO.Username);
+                var to_delete = _dbContext.Chats.FirstOrDefault(u => u.Id == chatDTO.Id);
                 _dbContext.Chats.Remove(to_delete);
                 _dbContext.UserChats.Remove(_dbContext.UserChats.FirstOrDefault(u => u.ChatId == to_delete.Id));
                 _dbContext.SaveChanges();
-                return Ok("User deleted successfully!");
+                return Ok("Chat deleted successfully!");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong! Error:" + e.Message + "Inner Exception:" + e.InnerException + "");
             }
         }
 
@@ -272,7 +272,7 @@ namespace BPR_API.Controllers
                     CreatedDate = messageDTO.CreatedDate 
                 });
                 _dbContext.SaveChanges();
-                return Ok("User added!");
+                return Ok("Message sent!");
             }
             catch (Exception)
             {

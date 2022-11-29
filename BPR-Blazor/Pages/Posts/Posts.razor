@@ -14,13 +14,29 @@
                     <textarea class="form-control bg-dark text-light shadow-none border-0" rows="1"
                         style="resize: none; overflow: hidden; font-size: large; margin-top: 10px"
                         oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-                        @bind="@(_post.Content)" maxlength="256"
+                        @bind="@(_post.Content)" 
                         placeholder="I'm not a bug, I'm a feature! (Content)"></textarea>
 
-                    <button type="submit" class="btn btn-primary mt-2 float-left">Tweet</button>
+                    <button type="submit" class="btn btn-primary mt-2 float-left static">Post</button>
                 </EditForm>
             </div>
         </div>
+        <div class="col-3" style="margin-left: 300px;">
+             @if(showAlert){
+         @if (isSuccess)
+            {
+                <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
+            <MudAlert Severity="Severity.Success"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                </Animate>
+            }
+            else{
+                <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
+                <MudAlert Severity="Severity.Error"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                </Animate>
+            }
+        }
+        </div>
+        
     </div>
     <!-- End Header Create post -->
     @foreach (var post in posts)
@@ -32,7 +48,7 @@
                 @onclick="() => GoToProfile(post.Creator)" />
             </div>
             <div class="col-auto">
-                <a class="mr-1" style="color: black;" href="@(post.Creator)">@(post.Creator)</a>
+                <a class="mr-1" style="color: black;" href="/profile/@(post.Creator)">@(post.Creator)</a>
                 <span class="mr-1" style="color: gray">@("@" + post.Creator)</span>
                 <span class="mr-1" style="color: gray">@(" - " + GetDate(post.CreatedDate))</span>
 
@@ -58,15 +74,15 @@
         </div>
     </div>
 </div>
-
     }
-
+    
 </div>
 
 @code {
     public List<PostDTO> posts = new List<PostDTO>();
     private PostDTO _post= new PostDTO();
-    private string username = "";
+    private string username, response = "";
+    public bool showAlert, isSuccess = false;
    
     protected override async Task OnInitializedAsync()
     {
@@ -79,8 +95,23 @@
 
     private async Task CreatePost()
     {
-        await PostService.CreatePost(username, _post.Title, _post.Content);
-        StateHasChanged();
+        response = await PostService.CreatePost(username, _post.Title, _post.Content);
+        if(response == "OKPost created!")
+        {
+            posts = await PostService.GetPostList(username);
+            _post = new PostDTO();
+            isSuccess = true;
+            showAlert = true;
+            ShowAlert("Post Created successfully");
+            StateHasChanged();
+        }
+        else
+        {
+            isSuccess = false;
+            showAlert = true;
+            ShowAlert("Error creating post");
+            StateHasChanged();
+        }
     }
     private void GoToProfile(string username){
         navManager.NavigateTo("/profile/" + username);
@@ -91,19 +122,35 @@
     }
     private async Task DeletePost(int id)
     {
-        string response;
         response = await PostService.DeletePost(username,id);
-        if(response == "OkPost deleted successfully!"){
+        if(response == "Post deleted successfully!"){
             if(posts.Any(p => p.Id == id))
             {
             posts.Remove(posts.First(p => p.Id == id));
+            showAlert = true;
+            isSuccess = true;
+            ShowAlert("Post deleted successfully");
             StateHasChanged();
             }
+        }else{
+            showAlert = true;
+            isSuccess = false;
+            ShowAlert("Error deleting post");
+            StateHasChanged();
         }
         
     }
     private async Task ReactToPost(){
         await PostService.ReactToPost(username, 1);
+        StateHasChanged();
+    }
+
+    private async Task ShowAlert(string result){
+        showAlert = true;
+        response = result;
+        await Task.Delay(2000);
+        showAlert = false;
+        response = "";
         StateHasChanged();
     }
 }

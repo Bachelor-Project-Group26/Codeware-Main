@@ -42,3 +42,13 @@
     padding: 0px 15px;
     
   }
+
+  .lastNote{
+    float: left;
+  }
+  .lastPost{
+    
+    margin-top: 20px;
+    margin-left : 6rem;
+    max-width: 500px;
+  }

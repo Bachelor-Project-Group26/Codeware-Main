@@ -49,6 +49,7 @@
              <MudText>Follow</MudText>
            }
     </MudButton>
+          
         }
         else{
           <MudButton Disabled="@_processing" OnClick="UnFollowUser" Variant="Variant.Filled" Color="Color.Primary">
@@ -62,6 +63,24 @@
              <MudText>UnFollow</MudText>
            }
     </MudButton>
+        <div class="lastPost">
+              <h4>Last Post:</h4>
+              <MudCard Style= "width : auto;  " >
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">@lastPost.Title</MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                 <a href="/note/@lastPost.Id"><MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" /></a>
+        
+                 </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>@lastPost.Content</MudText>
+                <MudText Typo="Typo.caption">@lastPost.CreatedDate</MudText>
+            </MudCardContent>
+            </MudCard>
+            </div>
         }
         
       }else{
@@ -83,8 +102,24 @@
             </MudCardContent>
             </MudCard>
             </div>
+            
+    
       }
   </div>
+  <div class="lastPost">
+              <h4>Last Post:</h4>
+              <MudCard Style= "width : auto;  " >
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">@lastPost.Title</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>@lastPost.Content</MudText>
+                <MudText Typo="Typo.caption">@lastPost.CreatedDate</MudText>
+            </MudCardContent>
+            </MudCard>
+            </div>
   }
 </div>
 @code{
@@ -95,6 +130,8 @@
   public UserDTO user = new UserDTO();
   public List<NoteDTO> notes = new List<NoteDTO>();
   public NoteDTO lastNote = new NoteDTO();
+  public List<PostDTO> posts = new List<PostDTO>();
+  public PostDTO lastPost = new PostDTO();
   private bool _processing, _alreadyFollows = false;
   protected override async Task OnInitializedAsync()
   {
@@ -103,7 +140,8 @@
     loggedUser = loggeduserObj.Identity.Name;
     try{
       user = await UserService.GetUserByUsername(username);
-      Console.WriteLine(user.Username);
+      posts = await PostService.GetPostListFromUser(loggedUser, username);
+      lastPost = posts[^1];
     }catch(Exception e){
       Console.WriteLine(e);
       navManager.NavigateTo("/404");
@@ -126,7 +164,7 @@
   private async Task FollowUser()
   {
     _processing = true;
-    var result = await PostService.Follow(username);
+    var result = await PostService.Follow(username, 1);
     Console.WriteLine("Follow result = " + result);
     await Task.Delay(1000);
     _processing = false;
@@ -135,10 +173,11 @@
   private async Task UnFollowUser()
   {
     _processing = true;
-    var result = await PostService.Unfollow(username);
+    var result = await PostService.Unfollow(username,1);
     Console.WriteLine("Follow result = " + result);
     await Task.Delay(1000);
     _processing = false;
    
   }
+  
 }

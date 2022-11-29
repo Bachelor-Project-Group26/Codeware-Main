@@ -94,6 +94,7 @@ namespace BPR_Blazor.Data
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Chat/delete_chat", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(json);
                 var str = JsonConvert.DeserializeObject<string>(json);
                 return response.StatusCode + str;
             }

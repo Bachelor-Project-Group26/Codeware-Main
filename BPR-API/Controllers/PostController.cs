@@ -123,7 +123,7 @@ namespace BPR_API.Controllers
         /// <param name="postDTO">Carries data related to the post between the client and the API.</param>
         /// <returns>Action result with a post list object inside if successful or an error message.</returns>
         [HttpPost("get_post_list"), Authorize]
-        public async Task<ActionResult<string>> GetPostList([FromBody] PostDTO postDTO)
+        public async Task<ActionResult<string>> GetPostListFromUser([FromBody] PostDTO postDTO)
         {
             if (!(postDTO.Creator == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
@@ -139,7 +139,21 @@ namespace BPR_API.Controllers
                     }
                 }
                 return Ok(Posts);*/
-                var posts = _dbContext.Posts.ToList().Where(p => p.FollowedId == postDTO.followedId && p.Creator == postDTO.Creator);
+                var posts = _dbContext.Posts.ToList().Where(p => p.FollowedId == postDTO.followedId && p.Creator == postDTO.Title);
+                return Ok(posts);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
+        }
+        [HttpPost("get_all_posts"), Authorize]
+        public async Task<ActionResult<string>> GetPostList([FromBody] PostDTO postDTO)
+        {
+            if (!(postDTO.Creator == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            { 
+                var posts = _dbContext.Posts.ToList();
                 return Ok(posts);
             }
             catch (Exception)

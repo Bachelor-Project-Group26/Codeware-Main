@@ -8,9 +8,16 @@
         <div class="hero d-flex align-items-center">
             <div class="gradient"></div>
             <div class="container-fluid content">
+                
+                <Animate Animation="Animations.FadeDown"  Duration="TimeSpan.FromSeconds(0.6)" >
                 <h1>Welcome to Codeware.</h1>
+                </Animate>
+                <Animate Animation="Animations.FadeUp"  Duration="TimeSpan.FromSeconds(0.6)" Delay="TimeSpan.FromSeconds(1)" >
                 <h2>Bachelor Project made by:</h2>
+                </Animate>
+                <Animate Animation="Animations.FadeDown"  Duration="TimeSpan.FromSeconds(0.6)" Delay="TimeSpan.FromSeconds(2)" >
                 <h4>Javier Candeira and Joao Bernardo</h4>
+                </Animate>
                 <p><a href="/posts" class="btn btn-success">Get Started</a></p>
             </div>
             <!--container-fluid end-->

@@ -12,9 +12,12 @@ namespace BPR_Blazor.Data
             PostDTO user = new PostDTO
             {
                 Creator = username,
+                Id = 0,
+                isUser = true,
                 Title = title,
                 Content = postContent,
                 followedId = 0,
+                Reaction = 0,
                 CreatedDate = DateTime.Now
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
@@ -22,9 +25,7 @@ namespace BPR_Blazor.Data
             using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/create_post", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
-                Console.Write(json);
                 var str = JsonConvert.DeserializeObject<string>(json);
-                Console.Write(str);
                 return response.StatusCode + str;
             }
         }
@@ -34,7 +35,13 @@ namespace BPR_Blazor.Data
             PostDTO user = new PostDTO
             {
                 Creator = username,
-                Id = id
+                Id = id,
+                Content = "",
+                isUser = true,
+                Title = "",
+                followedId = 0,
+                Reaction = 0,
+                CreatedDate = DateTime.Now
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
@@ -51,6 +58,12 @@ namespace BPR_Blazor.Data
             PostDTO user = new PostDTO
             {
                 Creator = username,
+                Id = 0,
+                Content = "",
+                isUser = true,
+                Title = "",
+                followedId = 0,
+                CreatedDate = DateTime.Now,
                 Reaction = reaction
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
@@ -87,6 +100,29 @@ namespace BPR_Blazor.Data
             }
         }
 
+        public async Task<List<PostDTO>> GetPostListFromUser(string username, string usernameToGet)
+        {
+            List<PostDTO> posts = new List<PostDTO>();
+            PostDTO post = new PostDTO
+            {
+                Creator = username,
+                Id = 0,
+                followedId = 0,
+                isUser = true,
+                Reaction = 0,
+                Title = usernameToGet,
+                Content = "",
+                CreatedDate = DateTime.Now,
+            };
+            string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
+            StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post_list", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                posts = JsonConvert.DeserializeObject<List<PostDTO>>(json);
+                return posts;
+            }
+        }
         public async Task<List<PostDTO>> GetPostList(string username)
         {
             List<PostDTO> posts = new List<PostDTO>();
@@ -103,7 +139,7 @@ namespace BPR_Blazor.Data
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_post_list", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_all_posts", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 posts = JsonConvert.DeserializeObject<List<PostDTO>>(json);
@@ -111,13 +147,13 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> Follow(string username)
+        public async Task<string> Follow(string username, int id)
         {
             PostDTO post = new PostDTO
             {
                 Creator = username,
                 Content = "",
-                followedId = 0
+                followedId = id,
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
@@ -130,11 +166,12 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> Unfollow(string username)
+        public async Task<string> Unfollow(string username,int id)
         {
             PostDTO user = new PostDTO
             {
-                Creator = username
+                Creator = username,
+                followedId = id,
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
@@ -147,9 +184,6 @@ namespace BPR_Blazor.Data
             }
         }
 
-        Task<PostDTO> IPostService.GetPost(string username, int id)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

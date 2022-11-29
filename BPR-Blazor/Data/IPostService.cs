@@ -8,7 +8,8 @@ namespace BPR_Blazor.Data
         public Task<string> ReactToPost(string username, int reaction);
         public Task<PostDTO> GetPost(string username, int id);
         public  Task<List<PostDTO>> GetPostList(string username);
-        public Task<string> Follow(string username);
-        public Task<string> Unfollow(string username);
+        public  Task<List<PostDTO>> GetPostListFromUser(string username, string usernameToGet);
+        public Task<string> Follow(string username,int id);
+        public Task<string> Unfollow(string username,int id);
     }
 }

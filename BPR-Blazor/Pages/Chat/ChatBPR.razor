@@ -31,12 +31,12 @@
                     </MudPopover>
              }
         </MudToolBar>
-        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll; display: static;" id="chatContainer">
+        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh;  overflow:scroll;" id="chatContainer">
             @foreach (var message in messages)
             {
                 @if (message.Username != @username)
                 {
-                  <div class="d-flex flex-row my-4">
+                  <div class="d-flex flex-row my-4" >
                     <div class="mr-4">
                         <MudAvatar Class="static" Color="Color.Secondary" Style="height:50px; width:50px;">@message.Username.ToUpper().FirstOrDefault()</MudAvatar>
                     </div>
@@ -73,20 +73,21 @@
             <MudToolBar Dense="true">
                 <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
                 <MudText Typo="Typo.h6">Chats</MudText>
-                 <MudButton Style="float:right;" OnClick="ToCreateChat">Create Chat</MudButton>
+                 <MudButton Style="float:right; margin-left:5px;" OnClick="ToCreateChat">Create Chat</MudButton>
+                 @if (chat.Username== username)
+                 {
+                    <MudButton Style="float:right; margin-left:5px;" OnClick="DeleteChat">Delete Chat</MudButton>
+                 } 
             </MudToolBar>
             <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
                 <MudList Clickable="true">
                     @foreach (var chat in chats)
                     {    
-                        <MudListItem Style="margin-top : 10px;" Class="pa-0 px-2">
+                        <MudListItem Style="margin-top : 10px;" Class="pa-0 px-2" @onclick="() => GoToChat(chat.Id.ToString())">
                             <div class="d-flex flex-row mt-n1 mb-n1">
                                 <div class="mr-4">
-                                    <a href="/chat/@chat.Id" style="text-decoration: none;">
                                      <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@chat.ChatName.ToUpper().FirstOrDefault()</MudAvatar>
                                      <MudText Style="float: right; margin-left: 20px; margin-top : 15px;" Typo="Typo.body1" >@chat.ChatName</MudText>
-                                    
-                                    </a>
                                 </div>
                             </div>
                         </MudListItem>
@@ -100,10 +101,14 @@
         @if(showAlert){
          @if (isSuccess)
             {
+                <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
             <MudAlert Severity="Severity.Success"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                </Animate>
             }
             else{
+                <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
                 <MudAlert Severity="Severity.Error"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                </Animate>
             }
         }
 </section>
@@ -151,11 +156,13 @@
 
     private async void SubmitAsync()
     {
-        ChatService.SendMessage(username, id, CurrentMessage);
-        CurrentMessage = "";
-        messages = await ChatService.GetMessages(username,id);
-        //add here possible javascript method
-        StateHasChanged();
+        response = await ChatService.SendMessage(username, id, CurrentMessage);
+        if(response == "OKMessage sent!"){
+            CurrentMessage = "";
+            messages = await ChatService.GetMessages(username,id);
+            StateHasChanged();
+        }
+        
     }
     private async Task addUser(){
         id = int.Parse(chatId);
@@ -165,7 +172,7 @@
             if(answer.ToString() == "BadRequestSomething went wrong!"){
                 showAlert = true;
                 isSuccess = false;
-                ShowAlert("Something went wrong");
+                ShowAlert("Something went wrong ");
             }
             else{
                 showAlert = true;
@@ -176,7 +183,7 @@
         catch(Exception e){
             Console.WriteLine(e);
             isSuccess = false;
-            ShowAlert("Something went wrong");
+            ShowAlert("Something went wrong with the system");
         }
         
     }
@@ -215,5 +222,31 @@
     }
     private void ToCreateChat(){
         navManager.NavigateTo("/createchat");
+    }
+    private void GoToChat(string id ){
+        navManager.NavigateTo("/chat/" + id);
+        StateHasChanged();
+    }
+    private async Task DeleteChat(){
+        id = int.Parse(chatId);
+        try{
+            response = await ChatService.DeleteChat(username, id);
+            if(response.ToString() == "BadRequestSomething went wrong!"){
+                showAlert = true;
+                isSuccess = false;
+                ShowAlert("Something went wrong with deleting the chat");
+
+            }else{
+                showAlert = true;
+                isSuccess = true;
+                ShowAlert("Chat deleted successfully");
+                navManager.NavigateTo("/chats");
+            }
+        }
+        catch(Exception e){
+            Console.WriteLine(e);
+            isSuccess = false;
+            ShowAlert("Something went wrong with the system");
+        }   
     }
 }
