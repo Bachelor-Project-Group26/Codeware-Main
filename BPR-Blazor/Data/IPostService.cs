@@ -9,7 +9,7 @@ namespace BPR_Blazor.Data
         public Task<PostDTO> GetPost(string username, int id);
         public  Task<List<PostDTO>> GetPostList(string username);
         public  Task<List<PostDTO>> GetPostListFromUser(string username, string usernameToGet);
-        public Task<string> Follow(string username,int id);
-        public Task<string> Unfollow(string username,int id);
+        public Task<string> Follow(string username,string usernameToFollow);
+        public Task<string> Unfollow(string username,string usernameToUnfollow);
     }
 }

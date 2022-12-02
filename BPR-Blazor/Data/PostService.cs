@@ -11,7 +11,7 @@ namespace BPR_Blazor.Data
         {
             PostDTO user = new PostDTO
             {
-                Creator = username,
+                Username = username,
                 Id = 0,
                 isUser = true,
                 Title = title,
@@ -34,7 +34,7 @@ namespace BPR_Blazor.Data
         {
             PostDTO user = new PostDTO
             {
-                Creator = username,
+                Username = username,
                 Id = id,
                 Content = "",
                 isUser = true,
@@ -57,7 +57,7 @@ namespace BPR_Blazor.Data
         {
             PostDTO user = new PostDTO
             {
-                Creator = username,
+                Username = username,
                 Id = 0,
                 Content = "",
                 isUser = true,
@@ -81,7 +81,7 @@ namespace BPR_Blazor.Data
             PostDTO post = new PostDTO();
             PostDTO user = new PostDTO
             {
-                Creator = username,
+                Username = username,
                 Id = id,
                 followedId = 0,
                 isUser = true,
@@ -105,7 +105,7 @@ namespace BPR_Blazor.Data
             List<PostDTO> posts = new List<PostDTO>();
             PostDTO post = new PostDTO
             {
-                Creator = username,
+                Username = username,
                 Id = 0,
                 followedId = 0,
                 isUser = true,
@@ -147,13 +147,12 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> Follow(string username, int id)
+        public async Task<string> Follow(string username, string usernameToFollow)
         {
             PostDTO post = new PostDTO
             {
-                Creator = username,
-                Content = "",
-                followedId = id,
+                Username = username,
+                Username2 = usernameToFollow
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
@@ -166,12 +165,12 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> Unfollow(string username,int id)
+        public async Task<string> Unfollow(string username,string usernameToUnfollow)
         {
             PostDTO user = new PostDTO
             {
-                Creator = username,
-                followedId = id,
+                Username = username,
+                Username2 = usernameToUnfollow
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");

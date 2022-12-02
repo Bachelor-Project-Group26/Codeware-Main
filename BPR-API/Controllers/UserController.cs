@@ -24,6 +24,12 @@ namespace BPR_API.Controllers
             _dbContext = new DatabaseContext();
         }
 
+        public UserController(IConfiguration configuration, DatabaseContext dbContext)
+        {
+            _configuration = configuration;
+            _dbContext = dbContext;
+        }
+
         /// <summary>
         /// Checks the credentials of the user and logs them in.
         /// </summary>
@@ -52,7 +58,7 @@ namespace BPR_API.Controllers
         /// <param name="userDTO">Carries data related to the user between the client and the API.</param>
         /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPost("register")]
-        public async Task<ActionResult<string>> Register([FromBody] UserDTO userDTO)
+        public ObjectResult Register([FromBody] UserDTO userDTO)
         {
             using (DatabaseContext dbContext = new DatabaseContext())
             {
@@ -72,9 +78,9 @@ namespace BPR_API.Controllers
 
             try
             {
-                await _dbContext.UserDetails.AddAsync(userDetails);
-                await _dbContext.UserPasswords.AddAsync(userPassword);
-                await _dbContext.SaveChangesAsync();
+                _dbContext.UserDetails.AddAsync(userDetails);
+                _dbContext.UserPasswords.AddAsync(userPassword);
+                _dbContext.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -90,7 +96,7 @@ namespace BPR_API.Controllers
         /// <param name="username">The username of the user that we want to find.</param>
         /// <returns>Action result and a string with message regarding the action result or the inforamtion regarding the user.</returns>
         [HttpGet("{username}")]
-        public async Task<ActionResult<string>> GetUserByUsername(string username)
+        public ObjectResult GetUserByUsername(string username)
         {
             try
             {
@@ -130,7 +136,7 @@ namespace BPR_API.Controllers
         /// <param name="userDTO">Carries data related to the user between the client and the API.</param>
         /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPut("update_details"), Authorize]
-        public async Task<ActionResult<string>> UpdateDetails([FromBody] UserDTO userDTO)
+        public ObjectResult UpdateDetails([FromBody] UserDTO userDTO)
         {
             if (!(userDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try

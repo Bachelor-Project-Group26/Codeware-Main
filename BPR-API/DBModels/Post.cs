@@ -18,5 +18,7 @@ namespace BPR_API.DBModels
         public string Content { get; set; }
         [Required]
         public DateTime CreatedDate { get; set; }
+        [Required]
+        public int Likes { get; set; }
     }
 }
