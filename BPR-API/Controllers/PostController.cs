@@ -38,7 +38,8 @@ namespace BPR_API.Controllers
                 IsUser = postDTO.isUser,
                 Title = postDTO.Title,
                 Content = postDTO.Content,
-                CreatedDate = postDTO.CreatedDate
+                CreatedDate = postDTO.CreatedDate,
+                Likes = 0
             };
             try
             {
@@ -86,6 +87,14 @@ namespace BPR_API.Controllers
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
                 _dbContext.Reactions.Add(new Reaction { PostId = postDTO.Id, UserId = user.Id, ReactionNumber = postDTO.Reaction });
+                int valueToAdd;
+                if (postDTO.Reaction == 1)
+                    valueToAdd = 1;
+                else
+                    valueToAdd = -1;
+                var toUpdate = _dbContext.Posts.FirstOrDefault(p => p.Id == postDTO.Id);
+                toUpdate.Likes += valueToAdd;
+                _dbContext.Posts.Update(toUpdate);
                 _dbContext.SaveChanges();
                 return Ok("Reaction added!");
             }
@@ -127,18 +136,7 @@ namespace BPR_API.Controllers
         {
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
-            { /*
-                var Following = _dbContext.FollowingList.Where(u => u.UserId == postDTO.Id);
-                var Posts = new List<Post>();
-                foreach (var follow in Following)
-                {
-                    var postList = _dbContext.Posts.Where(p => p.FollowedId == follow.FollowedId && p.IsUser == follow.IsUser);
-                    foreach (var post in postList)
-                    {
-                        Posts.Add(post);
-                    }
-                }
-                return Ok(Posts);*/
+            { 
                 var posts = _dbContext.Posts.ToList().Where(p => p.FollowedId == postDTO.followedId && p.Creator == postDTO.Title);
                 return Ok(posts);
             }
