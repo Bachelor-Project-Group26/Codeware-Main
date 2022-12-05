@@ -159,9 +159,9 @@
       navManager.NavigateTo("/404");
     }
 
-    //if(await PostService.Follow(username) == "UnauthorizedToken invalid!"){
-    // _alreadyFollows = true;
-    //}
+    if(await PostService.Follow(loggedUser, username) == "Something went wrong with following the user!"){
+     _alreadyFollows = true;
+    }
     try
     {
       if (user.Username == loggedUser)
@@ -180,7 +180,7 @@
   private async Task FollowUser()
   {
     _processing = true;
-    var result = await PostService.Follow(username, 1);
+    var result = await PostService.Follow(loggedUser, username);
     Console.WriteLine("Follow result = " + result);
     await Task.Delay(1000);
     _processing = false;
@@ -189,7 +189,7 @@
   private async Task UnFollowUser()
   {
     _processing = true;
-    var result = await PostService.Unfollow(username, 1);
+    var result = await PostService.Unfollow(loggedUser, username);
     Console.WriteLine("Follow result = " + result);
     await Task.Delay(1000);
     _processing = false;

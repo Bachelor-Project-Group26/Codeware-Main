@@ -45,14 +45,14 @@
             <div class="col-sm-auto">
                 <img src="images/Picture.png" class="img rounded-circle"
                 style="width: 50px; height: 50px; outline: none; cursor: pointer"
-                @onclick="() => GoToProfile(post.Creator)" />
+                @onclick="() => GoToProfile(post.Username)" />
             </div>
             <div class="col-auto">
-                <a class="mr-1" style="color: black;" href="/profile/@(post.Creator)">@(post.Creator)</a>
-                <span class="mr-1" style="color: gray">@("@" + post.Creator)</span>
+                <a class="mr-1" style="color: black;" href="/profile/@(post.Username)">@(post.Username)</a>
+                <span class="mr-1" style="color: gray">@("@" + post.Username)</span>
                 <span class="mr-1" style="color: gray">@(" - " + GetDate(post.CreatedDate))</span>
 
-                @if (post.Creator == username)
+                @if (post.Username == username)
                 {
                     <button class="btn shadow-none" @onclick="() => DeletePost(post.Id)">
                         <span class="oi oi-trash" style="color: gray" aria-hidden="true"></span>
@@ -70,7 +70,7 @@
             </p>
         <div class="btn-group">
             <button class="btn shadow-none ml-3" style="color: gray" @onclick="() => ReactToPost()">
-                <span class="oi oi-heart mr-2" style="color: gray"></span>0
+                <span class="oi oi-heart mr-2" style="color: gray"></span>@post.Likes
             </button>
         </div>
     </div>

@@ -11,5 +11,6 @@
         public string Content { get; set; }
         public DateTime CreatedDate { get; set; }
         public int Reaction { get; set; }
+        public int Likes { get; set; }
     }
 }
