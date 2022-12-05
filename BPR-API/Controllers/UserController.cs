@@ -24,12 +24,6 @@ namespace BPR_API.Controllers
             _dbContext = new DatabaseContext();
         }
 
-        public UserController(IConfiguration configuration, DatabaseContext dbContext)
-        {
-            _configuration = configuration;
-            _dbContext = dbContext;
-        }
-
         /// <summary>
         /// Checks the credentials of the user and logs them in.
         /// </summary>

@@ -128,7 +128,7 @@ namespace BPR_Blazor.Data
             List<PostDTO> posts = new List<PostDTO>();
             PostDTO post = new PostDTO
             {
-                Creator = username,
+                Username = username,
                 Id = 0,
                 followedId = 0,
                 isUser = true,
