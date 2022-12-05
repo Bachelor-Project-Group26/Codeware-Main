@@ -12,6 +12,7 @@ namespace BPR_Blazor.Data
             PostDTO user = new PostDTO
             {
                 Username = username,
+                Username2 = "",
                 Id = 0,
                 isUser = true,
                 Title = title,
@@ -35,6 +36,7 @@ namespace BPR_Blazor.Data
             PostDTO user = new PostDTO
             {
                 Username = username,
+                Username2 = "",
                 Id = id,
                 Content = "",
                 isUser = true,
@@ -53,18 +55,20 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> ReactToPost(string username, int reaction)
+        public async Task<string> ReactToPost(string username, int id, int reaction)
         {
             PostDTO user = new PostDTO
             {
                 Username = username,
-                Id = 0,
+                Username2 = "",
+                Id = id,
                 Content = "",
                 isUser = true,
                 Title = "",
                 followedId = 0,
                 CreatedDate = DateTime.Now,
-                Reaction = reaction
+                Reaction = reaction,
+                Likes = 0
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
@@ -82,6 +86,7 @@ namespace BPR_Blazor.Data
             PostDTO user = new PostDTO
             {
                 Username = username,
+                Username2 = "",
                 Id = id,
                 followedId = 0,
                 isUser = true,
@@ -89,6 +94,7 @@ namespace BPR_Blazor.Data
                 Title = "",
                 Content = "",
                 CreatedDate = DateTime.Now,
+                Likes = 0
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
@@ -106,6 +112,7 @@ namespace BPR_Blazor.Data
             PostDTO post = new PostDTO
             {
                 Username = username,
+                Username2 = "",
                 Id = 0,
                 followedId = 0,
                 isUser = true,
@@ -129,6 +136,7 @@ namespace BPR_Blazor.Data
             PostDTO post = new PostDTO
             {
                 Username = username,
+                Username2 = "",
                 Id = 0,
                 followedId = 0,
                 isUser = true,
@@ -152,7 +160,15 @@ namespace BPR_Blazor.Data
             PostDTO post = new PostDTO
             {
                 Username = username,
-                Username2 = usernameToFollow
+                Username2 = usernameToFollow,
+                Id = 0,
+                followedId = 0,
+                isUser = true,
+                Reaction = 0,
+                Title = "",
+                Content = "",
+                CreatedDate = DateTime.Now,
+
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
@@ -170,11 +186,18 @@ namespace BPR_Blazor.Data
             PostDTO user = new PostDTO
             {
                 Username = username,
-                Username2 = usernameToUnfollow
+                Username2 = usernameToUnfollow,
+                Id = 0,
+                followedId = 0,
+                isUser = true,
+                Reaction = 0,
+                Title = "",
+                Content = "",
+                CreatedDate = DateTime.Now,
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/unfollow", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/Post/unfollow", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 Console.WriteLine(json);

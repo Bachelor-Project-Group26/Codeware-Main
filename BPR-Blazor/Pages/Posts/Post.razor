@@ -3,12 +3,12 @@
  <div class="row pt-3">
             <div class="col-sm-1">
                 <img src="images/Picture.png" class="img rounded-circle"
-                     style="width: 50px; height: 50px; outline: none; cursor: pointer" @onclick="() => GoToProfile(post.Username)" />
+                     style="width: 50px; height: 50px; outline: none; cursor: pointer" @onclick="() => GoToProfile(post.Creator)" />
             </div>
             <div class="col-auto" style="margin-left:-90px;">
-                <a class="mr-1" style="color: black;" href="/profile/@(post.Username)">@(post.Username)</a>
+                <a class="mr-1" style="color: black;" href="/profile/@(post.Creator)">@(post.Creator)</a>
                 <br />
-                <span class="mr-1" style="color: gray">@("@" + post.Username)</span>
+                <span class="mr-1" style="color: gray">@("@" + post.Creator)</span>
             </div>
         </div>
         <div class="row m-2 mt-3">
@@ -21,16 +21,20 @@
         </div>
 
         <div class="row m-2 mt-3 border-bottom border-top border-secondary">
-            <span class="mt-3 mb-3" style="color:gray;">@(post.CreatedDate)</span>
-        </div>
+            <span class="mt-3 mb-3" style="color:gray;">@(post.CreatedDate) <button class="btn shadow-none" style="color: gray" @onclick="() => ReactToPost(post.Id)">
+                <span class="oi oi-heart" style="color: red"></span>@post.Likes
+            </button></span>
+            
+     </div>
+
 </div>
 @code{
     [Parameter] 
      public string postId{get; set;}
      public int id = 0;
-     public string username = "";
+     public string username,response = "";
      public PostDTO post = new PostDTO();
-
+    public bool showAlert, isSuccess = false;
      protected override async Task OnInitializedAsync()
      {
         id = int.Parse(postId);
@@ -39,6 +43,7 @@
         username = user.Identity.Name.ToString();
         try{
             post = await PostService.GetPost(username, id);
+            Console.WriteLine(post.Creator);
             StateHasChanged();
         }
         catch(Exception e){
@@ -47,5 +52,30 @@
      }
      private void GoToProfile(string username){
         navManager.NavigateTo("/profile/" + username);
+    }
+
+    private async Task ReactToPost(int id){
+        response = await PostService.ReactToPost(username, id,1);
+        if(response == "Reaction added!"){
+            post.Likes++;
+            showAlert = true;
+            isSuccess = true;
+            ShowAlert("Post reacted successfully");
+            StateHasChanged();
+            }
+        else{
+            showAlert = true;
+            isSuccess = false;
+            ShowAlert("Error reacting to post");
+            StateHasChanged();
+        }
+    }
+    private async Task ShowAlert(string result){
+        showAlert = true;
+        response = result;
+        await Task.Delay(2000);
+        showAlert = false;
+        response = "";
+        StateHasChanged();
     }
 }

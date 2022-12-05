@@ -39,9 +39,9 @@ namespace BPR_API.Controllers
                 string hash = Authentication.GenerateHash(userDTO.Password, dbPassword.Salt);
                 if (hash.Equals(dbPassword.Hash)) return Ok(Authentication.CreateToken(userDTO, _configuration));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong! Error:" + e.Message);
             }
             return BadRequest("Wrong password!");
         }
@@ -76,9 +76,9 @@ namespace BPR_API.Controllers
                 _dbContext.UserPasswords.AddAsync(userPassword);
                 _dbContext.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong! Error:" + e.Message);
             }
 
             return Ok("User created!");
@@ -150,9 +150,9 @@ namespace BPR_API.Controllers
 
                 return Ok("Details updated successfully!");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong! Error:" + e.Message);
             }
         }
 
@@ -200,9 +200,9 @@ namespace BPR_API.Controllers
                 _dbContext.SaveChanges();
                 return Ok("Password updated successfully!");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong! Error:" + e.Message);
             }
         }
 
@@ -222,9 +222,9 @@ namespace BPR_API.Controllers
                 _dbContext.SaveChanges();
                 return Ok("User deleted successfully!");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest("Something went wrong! Error:" + e.Message);
             }
         }
     }

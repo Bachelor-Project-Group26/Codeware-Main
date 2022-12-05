@@ -5,7 +5,7 @@ namespace BPR_Blazor.Data
     {
         public Task<string> CreatePost(string username, string title,string postContent);
         public Task<string> DeletePost(string username, int id);
-        public Task<string> ReactToPost(string username, int reaction);
+        public Task<string> ReactToPost(string username, int id, int reaction);
         public Task<PostDTO> GetPost(string username, int id);
         public  Task<List<PostDTO>> GetPostList(string username);
         public  Task<List<PostDTO>> GetPostListFromUser(string username, string usernameToGet);

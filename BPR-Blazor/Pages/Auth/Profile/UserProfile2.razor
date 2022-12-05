@@ -99,7 +99,9 @@
             <MudCard Style="width : auto;  ">
               <MudCardHeader>
                 <CardHeaderContent>
-                  <MudText Typo="Typo.h6">@lastPost.Title</MudText>
+                  <a href="/post/@lastPost.Id" style="all: unset; ">
+                <MudText Typo="Typo.h6">@lastPost.Title</MudText>
+                </a>
                 </CardHeaderContent>
               </MudCardHeader>
               <MudCardContent>
@@ -113,11 +115,13 @@
       else if(lastPost.Content != "")
       {
         <div class="lastPost1">
-          <h4>Last Post:</h4>
+          <a href="/post/@lastPost.Id" style="text-decoration : none;"><h4>Last Post:</h4></a>
           <MudCard Style="width : auto;  ">
             <MudCardHeader>
               <CardHeaderContent>
+                <a href="/post/@lastPost.Id">
                 <MudText Typo="Typo.h6">@lastPost.Title</MudText>
+                </a>
               </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
@@ -129,19 +133,32 @@
       }
     </div>
   }
+  @if(showAlert){
+         @if (isSuccess)
+            {
+                <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
+            <MudAlert Severity="Severity.Success"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                </Animate>
+            }
+            else{
+                <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
+                <MudAlert Severity="Severity.Error"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                </Animate>
+            }
+        }
 </div>
 
 @code {
   [Parameter]
   public string username { get; set; }
 
-  public string loggedUser = "";
+  public string loggedUser, response = "";
   public UserDTO user = new UserDTO();
   public List<NoteDTO> notes = new List<NoteDTO>();
   public NoteDTO lastNote = new NoteDTO();
   public List<PostDTO> posts = new List<PostDTO>();
   public PostDTO lastPost = new PostDTO();
-  private bool _processing, _alreadyFollows = false;
+  private bool _processing, _alreadyFollows,showAlert, isSuccess = false;
   protected override async Task OnInitializedAsync()
   {
     var authState = await _authStateProvider.GetAuthenticationStateAsync();
@@ -157,10 +174,6 @@
     {
       Console.WriteLine(e);
       navManager.NavigateTo("/404");
-    }
-
-    if(await PostService.Follow(loggedUser, username) == "Something went wrong with following the user!"){
-     _alreadyFollows = true;
     }
     try
     {
@@ -181,10 +194,20 @@
   {
     _processing = true;
     var result = await PostService.Follow(loggedUser, username);
-    Console.WriteLine("Follow result = " + result);
-    await Task.Delay(1000);
+     await Task.Delay(1000);
+     _alreadyFollows = true;
     _processing = false;
-
+    if(result == "BadRequestSomething went wrong with following the user!"){
+      showAlert = true;
+      isSuccess = false;
+      await ShowAlert("You already follow this user!");
+    }
+    else{
+      showAlert = true;
+      isSuccess = true;
+      await ShowAlert("You are now following this user!");
+    }
+    StateHasChanged();
   }
   private async Task UnFollowUser()
   {
@@ -193,7 +216,13 @@
     Console.WriteLine("Follow result = " + result);
     await Task.Delay(1000);
     _processing = false;
-
+    StateHasChanged();
   }
-
+  private async Task ShowAlert(string result){
+        showAlert = true;
+        response = result;
+        await Task.Delay(2000);
+        showAlert = false;
+        response = "";
+    }
 }
