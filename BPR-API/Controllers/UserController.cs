@@ -149,13 +149,36 @@ namespace BPR_API.Controllers
                 if (userDTO.Email != null) dbUserDetails.Email = userDTO.Email;
                 if (userDTO.Country != null) dbUserDetails.Country = userDTO.Country;
                 if (userDTO.Bio != null) dbUserDetails.Bio = userDTO.Bio;
-                // Add picture missing
                 if (userDTO.Birthday != null) dbUserDetails.Birthday = userDTO.Birthday;
 
                 _dbContext.UserDetails.Update(dbUserDetails);
                 _dbContext.SaveChanges();
 
                 return Ok("Details updated successfully!");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
+        }
+
+        /// <summary>
+        /// Adds a profile picture to the user
+        /// </summary>
+        /// <param name="imageDTO">Carries data related to the images between the client and the API.</param>
+        /// <returns>Action result and a string with message regarding the action result.</returns>
+        [HttpPost]
+        [Route("/update_image")]
+        public ObjectResult UploadImage([FromBody] ImageDTO imageDTO)
+        {
+            if (!(imageDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            {
+                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == imageDTO.Username);
+                user.ProfilePicture = imageDTO.Image;
+                _dbContext.UserDetails.Update(user);
+                _dbContext.SaveChanges();
+                return Ok("Image was uploaded");
             }
             catch (Exception)
             {
