@@ -35,6 +35,11 @@
                                 <span></span>
                                 <label>Bio</label>
                             </div>
+                            <div class="signup">
+                                <InputFile OnChange="@LoadFiles"/>
+                                <span></span>
+                                <label>Profile Picture</label>
+                            </div>
                             <MudDatePicker Label="Enter your birthday" Style="color:{Colors.Blue.Lighten4}" IconSize="Size.Small" Adornment="Adornment.None" ShowWeekNumbers="true" @bind-Date="@date" />
                             <button class="btn" style="margin-top: 15px;" type="submit">Update your profile</button>
                         </EditForm>
@@ -55,6 +60,9 @@
     private UserDTO _userDetails = new UserDTO();
     private string username = "";
     public DateTime? date = DateTime.Today;
+    private byte[]  _image = new byte[0];
+    public IBrowserFile selectedFile { set; get; }
+    public readonly long maxFileSize = 1024 * 1024 * 10;
     protected async override void OnInitialized()
     {
         var authState  = await _authStateProvider.GetAuthenticationStateAsync();
@@ -73,5 +81,22 @@
         {
             Console.WriteLine(e);
         }
+    }
+    private async void LoadFiles(InputFileChangeEventArgs e){
+        selectedFile = e.File;
+        var browserFile = await selectedFile.RequestImageFileAsync("image/png", 500, 500);
+        Stream fileStream = browserFile.OpenReadStream(maxFileSize);
+        MemoryStream ms = new();
+        await fileStream.CopyToAsync(ms);
+        Console.WriteLine(ms.ToArray());
+       var result = await UserService.UploadImage(username, Convert.ToBase64String(ms.ToArray()));
+        Console.WriteLine(result + "success?");
+    }
+    // method that takes a IBrowserfile and sends it
+    public static async Task<byte[]> GetBytes(IBrowserFile file)
+    {
+        var ms = new MemoryStream();
+        await file.OpenReadStream().CopyToAsync(ms);
+        return ms.ToArray();
     }
 }

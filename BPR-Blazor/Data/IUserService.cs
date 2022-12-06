@@ -14,4 +14,5 @@ public interface IUserService
     Task<string> UpdatePassword(string username, string password);
     // Task<List<UserDTO>> GetAllUsers();
     Task<string> DeleteUser(string username);
+    Task<string> UploadImage(string username, string image);
 }

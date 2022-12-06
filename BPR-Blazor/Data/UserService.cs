@@ -99,7 +99,7 @@ namespace BPR_Blazor.Data
             }
         }
 
-        public async Task<string> UploadImage(string username, byte[] image)
+        public async Task<string> UploadImage(string username, string image)
         {
             ImageDTO imageDTO = new ImageDTO
             {
@@ -108,10 +108,12 @@ namespace BPR_Blazor.Data
             };
             string jsonImage = Newtonsoft.Json.JsonConvert.SerializeObject(image);
             StringContent content = new StringContent(jsonImage, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/upload_image", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/update_image", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(json);
                 var str = JsonConvert.DeserializeObject<string>(json);
+                Console.WriteLine(str);
                 return response.StatusCode + str;
             }
         }
