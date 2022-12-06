@@ -83,15 +83,20 @@
         }
     }
     private async void LoadFiles(InputFileChangeEventArgs e){
-        var format = "image/png";
         selectedFile = e.File;
         var browserFile = await selectedFile.RequestImageFileAsync("image/png", 500, 500);
-        var buffer = new byte[browserFile.Size];
-        await browserFile.OpenReadStream().ReadAsync(buffer);
-        var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
-       var result = await UserService.UploadImage(username, imageData);
+        Stream fileStream = browserFile.OpenReadStream(maxFileSize);
+        MemoryStream ms = new();
+        await fileStream.CopyToAsync(ms);
+        Console.WriteLine(ms.ToArray());
+       var result = await UserService.UploadImage(username, Convert.ToBase64String(ms.ToArray()));
         Console.WriteLine(result + "success?");
     }
     // method that takes a IBrowserfile and sends it
-    
+    public static async Task<byte[]> GetBytes(IBrowserFile file)
+    {
+        var ms = new MemoryStream();
+        await file.OpenReadStream().CopyToAsync(ms);
+        return ms.ToArray();
+    }
 }

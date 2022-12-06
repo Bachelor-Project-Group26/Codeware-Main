@@ -26,52 +26,7 @@
             </button></span>
             
      </div>
-    <div class="row border-bottom border-secondary p-3">
-        <div class="col-sm-auto">
-            <img src="images/Picture.png" class="img rounded-circle"
-                style="width: 50px; height: 50px; outline: none; cursor: pointer" />
-        </div>
-        <div class="col-6">
-            <div class="container">
-                <EditForm Model="@comment" OnValidSubmit="@SendComment">
-                    <InputText class="form-control bg-dark text-light shadow-none border-0" @bind-Value="@(comment.Title)"
-                        placeholder="Insert a title"></InputText>
-                    <textarea class="form-control bg-dark text-light shadow-none border-0" rows="1"
-                        style="resize: none; overflow: hidden; font-size: large; margin-top: 10px"
-                        oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-                        @bind="@(comment.Description)" 
-                        placeholder="I'm not a bug, I'm a feature! (Content)"></textarea>
 
-                    <button type="submit" class="btn btn-primary mt-2 float-left static">Comment</button>
-                </EditForm>
-            </div>
-        </div>
-    </div>
-    @foreach (var _comment in comments)
-    {
-        <div class="row pt-3">
-            <div class="col-sm-auto">
-                <img src="images/Picture.png" class="img rounded-circle"
-                style="width: 50px; height: 50px; outline: none; cursor: pointer"
-                @onclick="() => GoToProfile(_comment.Username)" />
-            </div>
-            <div class="col-auto">
-                <a class="mr-1" style="color: black;" href="/profile/@(post.Creator)">@(_comment.Username)</a>
-                <span class="mr-1" style="color: gray">@("@" + _comment.Username)</span>
-            </div>
-        </div>
-        
-<div class="row border-bottom border-secondary">
-    <div class="col-sm-1"></div>
-    <div class="col-8">
-        <h5 style="margin-left: -83px; margin-top: -15px;"><b>@_comment.Title</b></h5>
-            <p style="margin-left: -60px;">
-                <a class="mb-1" style="color: black; word-wrap: break-word; text-decoration: none;" href="post/@post.Id">@(_comment.Description)</a>
-            </p>
-    </div>
-</div>
-      
-    }
 </div>
 @code{
     [Parameter] 
@@ -79,8 +34,6 @@
      public int id = 0;
      public string username,response = "";
      public PostDTO post = new PostDTO();
-     public CommentDTO comment = new CommentDTO();
-     public List<CommentDTO> comments = new List<CommentDTO>();
     public bool showAlert, isSuccess = false;
      protected override async Task OnInitializedAsync()
      {
@@ -90,7 +43,7 @@
         username = user.Identity.Name.ToString();
         try{
             post = await PostService.GetPost(username, id);
-            comments = await PostService.GetComments(username, id);
+            Console.WriteLine(post.Creator);
             StateHasChanged();
         }
         catch(Exception e){
@@ -124,9 +77,5 @@
         showAlert = false;
         response = "";
         StateHasChanged();
-    }
-
-    private async Task SendComment(){
-        await PostService.Comment(username, comment.Title, comment.Description, id);
     }
 }
