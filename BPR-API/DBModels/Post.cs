@@ -20,5 +20,7 @@ namespace BPR_API.DBModels
         public DateTime CreatedDate { get; set; }
         [Required]
         public int Likes { get; set; }
+        [Required]
+        public ICollection<Comment> Comments { get; set; }
     }
 }
