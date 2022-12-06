@@ -7,9 +7,11 @@ namespace BPR_Blazor.Data
         public Task<string> DeletePost(string username, int id);
         public Task<string> ReactToPost(string username, int id, int reaction);
         public Task<PostDTO> GetPost(string username, int id);
+        public Task<List<CommentDTO>> GetComments (string username, int id);
         public  Task<List<PostDTO>> GetPostList(string username);
         public  Task<List<PostDTO>> GetPostListFromUser(string username, string usernameToGet);
         public Task<string> Follow(string username,string usernameToFollow);
         public Task<string> Unfollow(string username,string usernameToUnfollow);
+        public Task<string> Comment (string username, string Title, string Content, int id);
     }
 }
