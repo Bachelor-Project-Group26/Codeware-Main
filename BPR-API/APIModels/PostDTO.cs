@@ -1,5 +1,4 @@
-﻿using BPR_API.DBModels;
-namespace BPR_API.APIModels
+﻿namespace BPR_API.APIModels
 {
     public class PostDTO
     {
@@ -13,6 +12,5 @@ namespace BPR_API.APIModels
         public DateTime CreatedDate { get; set; }
         public int Reaction { get; set; }
         public int Likes { get; set; }
-        public ICollection<Comment> Comments { get; set; }
     }
 }

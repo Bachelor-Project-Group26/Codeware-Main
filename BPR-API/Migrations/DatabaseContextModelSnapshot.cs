@@ -44,36 +44,6 @@ namespace BPR_API.Migrations
                     b.ToTable("Chats");
                 });
 
-            modelBuilder.Entity("BPR_API.DBModels.Comment", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("UserId", "PostId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("BPR_API.DBModels.Following", b =>
                 {
                     b.Property<int>("UserId")
@@ -308,20 +278,6 @@ namespace BPR_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserPasswords");
-                });
-
-            modelBuilder.Entity("BPR_API.DBModels.Comment", b =>
-                {
-                    b.HasOne("BPR_API.DBModels.Post", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BPR_API.DBModels.Post", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
