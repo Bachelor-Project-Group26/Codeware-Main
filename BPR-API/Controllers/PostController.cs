@@ -212,5 +212,38 @@ namespace BPR_API.Controllers
             }
             return Ok("User unfollowed!");
         }
+
+        [HttpPost("send_Comment"), Authorize]
+        public async Task<ActionResult<string>> Comment ([FromBody] PostDTO postDTO){
+            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            {
+                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
+                var comment = _dbContext.Comments.Add(new Comment{PostId = postDTO.Id, UserId = user.Id, Username = postDTO.Username,Title = postDTO.Title, Description = postDTO.Content});
+                var toUpdate = _dbContext.Posts.FirstOrDefault(p => p.Id == postDTO.Id);
+                toUpdate.Comments.Add(comment.Entity);
+                _dbContext.Posts.Update(toUpdate);
+                await _dbContext.SaveChangesAsync();
+                return Ok("Comment added!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Something went wrong! Error: " + e.Message + "Inner: " + e.InnerException);
+            }
+        }
+
+        [HttpPost("get_Comments"), Authorize]
+        public async Task<ActionResult<string>> GetComments ([FromBody] PostDTO postDTO){
+            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            {
+                var comments = _dbContext.Comments.ToList().Where(c => c.PostId == postDTO.Id);
+                return Ok(comments);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Something went wrong! Error: " + e.Message + "Inner: " + e.InnerException);
+            }
+        }
     }
 }
