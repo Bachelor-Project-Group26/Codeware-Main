@@ -5,6 +5,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>BPR_API</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>C:\Users\joaob\source\repos\BPR-Blazor\BPR-API\Properties\PublishProfiles\Codeware-backend-bpr - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\javic\source\repos\XRDcourse\BPR-Main\.github\workflows\dotnet.yml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
