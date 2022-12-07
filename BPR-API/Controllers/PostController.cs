@@ -235,7 +235,7 @@ namespace BPR_API.Controllers
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var comments = _dbContext.Comments.ToList().Where(c => c.PostId == postDTO.Id);
+                var comments = _dbContext.Comments.Where(c => c.PostId == postDTO.Id).ToList();
                 return Ok(comments);
             }
             catch (Exception e)
