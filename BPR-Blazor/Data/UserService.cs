@@ -76,7 +76,7 @@ namespace BPR_Blazor.Data
             }
         }
         public async Task<string> UpdateDetails(string username, int securityLevel, string firstName, 
-            string lastName, string email, string country, string bio, byte[] profilePicture, DateTime? birthday)
+            string lastName, string email, string country, string bio, byte[] profilePicture, DateTime? birthday, string image)
         {
             UserDTO user = new UserDTO
             {
@@ -87,7 +87,7 @@ namespace BPR_Blazor.Data
                 Email = email,
                 Country = country,
                 Bio = bio,
-                // Add picture missing
+                Image = image,
                 Birthday = birthday
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
@@ -96,25 +96,6 @@ namespace BPR_Blazor.Data
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);
-                return response.StatusCode + str;
-            }
-        }
-
-        public async Task<string> UploadImage(string username, string image)
-        {
-            ImageDTO imageDTO = new ImageDTO
-            {
-                Username = username,
-                Image = image
-            };
-            string jsonImage = Newtonsoft.Json.JsonConvert.SerializeObject(image);
-            StringContent content = new StringContent(jsonImage, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/update_image", content))
-            {
-                var json = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(json);
-                var str = JsonConvert.DeserializeObject<string>(json);
-                Console.WriteLine(str);
                 return response.StatusCode + str;
             }
         }

@@ -10,9 +10,7 @@ public interface IUserService
     Task<List<UserDTO>> GetUsers();
     Task<UserDTO> GetUserByUsername(string username);
     Task<string> UpdateDetails(string username, int securityLevel, string firstName,
-            string lastName, string email, string country, string bio, byte[] profilePicture, DateTime? birthday);
+            string lastName, string email, string country, string bio, byte[] profilePicture, DateTime? birthday, string image);
     Task<string> UpdatePassword(string username, string password);
-    // Task<List<UserDTO>> GetAllUsers();
     Task<string> DeleteUser(string username);
-    Task<string> UploadImage(string username, string image);
 }

@@ -58,6 +58,7 @@
     </section>
 @code {
     private UserDTO _userDetails = new UserDTO();
+    private byte[] ms;
     private string username = "";
     public DateTime? date = DateTime.Today;
     private byte[]  _image = new byte[0];
@@ -73,8 +74,7 @@
     private async void SubmitProfile()
     {
         try{
-        var result = await UserService.UpdateDetails(username, 0, _userDetails.FirstName, _userDetails.LastName, _userDetails.Email, _userDetails.Country, _userDetails.Bio, null, date);
-        
+        var result = await UserService.UpdateDetails(username, 0, _userDetails.FirstName, _userDetails.LastName, _userDetails.Email, _userDetails.Country, _userDetails.Bio, null, date, Convert.ToBase64String(ms.ToArray()));
         navManager.NavigateTo("/profile/" + username);
         }
         catch(Exception e)
@@ -82,16 +82,15 @@
             Console.WriteLine(e);
         }
     }
+
     private async void LoadFiles(InputFileChangeEventArgs e){
         selectedFile = e.File;
         var browserFile = await selectedFile.RequestImageFileAsync("image/png", 500, 500);
         Stream fileStream = browserFile.OpenReadStream(maxFileSize);
         MemoryStream ms = new();
         await fileStream.CopyToAsync(ms);
-        Console.WriteLine(ms.ToArray());
-       var result = await UserService.UploadImage(username, Convert.ToBase64String(ms.ToArray()));
-        Console.WriteLine(result + "success?");
     }
+
     // method that takes a IBrowserfile and sends it
     public static async Task<byte[]> GetBytes(IBrowserFile file)
     {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace BPR_API.Controllers
 {
@@ -144,6 +145,7 @@ namespace BPR_API.Controllers
                 if (userDTO.Country != null) dbUserDetails.Country = userDTO.Country;
                 if (userDTO.Bio != null) dbUserDetails.Bio = userDTO.Bio;
                 if (userDTO.Birthday != null) dbUserDetails.Birthday = userDTO.Birthday;
+                if (userDTO.Image != null) dbUserDetails.ProfilePicture = Encoding.ASCII.GetBytes(userDTO.Image);
 
                 _dbContext.UserDetails.Update(dbUserDetails);
                 _dbContext.SaveChanges();
@@ -153,30 +155,6 @@ namespace BPR_API.Controllers
             catch (Exception e)
             {
                 return BadRequest("Something went wrong! Error:" + e.Message);
-            }
-        }
-
-        /// <summary>
-        /// Adds a profile picture to the user
-        /// </summary>
-        /// <param name="imageDTO">Carries data related to the images between the client and the API.</param>
-        /// <returns>Action result and a string with message regarding the action result.</returns>
-        [HttpPost]
-        [Route("/update_image")]
-        public ObjectResult UploadImage([FromBody] ImageDTO imageDTO)
-        {
-            if (!(imageDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
-            try
-            {
-                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == imageDTO.Username);
-                user.ProfilePicture = imageDTO.Image;
-                _dbContext.UserDetails.Update(user);
-                _dbContext.SaveChanges();
-                return Ok("Image was uploaded");
-            }
-            catch (Exception)
-            {
-                return BadRequest("Something went wrong!");
             }
         }
 
