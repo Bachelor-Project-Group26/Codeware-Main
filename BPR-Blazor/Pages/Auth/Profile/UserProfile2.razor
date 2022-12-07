@@ -13,7 +13,7 @@
   {
 
     <div class="profilePic">
-      <img class="profile" src="images/Picture.png" alt="profilepic">
+      <img class="profile" src="@_image" alt="profilepic">
 
       <h1>@user.FirstName @user.LastName
         @if (user.Username == loggedUser)
@@ -152,7 +152,7 @@
   [Parameter]
   public string username { get; set; }
 
-  public string loggedUser, response = "";
+  public string loggedUser, response, _image = "";
   public UserDTO user = new UserDTO();
   public List<NoteDTO> notes = new List<NoteDTO>();
   public NoteDTO lastNote = new NoteDTO();
@@ -167,7 +167,9 @@
     try
     {
       user = await UserService.GetUserByUsername(username);
+      _image = string.Format("data:image/png;base64,{0}", user.ProfilePicture);
       posts = await PostService.GetPostListFromUser(loggedUser, username);
+      
       lastPost = posts[^1];
     }
     catch (Exception e)
