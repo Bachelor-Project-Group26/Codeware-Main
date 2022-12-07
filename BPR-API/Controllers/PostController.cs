@@ -185,6 +185,7 @@ namespace BPR_API.Controllers
         public async Task<ActionResult<string>> Follow([FromBody] PostDTO postDTO)
         {
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            if (postDTO.Username == postDTO.Username2) return BadRequest("You cannot follow yourself!");
             var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
             var followedUser = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username2);
             Following follower = new Following()
@@ -214,6 +215,7 @@ namespace BPR_API.Controllers
         public async Task<ActionResult<string>> Unfollow([FromBody] PostDTO postDTO)
         {
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            if (postDTO.Username == postDTO.Username2) return BadRequest("You cannot unfollow yourself!");
             var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
             var followedUser = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username2);
             try
@@ -228,7 +230,32 @@ namespace BPR_API.Controllers
             }
             return Ok("User unfollowed!");
         }
-
+        // Method that get the posts from the followed users
+        [HttpPost("get_followed_posts"), Authorize]
+        public async Task<ActionResult<string>> GetFollowedPosts([FromBody] PostDTO postDTO)
+        {
+            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            {
+                int creatorId = 0;
+                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
+                creatorId = user.Id;
+                var followedUsers = _dbContext.FollowingList.Where(f => f.UserId == user.Id && f.IsUser == true).ToList();
+                List<Post> posts = new List<Post>();
+                foreach (var followedUser in followedUsers)
+                {
+                    var _user = _dbContext.UserDetails.FirstOrDefault(u => u.Id == followedUser.FollowedId);
+                    var followedUserPosts = _dbContext.Posts.Where(p => p.Creator == _user.Username).ToList();
+                    return Ok(followedUserPosts);
+                }
+                return BadRequest("Something went wrong with getting the posts!");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong with getting the posts!");
+            }
+        } 
+        
         [HttpPost("send_Comment"), Authorize]
         public async Task<ActionResult<string>> Comment ([FromBody] PostDTO postDTO){
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");

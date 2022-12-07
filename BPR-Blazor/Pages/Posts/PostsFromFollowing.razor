@@ -1,0 +1,181 @@
+@page "/postsFromFollowing"
+<div class="index">
+    <!-- Header Create post -->
+    <div class="row border-bottom border-secondary p-3">
+        <div class="col-sm-auto">
+            <img src="images/Picture.png" class="img rounded-circle"
+                style="width: 50px; height: 50px; outline: none; cursor: pointer" />
+        </div>
+        <div class="col-6">
+            <div class="container">
+                <EditForm Model="@_post" OnValidSubmit="@CreatePost">
+                    <InputText class="form-control bg-dark text-light shadow-none border-0" @bind-Value="@(_post.Title)"
+                        placeholder="Insert a title"></InputText>
+                    <textarea class="form-control bg-dark text-light shadow-none border-0" rows="1"
+                        style="resize: none; overflow: hidden; font-size: large; margin-top: 10px"
+                        oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                        @bind="@(_post.Content)" 
+                        placeholder="I'm not a bug, I'm a feature! (Content)"></textarea>
+
+                    <button type="submit" class="btn btn-primary mt-2 float-left static">Post</button>
+                </EditForm>
+            </div>
+        </div>
+        <div class="col-3" style="margin-left: 300px;">
+             @if(showAlert){
+         @if (isSuccess)
+            {
+                <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
+            <MudAlert Severity="Severity.Success"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                </Animate>
+            }
+            else{
+                <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
+                <MudAlert Severity="Severity.Error"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                </Animate>
+            }
+        }
+        </div>
+        
+    </div>
+    <!-- End Header Create post -->
+    @foreach (var post in posts)
+    {
+        <div class="row pt-3">
+            <div class="col-sm-auto">
+                <img src="images/Picture.png" class="img rounded-circle"
+                style="width: 50px; height: 50px; outline: none; cursor: pointer"
+                @onclick="() => GoToProfile(post.Username)" />
+            </div>
+            <div class="col-auto">
+                <a class="mr-1" style="color: black;" href="/profile/@(post.Creator)">@(post.Creator)</a>
+                <span class="mr-1" style="color: gray">@("@" + post.Creator)</span>
+                <span class="mr-1" style="color: gray">@(" - " + GetDate(post.CreatedDate))</span>
+
+                @if (post.Creator == username)
+                {
+                    <button class="btn shadow-none" @onclick="() => DeletePost(post.Id)">
+                        <span class="oi oi-trash" style="color: gray" aria-hidden="true"></span>
+                    </button>
+                }
+            </div>
+        </div>
+        
+<div class="row border-bottom border-secondary">
+    <div class="col-sm-1"></div>
+    <div class="col-8">
+        <h5 style="margin-left: -83px; margin-top: -15px;"><b>@post.Title</b></h5>
+            <p style="margin-left: -60px;">
+                <a class="mb-1" style="color: black; word-wrap: break-word; text-decoration: none;" href="post/@post.Id">@(post.Content)</a>
+            </p>
+            <span class="oi oi-heart mr-2" style="color: red"></span>@post.Likes
+        <div class="btn-group" >
+            
+            <button class="btn shadow-none ml-3" style="color: gray" @onclick="() => ReactToPost(post.Id, 1)">
+                <span class="oi oi-thumb-up mr-2" style="color: gray; "></span>
+            </button>
+            <button class="btn shadow-none ml-3" style="color: gray" @onclick="() => ReactToPost(post.Id, 0)">
+                <span class="oi oi-thumb-down mr-2" style="color: gray;"></span>
+            </button>
+        </div>
+    </div>
+</div>
+      
+    }
+    
+</div>
+
+@code {
+    public List<PostDTO> posts = new List<PostDTO>();
+    private PostDTO _post= new PostDTO();
+    private string username, response = "";
+    public bool showAlert, isSuccess = false;
+    
+   
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        username = user.Identity.Name.ToString();
+        posts = await PostService.GetPostListFromFollowing(username);
+        StateHasChanged();
+    }
+
+    private async Task CreatePost()
+    {
+        response = await PostService.CreatePost(username, _post.Title, _post.Content);
+        if(response == "OKPost created!")
+        {
+            posts = await PostService.GetPostListFromFollowing(username);
+            _post = new PostDTO();
+            isSuccess = true;
+            showAlert = true;
+            ShowAlert("Post Created successfully");
+            StateHasChanged();
+        }
+        else
+        {
+            isSuccess = false;
+            showAlert = true;
+            ShowAlert("Error creating post");
+            StateHasChanged();
+        }
+    }
+    private void GoToProfile(string username){
+        navManager.NavigateTo("/profile/" + username);
+    }
+    private string GetDate(DateTime timestamp)
+    {
+        return timestamp.Date.ToString("dd/M/yyyy");
+    }
+    private async Task DeletePost(int id)
+    {
+        response = await PostService.DeletePost(username,id);
+        if(response == "Post deleted successfully!"){
+            if(posts.Any(p => p.Id == id))
+            {
+            posts.Remove(posts.First(p => p.Id == id));
+            showAlert = true;
+            isSuccess = true;
+            ShowAlert("Post deleted successfully");
+            
+            StateHasChanged();
+            }
+        }else{
+            showAlert = true;
+            isSuccess = false;
+            ShowAlert("Error deleting post");
+            StateHasChanged();
+        }
+        
+    }
+    private async Task ReactToPost(int id, int reaction){
+        response = await PostService.ReactToPost(username, id,reaction);
+        if(response == "Reaction added!"){
+            if(posts.Any(p => p.Id == id))
+            {
+                if(reaction == 0)
+                    posts.First(p => p.Id == id).Likes--;
+                else if(reaction == 1)
+            showAlert = true;
+            isSuccess = true;
+            ShowAlert("Post reacted successfully");
+            StateHasChanged();
+            }
+        }else{
+            showAlert = true;
+            isSuccess = false;
+            ShowAlert("Error reacting to post");
+            StateHasChanged();
+        }
+    }
+
+    private async Task ShowAlert(string result){
+        showAlert = true;
+        response = result;
+        await Task.Delay(2000);
+        showAlert = false;
+        response = "";
+        StateHasChanged();
+    }
+}

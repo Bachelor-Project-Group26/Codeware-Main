@@ -155,6 +155,30 @@ namespace BPR_Blazor.Data
                 return posts;
             }
         }
+        public async Task<List<PostDTO>> GetPostListFromFollowing(string username)
+        {
+            List<PostDTO> posts = new List<PostDTO>();
+            PostDTO post = new PostDTO
+            {
+                Username = username,
+                Username2 = "",
+                Id = 0,
+                followedId = 0,
+                isUser = true,
+                Reaction = 0,
+                Title = "",
+                Content = "",
+                CreatedDate = DateTime.Now,
+            };
+            string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
+            StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_followed_posts", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                posts = JsonConvert.DeserializeObject<List<PostDTO>>(json);
+                return posts;
+            }
+        }
 
         public async Task<string> Follow(string username, string usernameToFollow)
         {

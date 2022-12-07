@@ -157,7 +157,7 @@ namespace BPR_API.Controllers
                 return BadRequest("Something went wrong! Error:" + e.Message);
             }
         }
-
+        
         /// <summary>
         /// Updates the password of a user.
         /// </summary>
