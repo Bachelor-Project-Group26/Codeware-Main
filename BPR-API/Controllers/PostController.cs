@@ -219,10 +219,8 @@ namespace BPR_API.Controllers
             try
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-                var comment = _dbContext.Comments.Add(new Comment{PostId = postDTO.Id, UserId = user.Id, Username = postDTO.Username,Title = postDTO.Title, Description = postDTO.Content});
-                var toUpdate = _dbContext.Posts.FirstOrDefault(p => p.Id == postDTO.Id);
-                toUpdate.Comments.Add(comment.Entity);
-                _dbContext.Posts.Update(toUpdate);
+                var comment = _dbContext.Comments.Add(new Comment{PostId = postDTO.Id, UserId = user.Id, 
+                    Username = postDTO.Username, Title = postDTO.Title, Description = postDTO.Content});
                 await _dbContext.SaveChangesAsync();
                 return Ok("Comment added!");
             }
