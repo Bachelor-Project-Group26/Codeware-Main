@@ -86,12 +86,28 @@ namespace BPR_API.Controllers
             try
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-                _dbContext.Reactions.Add(new Reaction { PostId = postDTO.Id, UserId = user.Id, ReactionNumber = postDTO.Reaction });
-                int valueToAdd;
-                if (postDTO.Reaction == 1)
-                    valueToAdd = 1;
+                var reaction = _dbContext.Reactions.FirstOrDefault(r => r.PostId == postDTO.Id);
+                int valueToAdd = 0;
+                
+                if (reaction == null)
+                {
+                    _dbContext.Reactions.Add(new Reaction { PostId = postDTO.Id, UserId = user.Id, ReactionNumber = postDTO.Reaction });
+                    
+                    if (postDTO.Reaction == 1)
+                        valueToAdd = 1;
+                    else
+                        valueToAdd = -1;
+                }
                 else
-                    valueToAdd = -1;
+                {
+                    _dbContext.Reactions.Remove(reaction);
+
+                    if (postDTO.Reaction == 1)
+                        valueToAdd = -1;
+                    else
+                        valueToAdd = 1;
+                }
+                
                 var toUpdate = _dbContext.Posts.FirstOrDefault(p => p.Id == postDTO.Id);
                 toUpdate.Likes += valueToAdd;
                 _dbContext.Posts.Update(toUpdate);
