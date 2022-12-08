@@ -1,11 +1,11 @@
 @page "/profile/{username}"
 <div>
-  @if (user.FirstName == "" && user.Username == loggedUser)
+  @if (firstName.Equals("") && _username == loggedUser)
   {
 
     <FourOFourPR />
   }
-  else if (user.FirstName == "" && user.Username != loggedUser)
+  else if (firstName.Equals("") && _username != loggedUser)
   {
     <FourOFour />
   }
@@ -15,7 +15,7 @@
     <div class="profilePic">
       @if (user.ProfilePicture == null)
       {
-        <img class="profile" src="images/Profile-Pic-Via.jpg" alt="profilepic">
+        <img class="profile" src="images/VIA-PP.jpg" alt="profilepic">
       }
       else{
           <img class="profile" src="@_image" alt="profilepic">
@@ -158,6 +158,8 @@
   public string username { get; set; }
 
   public string loggedUser, response, _image = "";
+  public string firstName = "";
+  public string _username = "";
   public UserDTO user = new UserDTO();
   public List<NoteDTO> notes = new List<NoteDTO>();
   public NoteDTO lastNote = new NoteDTO();
@@ -169,13 +171,16 @@
     var authState = await _authStateProvider.GetAuthenticationStateAsync();
     var loggeduserObj = authState.User;
     loggedUser = loggeduserObj.Identity.Name;
+    
     try
     {
       user = await UserService.GetUserByUsername(username);
       _image = string.Format("data:image/png;base64,{0}", user.ProfilePicture);
       posts = await PostService.GetPostListFromUser(loggedUser, username);
+      Console.WriteLine(posts.Count);
       if(posts.Count > 0){
-      lastPost = posts[^1];
+
+        lastPost = posts[^1];
       }
     }
     catch (Exception e)
@@ -183,11 +188,14 @@
       Console.WriteLine(e);
       navManager.NavigateTo("/404");
     }
+    firstName = user.FirstName;
+    _username = user.Username;
     try
     {
       if (user.Username == loggedUser)
       {
         notes = await NoteService.GetNoteList(username);
+        Console.WriteLine(notes.Count);
         if(notes.Count > 0){
         lastNote = notes[^1];
         }

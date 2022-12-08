@@ -17,6 +17,8 @@
                      <MudTextField T="string" Placeholder="Enter a content..."DisableUnderLine="true" Class="mt-n2 mx-4"
                       @bind-Value="content" For="@(()=> content)" />
                         <MudButton OnClick="updateNote" StartIcon="@Icons.Filled.HorizontalRule" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten2}" ButtonType="ButtonType.Button">Update</MudButton>
+                         <MudButton OnClick="deleteNote" StartIcon="@Icons.Filled.HorizontalRule" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten3}; margin-left:10px;" ButtonType="ButtonType.Button">Delete</MudButton>
+
                     </MudPopover>
                     }
                  </CardHeaderActions>
@@ -62,6 +64,13 @@
         id = int.Parse(noteId);
        var answer =  await NoteService.UpdateNote(username, id, title, content);
        Console.WriteLine("Answer : " + answer);
+       StateHasChanged();
+    }
+    private async Task deleteNote(){
+        id = int.Parse(noteId);
+       var answer =  await NoteService.DeleteNote(username, id);
+       Console.WriteLine("Answer : " + answer);
+       navManager.NavigateTo("/notes");
        StateHasChanged();
     }
     public void openPopOver()
