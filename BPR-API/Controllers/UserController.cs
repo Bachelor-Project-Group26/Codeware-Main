@@ -145,7 +145,7 @@ namespace BPR_API.Controllers
                 if (userDTO.Country != null) dbUserDetails.Country = userDTO.Country;
                 if (userDTO.Bio != null) dbUserDetails.Bio = userDTO.Bio;
                 if (userDTO.Birthday != null) dbUserDetails.Birthday = userDTO.Birthday;
-                if (userDTO.Image != null) dbUserDetails.ProfilePicture = Convert.FromBase64String(userDTO.Image);
+                if (userDTO.ProfilePicture != null) dbUserDetails.ProfilePicture = Convert.FromBase64String(userDTO.ProfilePicture);
 
                 _dbContext.UserDetails.Update(dbUserDetails);
                 _dbContext.SaveChanges();

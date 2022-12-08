@@ -75,8 +75,7 @@
     {
         try{
         var result = await UserService.UpdateDetails(username, 0, _userDetails.FirstName, _userDetails.LastName, _userDetails.Email, _userDetails.Country, _userDetails.Bio, null, date, image);
-        Console.WriteLine(result);
-       
+        navManager.NavigateTo("/Profile/" + username);
         }
         catch(Exception e)
         {

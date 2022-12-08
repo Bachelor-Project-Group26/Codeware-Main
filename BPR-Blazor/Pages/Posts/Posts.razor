@@ -19,6 +19,7 @@
 
                     <button type="submit" class="btn btn-primary mt-2 float-left static">Post</button>
                 </EditForm>
+                <button @onclick="() => GoToFollowing()" class="btn btn-primary mt-2 float-left static">See following posts</button>
             </div>
         </div>
         <div class="col-3" style="margin-left: 300px;">
@@ -43,9 +44,19 @@
     {
         <div class="row pt-3">
             <div class="col-sm-auto">
-                <img src="" class="img rounded-circle"
-                style="width: 50px; height: 50px; outline: none; cursor: pointer"
+                @foreach (var user in users)
+                {
+                   @if (post.Creator == user.Username && user.ProfilePicture != null)
+                    {
+                        <img src="@string.Format(@imageFormat, @user.ProfilePicture)" class="img rounded-circle"
+                        style="width: 50px; height: 50px; outline: none; cursor: pointer"
+                        @onclick="() => GoToProfile(post.Username)" />
+                }
+                else if(post.Creator == user.Username && user.ProfilePicture == null){
+                    <img src="images/Profile-Pic-Via.jpg" class="img rounded-circle"style="width: 50px; height: 50px; outline: none; cursor: pointer"
                 @onclick="() => GoToProfile(post.Username)" />
+                    } 
+                }       
             </div>
             <div class="col-auto">
                 <a class="mr-1" style="color: black;" href="/profile/@(post.Creator)">@(post.Creator)</a>
@@ -87,11 +98,12 @@
 
 @code {
     public List<PostDTO> posts = new List<PostDTO>();
+    public List<UserDTO> users = new List<UserDTO>();
     private PostDTO _post= new PostDTO();
     private UserDTO loggedUser = new UserDTO();
     private string username, response, image = "";
     public bool showAlert, isSuccess = false;
-    
+    public string imageFormat = "data:image/png;base64,{0}";
    
     protected override async Task OnInitializedAsync()
     {
@@ -99,6 +111,7 @@
         var user = authState.User;
         username = user.Identity.Name.ToString();
         posts = await PostService.GetPostList(username);
+        users = await UserService.GetUsers();
         loggedUser = await UserService.GetUserByUsername(username);
         image = string.Format("data:image/png;base64,{0}", loggedUser.ProfilePicture);
         StateHasChanged();
@@ -126,6 +139,9 @@
     }
     private void GoToProfile(string username){
         navManager.NavigateTo("/profile/" + username);
+    }
+    private void GoToFollowing(){
+        navManager.NavigateTo("/postsFromFollowing");
     }
     private string GetDate(DateTime timestamp)
     {
@@ -160,6 +176,7 @@
                 if(reaction == 0)
                     posts.First(p => p.Id == id).Likes--;
                 else if(reaction == 1)
+                    posts.First(p => p.Id == id).Likes++;
             showAlert = true;
             isSuccess = true;
             ShowAlert("Post reacted successfully");

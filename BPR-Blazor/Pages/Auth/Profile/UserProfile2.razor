@@ -13,8 +13,13 @@
   {
 
     <div class="profilePic">
-      <img class="profile" src="@_image" alt="profilepic">
-
+      @if (user.ProfilePicture == null)
+      {
+        <img class="profile" src="images/Profile-Pic-Via.jpg" alt="profilepic">
+      }
+      else{
+          <img class="profile" src="@_image" alt="profilepic">
+      }
       <h1>@user.FirstName @user.LastName
         @if (user.Username == loggedUser)
         {
@@ -169,8 +174,9 @@
       user = await UserService.GetUserByUsername(username);
       _image = string.Format("data:image/png;base64,{0}", user.ProfilePicture);
       posts = await PostService.GetPostListFromUser(loggedUser, username);
-      
+      if(posts.Count > 0){
       lastPost = posts[^1];
+      }
     }
     catch (Exception e)
     {
@@ -182,7 +188,9 @@
       if (user.Username == loggedUser)
       {
         notes = await NoteService.GetNoteList(username);
+        if(notes.Count > 0){
         lastNote = notes[^1];
+        }
       }
     }
     catch (Exception e)
