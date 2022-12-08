@@ -1,18 +1,18 @@
 @page "/chat/{chatId}"
 <section class="index">
    
-<div class="d-flex flex-grow-1 flex-row" style="margin-top: 50px; margin-left: 10px;">
+<div class="d-flex flex-grow-1 flex-row chatContainer">
     <MudPaper Elevation = "25"  Class = "py-16 flex-grow-1 static">
         <MudToolBar Class="static" style="margin-top: -68px;">
             
             @if (id == 0)
             {
-               <MudIcon Icon="@Icons.Material.Outlined.Person"  Style="width: 35px"></MudIcon> <MudText  Typo="Typo.h6">chat</MudText>
+               <MudIcon Icon="@Icons.Material.Outlined.Person"  class="chatIcon"></MudIcon> <MudText  Typo="Typo.h6">chat</MudText>
               
             }
             else
             {
-                <MudIcon Icon="@Icons.Material.Outlined.ChatBubble"  Style="width: 35px"></MudIcon>
+                <MudIcon Icon="@Icons.Material.Outlined.ChatBubble"  class="chatIcon"></MudIcon>
                 <MudText  Typo="Typo.h6">Chat with @chat.ChatName</MudText>
             }
             @if (chat.Username == username)

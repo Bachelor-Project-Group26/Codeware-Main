@@ -6,19 +6,21 @@
         <div class="no-notes">
             <MudText Typo="Typo.h4">You don't have any notes yet.</MudText>
             <MudText Typo="Typo.h6">Create a note to start.</MudText>
-            <MudButton OnClick="OpenPopOver" Style="float : right; margin: 15px;">Create a note</MudButton>
+            <MudButton OnClick="OpenPopOver">Create a note</MudButton>
     @if (_isOpen)
     {
-        <MudCard class="create-note" Style="background-color: #fcd297;">
+        <MudCard class="create-note">
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudTextField Style="width: 250px; background-color: #fcd297;" @bind-Value="noteDTO.Title" HelperText="Title" Variant="Variant.Outlined"
+                    <div id="input">
+                    <MudTextField @bind-Value="noteDTO.Title" HelperText="Title" Variant="Variant.Outlined"
                     Margin="Margin.Dense"> </MudTextField>
-                    <MudButton Style="float : right; margin-top : -75px;" OnClick="OpenPopOver">Close</MudButton>
+                    </div>
+                    <MudButton id="close" OnClick="OpenPopOver">Close</MudButton>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
-                <textarea @bind="noteDTO.Content" style="width: 450px; height: 230px; background-color: #fcd297; border-width: 1px;" placeholder="Content"></textarea>
+                <textarea @bind="noteDTO.Content" placeholder="Content"></textarea>
                 <MudButton OnClick="CreateNote">Create</MudButton>
             </MudCardContent>
         </MudCard>
@@ -29,19 +31,19 @@
     else{
         
     
-    <MudButton OnClick="OpenPopOver" Style="float : right; margin: 15px;">Create a note</MudButton>
+    <MudButton OnClick="OpenPopOver" class="note-popover">Create a note</MudButton>
     @if (_isOpen)
     {
-        <MudCard class="create-note" Style="background-color: #fcd297;">
+        <MudCard class="create-note">
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudTextField Style="width: 250px; background-color: #fcd297;" @bind-Value="noteDTO.Title" HelperText="Title" Variant="Variant.Outlined"
+                    <MudTextField  @bind-Value="noteDTO.Title" HelperText="Title" Variant="Variant.Outlined"
                     Margin="Margin.Dense"> </MudTextField>
-                    <MudButton Style="float : right; margin-top : -75px;" OnClick="OpenPopOver">Close</MudButton>
+                    <MudButton id="close" OnClick="OpenPopOver">Close</MudButton>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
-                <textarea @bind="noteDTO.Content" style="width: 450px; height: 230px; background-color: #fcd297; border-width: 1px;" placeholder="Content"></textarea>
+                <textarea @bind="noteDTO.Content" placeholder="Content"></textarea>
                 <MudButton OnClick="CreateNote">Create</MudButton>
             </MudCardContent>
         </MudCard>
@@ -50,7 +52,7 @@
         @foreach (var note in notes)
         {
             <div class="card-note">
-                <MudCard Style="width : 270px; margin : 20px; background-color: #fac070">
+                <MudCard id = "card">
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6">@note.Title </MudText>

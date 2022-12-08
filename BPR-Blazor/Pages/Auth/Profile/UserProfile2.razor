@@ -78,10 +78,10 @@
       }
       @if (loggedUser == username)
       {
-        <div style="width: 100%; margin-left: 6rem">
+        <div style="width: 100%; margin-left: 6rem;">
           <div class="lastNote">
             <h4>Last Note:</h4>
-            <MudCard Style="width : auto;  ">
+            <MudCard>
               <MudCardHeader>
                 <CardHeaderContent>
                   <MudText Typo="Typo.h6">@lastNote.Title</MudText>
@@ -101,7 +101,7 @@
           </div>
           <div class="lastPost">
             <h4>Last Post:</h4>
-            <MudCard Style="width : auto;  ">
+            <MudCard>
               <MudCardHeader>
                 <CardHeaderContent>
                   <a href="/post/@lastPost.Id" style="all: unset; ">
@@ -142,12 +142,12 @@
          @if (isSuccess)
             {
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-            <MudAlert Severity="Severity.Success"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+            <MudAlert Severity="Severity.Success"  class="alertProfile" Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
             else{
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-                <MudAlert Severity="Severity.Error"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                <MudAlert Severity="Severity.Error" class="alertProfile" Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
         }
@@ -177,7 +177,6 @@
       user = await UserService.GetUserByUsername(username);
       _image = string.Format("data:image/png;base64,{0}", user.ProfilePicture);
       posts = await PostService.GetPostListFromUser(loggedUser, username);
-      Console.WriteLine(posts.Count);
       if(posts.Count > 0){
 
         lastPost = posts[^1];
@@ -195,7 +194,6 @@
       if (user.Username == loggedUser)
       {
         notes = await NoteService.GetNoteList(username);
-        Console.WriteLine(notes.Count);
         if(notes.Count > 0){
         lastNote = notes[^1];
         }

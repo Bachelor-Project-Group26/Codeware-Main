@@ -4,16 +4,14 @@
     <div class="row border-bottom border-secondary p-3">
         
         <div class="col-sm-auto">
-            <img src="@image" class="img rounded-circle"
-                style="width: 50px; height: 50px; outline: none; cursor: pointer" />
+            <img src="@image" class="img rounded-circle post-pfpic" />
         </div>
         <div class="col-6">
             <div class="container">
                 <EditForm Model="@_post" OnValidSubmit="@CreatePost">
                     <InputText class="form-control bg-dark text-light shadow-none border-0" @bind-Value="@(_post.Title)"
                         placeholder="Insert a title"></InputText>
-                    <textarea class="form-control bg-dark text-light shadow-none border-0" rows="1"
-                        style="resize: none; overflow: hidden; font-size: large; margin-top: 10px"
+                    <textarea class="form-control bg-dark text-light shadow-none border-0 post-textarea" rows="1"
                         oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
                         @bind="@(_post.Content)" 
                         placeholder="I'm not a bug, I'm a feature! (Content)"></textarea>
@@ -24,17 +22,17 @@
             </div>
 
         </div>
-        <div class="col-3" style="margin-left: 300px;">
+        <div class="col-3 post-alert">
              @if(showAlert){
          @if (isSuccess)
             {
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-            <MudAlert Severity="Severity.Success"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+            <MudAlert Severity="Severity.Success" class="note-popover" Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
             else{
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-                <MudAlert Severity="Severity.Error"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                <MudAlert Severity="Severity.Error"  class="note-popover" Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
         }
@@ -51,25 +49,25 @@
                 {
                    @if (post.Creator == user.Username && user.ProfilePicture != null)
                     {
-                        <img src="@string.Format(@imageFormat, @user.ProfilePicture)" class="img rounded-circle"
-                        style="width: 50px; height: 50px; outline: none; cursor: pointer"
+                        <img src="@string.Format(@imageFormat, @user.ProfilePicture)" 
+                        class="img rounded-circle post-pfpic"
                         @onclick="() => GoToProfile(post.Username)" />
                 }
                 else if(post.Creator == user.Username && user.ProfilePicture == null){
-                    <img src="images/VIA-PP.jpg" class="img rounded-circle"style="width: 50px; height: 50px; outline: none; cursor: pointer"
-                @onclick="() => GoToProfile(post.Username)" />
+                    <img src="images/VIA-PP.jpg" class="img rounded-circle post-pfpic"
+                    @onclick="() => GoToProfile(post.Username)" />
                     } 
                 }       
             </div>
             <div class="col-auto">
-                <a class="mr-1" style="color: black;" href="/profile/@(post.Creator)">@(post.Creator)</a>
-                <span class="mr-1" style="color: gray">@("@" + post.Creator)</span>
-                <span class="mr-1" style="color: gray">@(" - " + GetDate(post.CreatedDate))</span>
+                <a class="mr-1 post-link" href="/profile/@(post.Creator)">@(post.Creator)</a>
+                <span class="mr-1 post-gray">@("@" + post.Creator)</span>
+                <span class="mr-1 post-gray">@(" - " + GetDate(post.CreatedDate))</span>
 
                 @if (post.Creator == username)
                 {
                     <button class="btn shadow-none" @onclick="() => DeletePost(post.Id)">
-                        <span class="oi oi-trash" style="color: gray" aria-hidden="true"></span>
+                        <span class="oi oi-trash  post-gray" aria-hidden="true"></span>
                     </button>
                 }
             </div>
@@ -78,18 +76,20 @@
 <div class="row border-bottom border-secondary">
     <div class="col-sm-1"></div>
     <div class="col-8">
-        <h5 style="margin-left: -83px; margin-top: -15px;"><b>@post.Title</b></h5>
-            <p style="margin-left: -60px;">
-                <a class="mb-1" style="color: black; word-wrap: break-word; text-decoration: none;" href="post/@post.Id">@(post.Content)</a>
+        <div class="postContainer">
+            <h5><b>@post.Title</b></h5>
+            <p>
+                <a class="mb-1 post-link" href="post/@post.Id">@(post.Content)</a>
             </p>
+            </div>
             <span class="oi oi-heart mr-2" style="color: red"></span>@post.Likes
         <div class="btn-group" >
             
-            <button class="btn shadow-none ml-3" style="color: gray" @onclick="() => ReactToPost(post.Id, 1)">
-                <span class="oi oi-thumb-up mr-2" style="color: gray; "></span>
+            <button class="btn shadow-none ml-3 post-gray" @onclick="() => ReactToPost(post.Id, 1)">
+                <span class="oi oi-thumb-up mr-2 post-gray"></span>
             </button>
-            <button class="btn shadow-none ml-3" style="color: gray" @onclick="() => ReactToPost(post.Id, 0)">
-                <span class="oi oi-thumb-down mr-2" style="color: gray;"></span>
+            <button class="btn shadow-none ml-3 post-gray" @onclick="() => ReactToPost(post.Id, 0)">
+                <span class="oi oi-thumb-down mr-2 post-gray"></span>
             </button>
         </div>
     </div>

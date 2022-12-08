@@ -49,9 +49,36 @@
   .lastPost{
     
     float: right;
+    width: fit-content;
+    max-width: 50%;
   }
   .lastPost1{
     
     margin-top: 10px;
   }
+  @media screen and (min-width: 1920px){
+    .lastPost{
+    
+      float: right;
+      width: fit-content;
+      max-width: 35%;
+    }
+    .lastNote{
+      float: left;
+      max-width: 35%;
+    }
+}
+  @media screen and (max-width: 1600px) {
+    .lastPost{
+    
+      float: right;
+      width: fit-content;
+      max-width: 30%;
+    }
+    .lastNote{
+      float: left;
+      max-width: 30%;
+    }
+  }
+    
   

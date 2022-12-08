@@ -3,16 +3,15 @@
     <!-- Header Create post -->
     <div class="row border-bottom border-secondary p-3">
         <div class="col-sm-auto">
-             <img src="@image" class="img rounded-circle"
-                style="width: 50px; height: 50px; outline: none; cursor: pointer" />
+             <img src="@image" class="img rounded-circle post-pfpic"
+                 />
         </div>
         <div class="col-6">
             <div class="container">
                 <EditForm Model="@_post" OnValidSubmit="@CreatePost">
                     <InputText class="form-control bg-dark text-light shadow-none border-0" @bind-Value="@(_post.Title)"
                         placeholder="Insert a title"></InputText>
-                    <textarea class="form-control bg-dark text-light shadow-none border-0" rows="1"
-                        style="resize: none; overflow: hidden; font-size: large; margin-top: 10px"
+                    <textarea class="form-control bg-dark text-light shadow-none border-0 post-textarea" rows="1"
                         oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
                         @bind="@(_post.Content)" 
                         placeholder="I'm not a bug, I'm a feature! (Content)"></textarea>
@@ -21,17 +20,17 @@
                 </EditForm>
             </div>
         </div>
-        <div class="col-3" style="margin-left: 300px;">
+        <div class="col-3 post-alert">
              @if(showAlert){
          @if (isSuccess)
             {
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-            <MudAlert Severity="Severity.Success"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+            <MudAlert Severity="Severity.Success"  class="note-popover" Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
             else{
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-                <MudAlert Severity="Severity.Error"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                <MudAlert Severity="Severity.Error" class="note-popover"  Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
         }
@@ -47,12 +46,11 @@
                 {
                    @if (post.Creator == user.Username && user.ProfilePicture != null)
                     {
-                        <img src="@string.Format(@imageFormat, @user.ProfilePicture)" class="img rounded-circle"
-                        style="width: 50px; height: 50px; outline: none; cursor: pointer"
+                        <img src="@string.Format(@imageFormat, @user.ProfilePicture)" class="img rounded-circle post-pfpic"
                         @onclick="() => GoToProfile(post.Username)" />
                 }
                 else if(post.Creator == user.Username && user.ProfilePicture == null){
-                    <img src="images/VIA-PP.jpg" class="img rounded-circle"style="width: 50px; height: 50px; outline: none; cursor: pointer"
+                    <img src="images/VIA-PP.jpg" class="img rounded-circle post-pfpic"
                 @onclick="() => GoToProfile(post.Username)" />
                     } 
                 }    
