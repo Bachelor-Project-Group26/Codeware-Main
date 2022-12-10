@@ -1,6 +1,6 @@
 ﻿@page "/SignUp"
 @attribute [Authorize]
-<section class="login-form-1 signup">
+<section class="signup-form login-form-1">
     <div class="container">
             <!-- /form -->
             <div class="login-form-grid">
@@ -58,8 +58,8 @@
     </section>
 @code {
     private UserDTO _userDetails = new UserDTO();
-    private byte[] ms;
-    private string username = "";
+    
+    private string username, image = "";
     public DateTime? date = DateTime.Today;
     private byte[]  _image = new byte[0];
     public IBrowserFile selectedFile { set; get; }
@@ -74,8 +74,8 @@
     private async void SubmitProfile()
     {
         try{
-        var result = await UserService.UpdateDetails(username, 0, _userDetails.FirstName, _userDetails.LastName, _userDetails.Email, _userDetails.Country, _userDetails.Bio, null, date, Convert.ToBase64String(ms.ToArray()));
-        navManager.NavigateTo("/profile/" + username);
+        var result = await UserService.UpdateDetails(username, 0, _userDetails.FirstName, _userDetails.LastName, _userDetails.Email, _userDetails.Country, _userDetails.Bio, null, date, image);
+        navManager.NavigateTo("/Profile/" + username);
         }
         catch(Exception e)
         {
@@ -89,13 +89,7 @@
         Stream fileStream = browserFile.OpenReadStream(maxFileSize);
         MemoryStream ms = new();
         await fileStream.CopyToAsync(ms);
+        image = Convert.ToBase64String(ms.ToArray());
     }
 
-    // method that takes a IBrowserfile and sends it
-    public static async Task<byte[]> GetBytes(IBrowserFile file)
-    {
-        var ms = new MemoryStream();
-        await file.OpenReadStream().CopyToAsync(ms);
-        return ms.ToArray();
-    }
 }

@@ -1,10 +1,10 @@
-@page "/posts"
+@page "/postsFromFollowing"
 <div class="index">
     <!-- Header Create post -->
     <div class="row border-bottom border-secondary p-3">
-        
         <div class="col-sm-auto">
-            <img src="@image" class="img rounded-circle post-pfpic" />
+             <img src="@image" class="img rounded-circle post-pfpic"
+                 />
         </div>
         <div class="col-6">
             <div class="container">
@@ -18,26 +18,23 @@
 
                     <button type="submit" class="btn btn-primary mt-2 float-left static">Post</button>
                 </EditForm>
-                <button @onclick="() => GoToFollowing()" class="btn btn-primary mt-2 float-left static">See following posts</button>
             </div>
-
         </div>
         <div class="col-3 post-alert">
              @if(showAlert){
          @if (isSuccess)
             {
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-            <MudAlert Severity="Severity.Success" class="note-popover" Variant="Variant.Outlined">@response</MudAlert>
+            <MudAlert Severity="Severity.Success"  class="note-popover" Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
             else{
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-                <MudAlert Severity="Severity.Error"  class="note-popover" Variant="Variant.Outlined">@response</MudAlert>
+                <MudAlert Severity="Severity.Error" class="note-popover"  Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
         }
         </div>
-        
         
     </div>
     <!-- End Header Create post -->
@@ -49,25 +46,24 @@
                 {
                    @if (post.Creator == user.Username && user.ProfilePicture != null)
                     {
-                        <img src="@string.Format(@imageFormat, @user.ProfilePicture)" 
-                        class="img rounded-circle post-pfpic"
+                        <img src="@string.Format(@imageFormat, @user.ProfilePicture)" class="img rounded-circle post-pfpic"
                         @onclick="() => GoToProfile(post.Username)" />
                 }
                 else if(post.Creator == user.Username && user.ProfilePicture == null){
                     <img src="images/VIA-PP.jpg" class="img rounded-circle post-pfpic"
-                    @onclick="() => GoToProfile(post.Username)" />
+                @onclick="() => GoToProfile(post.Username)" />
                     } 
-                }       
+                }    
             </div>
             <div class="col-auto">
-                <a class="mr-1 post-link" href="/profile/@(post.Creator)">@(post.Creator)</a>
-                <span class="mr-1 post-gray">@("@" + post.Creator)</span>
-                <span class="mr-1 post-gray">@(" - " + GetDate(post.CreatedDate))</span>
+                <a class="mr-1" style="color: black;" href="/profile/@(post.Creator)">@(post.Creator)</a>
+                <span class="mr-1" style="color: gray">@("@" + post.Creator)</span>
+                <span class="mr-1" style="color: gray">@(" - " + GetDate(post.CreatedDate))</span>
 
                 @if (post.Creator == username)
                 {
                     <button class="btn shadow-none" @onclick="() => DeletePost(post.Id)">
-                        <span class="oi oi-trash  post-gray" aria-hidden="true"></span>
+                        <span class="oi oi-trash" style="color: gray" aria-hidden="true"></span>
                     </button>
                 }
             </div>
@@ -76,20 +72,18 @@
 <div class="row border-bottom border-secondary">
     <div class="col-sm-1"></div>
     <div class="col-8">
-        <div class="postContainer">
-            <h5><b>@post.Title</b></h5>
-            <p>
-                <a class="mb-1 post-link" href="post/@post.Id">@(post.Content)</a>
+        <h5 style="margin-left: -83px; margin-top: -15px;"><b>@post.Title</b></h5>
+            <p style="margin-left: -60px;">
+                <a class="mb-1" style="color: black; word-wrap: break-word; text-decoration: none;" href="post/@post.Id">@(post.Content)</a>
             </p>
-            </div>
             <span class="oi oi-heart mr-2" style="color: red"></span>@post.Likes
         <div class="btn-group" >
             
-            <button class="btn shadow-none ml-3 post-gray" @onclick="() => ReactToPost(post.Id, 1)">
-                <span class="oi oi-thumb-up mr-2 post-gray"></span>
+            <button class="btn shadow-none ml-3" style="color: gray" @onclick="() => ReactToPost(post.Id, 1)">
+                <span class="oi oi-thumb-up mr-2" style="color: gray; "></span>
             </button>
-            <button class="btn shadow-none ml-3 post-gray" @onclick="() => ReactToPost(post.Id, 0)">
-                <span class="oi oi-thumb-down mr-2 post-gray"></span>
+            <button class="btn shadow-none ml-3" style="color: gray" @onclick="() => ReactToPost(post.Id, 0)">
+                <span class="oi oi-thumb-down mr-2" style="color: gray;"></span>
             </button>
         </div>
     </div>
@@ -101,19 +95,20 @@
 
 @code {
     public List<PostDTO> posts = new List<PostDTO>();
-    public List<UserDTO> users, toShow = new List<UserDTO>();
+    public List<UserDTO> users = new List<UserDTO>();
     private PostDTO _post= new PostDTO();
-    private UserDTO loggedUser = new UserDTO();
-    private string username, response, image, filter = "";
+    private string username, response, image = "";
     public bool showAlert, isSuccess = false;
-    public string imageFormat = "data:image/png;base64,{0}";
+    private UserDTO loggedUser = new UserDTO();
+    private string imageFormat = "data:image/png;base64,{0}";
+
    
     protected override async Task OnInitializedAsync()
     {
         var authState = await _authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         username = user.Identity.Name.ToString();
-        posts = await PostService.GetPostList(username);
+        posts = await PostService.GetPostListFromFollowing(username);
         users = await UserService.GetUsers();
         loggedUser = await UserService.GetUserByUsername(username);
         image = string.Format("data:image/png;base64,{0}", loggedUser.ProfilePicture);
@@ -125,7 +120,7 @@
         response = await PostService.CreatePost(username, _post.Title, _post.Content);
         if(response == "OKPost created!")
         {
-            posts = await PostService.GetPostList(username);
+            posts = await PostService.GetPostListFromFollowing(username);
             _post = new PostDTO();
             isSuccess = true;
             showAlert = true;
@@ -142,9 +137,6 @@
     }
     private void GoToProfile(string username){
         navManager.NavigateTo("/profile/" + username);
-    }
-    private void GoToFollowing(){
-        navManager.NavigateTo("/postsFromFollowing");
     }
     private string GetDate(DateTime timestamp)
     {
@@ -179,7 +171,6 @@
                 if(reaction == 0)
                     posts.First(p => p.Id == id).Likes--;
                 else if(reaction == 1)
-                    posts.First(p => p.Id == id).Likes++;
             showAlert = true;
             isSuccess = true;
             ShowAlert("Post reacted successfully");
@@ -199,21 +190,6 @@
         await Task.Delay(2000);
         showAlert = false;
         response = "";
-        StateHasChanged();
-    }
-    private void FilterByUser(){
-        if(filter != null){
-            toShow = users.Where(x => x.Username.Contains(filter)).ToList();
-            StateHasChanged();
-        }
-        else if (filter.Equals("")){
-            
-            toShow.Clear();
-            StateHasChanged();
-        }
-    }
-    private void ClearList(){
-        toShow.Clear();
         StateHasChanged();
     }
 }

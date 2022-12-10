@@ -12,6 +12,6 @@
         public string? Country { get; set; }
         public string? Bio { get; set; }
         public DateTime? Birthday { get; set; }
-        public string? Image { get; set; }
+        public string? ProfilePicture { get; set; }
     }
 }

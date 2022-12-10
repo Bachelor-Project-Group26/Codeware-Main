@@ -1,11 +1,11 @@
 @page "/profile/{username}"
 <div>
-  @if (user.FirstName == "" && user.Username == loggedUser)
+  @if (firstName.Equals("") && _username == loggedUser)
   {
 
     <FourOFourPR />
   }
-  else if (user.FirstName == "" && user.Username != loggedUser)
+  else if (firstName.Equals("") && _username != loggedUser)
   {
     <FourOFour />
   }
@@ -13,8 +13,13 @@
   {
 
     <div class="profilePic">
-      <img class="profile" src="images/Picture.png" alt="profilepic">
-
+      @if (user.ProfilePicture == null)
+      {
+        <img class="profile" src="images/VIA-PP.jpg" alt="profilepic">
+      }
+      else{
+          <img class="profile" src="@_image" alt="profilepic">
+      }
       <h1>@user.FirstName @user.LastName
         @if (user.Username == loggedUser)
         {
@@ -73,10 +78,10 @@
       }
       @if (loggedUser == username)
       {
-        <div style="width: 100%; margin-left: 6rem">
+        <div style="width: 100%; margin-left: 6rem;">
           <div class="lastNote">
             <h4>Last Note:</h4>
-            <MudCard Style="width : auto;  ">
+            <MudCard>
               <MudCardHeader>
                 <CardHeaderContent>
                   <MudText Typo="Typo.h6">@lastNote.Title</MudText>
@@ -96,7 +101,7 @@
           </div>
           <div class="lastPost">
             <h4>Last Post:</h4>
-            <MudCard Style="width : auto;  ">
+            <MudCard>
               <MudCardHeader>
                 <CardHeaderContent>
                   <a href="/post/@lastPost.Id" style="all: unset; ">
@@ -137,12 +142,12 @@
          @if (isSuccess)
             {
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-            <MudAlert Severity="Severity.Success"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+            <MudAlert Severity="Severity.Success"  class="alertProfile" Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
             else{
                 <Animate Animation="Animations.FadeLeft"  Duration="TimeSpan.FromSeconds(0.6)" >
-                <MudAlert Severity="Severity.Error"  style="float: right; padding: 10px;" Variant="Variant.Outlined">@response</MudAlert>
+                <MudAlert Severity="Severity.Error" class="alertProfile" Variant="Variant.Outlined">@response</MudAlert>
                 </Animate>
             }
         }
@@ -152,7 +157,9 @@
   [Parameter]
   public string username { get; set; }
 
-  public string loggedUser, response = "";
+  public string loggedUser, response, _image = "";
+  public string firstName = "";
+  public string _username = "";
   public UserDTO user = new UserDTO();
   public List<NoteDTO> notes = new List<NoteDTO>();
   public NoteDTO lastNote = new NoteDTO();
@@ -164,23 +171,32 @@
     var authState = await _authStateProvider.GetAuthenticationStateAsync();
     var loggeduserObj = authState.User;
     loggedUser = loggeduserObj.Identity.Name;
+    
     try
     {
       user = await UserService.GetUserByUsername(username);
+      _image = string.Format("data:image/png;base64,{0}", user.ProfilePicture);
       posts = await PostService.GetPostListFromUser(loggedUser, username);
-      lastPost = posts[^1];
+      if(posts.Count > 0){
+
+        lastPost = posts[^1];
+      }
     }
     catch (Exception e)
     {
       Console.WriteLine(e);
       navManager.NavigateTo("/404");
     }
+    firstName = user.FirstName;
+    _username = user.Username;
     try
     {
       if (user.Username == loggedUser)
       {
         notes = await NoteService.GetNoteList(username);
+        if(notes.Count > 0){
         lastNote = notes[^1];
+        }
       }
     }
     catch (Exception e)

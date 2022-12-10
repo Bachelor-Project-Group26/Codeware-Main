@@ -155,7 +155,7 @@ namespace BPR_API.Controllers
                 if (userDTO.Country != null) dbUserDetails.Country = userDTO.Country;
                 if (userDTO.Bio != null) dbUserDetails.Bio = userDTO.Bio;
                 if (userDTO.Birthday != null) dbUserDetails.Birthday = userDTO.Birthday;
-                if (userDTO.Image != null) dbUserDetails.ProfilePicture = Encoding.ASCII.GetBytes(userDTO.Image);
+                if (userDTO.ProfilePicture != null) dbUserDetails.ProfilePicture = Convert.FromBase64String(userDTO.ProfilePicture);
 
                 _dbContext.UserDetails.Update(dbUserDetails);
                 _dbContext.SaveChanges();
@@ -167,7 +167,7 @@ namespace BPR_API.Controllers
                 return BadRequest("Something went wrong! Error:" + e.Message);
             }
         }
-
+        
         /// <summary>
         /// Updates the password of a user.
         /// </summary>

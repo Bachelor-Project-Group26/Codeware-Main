@@ -23,6 +23,7 @@
                         </EditForm>
                         
                         <p class="account">Don't have an account? <a href="register">Register</a></p>
+                        <p style="color : red;">@error</p>
                     </div>
                     <div class="login_form align-self">
                         <div class="left_grid_info">
@@ -38,18 +39,21 @@
     </section>
 @code {
     UserDTO _userWithPassword = new UserDTO();
-
+    private string error = "";
     private async void OnValidSubmit()
     {
         try
         {
             var result =  await UserService.Login(_userWithPassword.Username, _userWithPassword.Password);
-            if (true)//!result.Equals(""))
+            if (!result.Equals("BadRequestWrong password!"))
             {
                 await LocalStorage.SetItemAsync("token", result);
                 await _authStateProvider.GetAuthenticationStateAsync();
                 StateHasChanged();
                 navManager.NavigateTo("index");
+            }else{
+                error = "Wrong password!";
+                StateHasChanged();
             }
         }
         catch (Exception e)

@@ -17,7 +17,7 @@
 }
 html, body {
     font-family: 'circular_stdlight';
-    background-color: #eaebe5;
+    background-color: #a4d39f;
 }
 
 h1:focus {
@@ -231,7 +231,23 @@ a, .btn-link {
     grid-template-rows: 1fr auto 1fr;
     align-items: center;
 }
+.login-form-2 {
+    position: relative;
+    min-height: 100vh;
+    z-index: 0;
+    background: linear-gradient(141deg, #0026f9, #e500e6);
+    background-size: 400% 400%;
 
+    -webkit-animation: AnimationName 31s ease infinite;
+    -moz-animation: AnimationName 31s ease infinite;
+    animation: AnimationName 31s ease infinite;
+    
+    padding: 40px 40px;
+    justify-content: center;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    align-items: center;
+}
 .login-content {
     flex-basis:50%;
     -webkit-flex-basis:50%;
@@ -329,7 +345,7 @@ a, .btn-link {
     grid-template-rows: 1fr auto 1fr;
     align-items: center;
 }
-.login-form-1.signup{
+.signup-form{
     position: relative;
     z-index: 0;
     background: linear-gradient(270deg, #eeaeca, #75aced);
@@ -341,7 +357,7 @@ a, .btn-link {
     padding: 40px 40px;
     justify-content: center;
     display: grid;
-    grid-template-rows: 1fr auto 1fr;
+    grid-template-rows: 1fr;
     align-items: center;
 }
 
@@ -474,6 +490,11 @@ form .signup{
     align-items: center;
     margin-top: 250px;
     margin-right: 20px;
+    
+}
+.single-note{
+    width : auto;
+    background-color: #EBE4D2;
 }
 .card-notes{
     display: flex;
@@ -484,8 +505,12 @@ form .signup{
     flex-wrap: wrap;
     width: auto;
     overflow: auto;
-    max-height: 250px;
-    
+    max-height: 250px; 
+}
+.card-note #card{
+    background-color: #EBE4D2;
+    width : 270px; 
+    margin : 20px;
 }
 .lastNote{
     float: left;
@@ -495,13 +520,128 @@ form .signup{
     width: 500px;
     height: 400px;
     margin-top: 25px;
-    background-color: #fcd297;
+    background-color: #EBE4D2;
 }
-
-
+.create-note #input{
+    width: 300px;
+}
+.create-note #close{
+    float : right; 
+    margin-top : -75px;
+}
+.create-note textarea{
+    width: 450px; 
+    height: 230px;
+    background-color: #EBE4D2;
+    border-width: 1px;
+}
 .post-container{
     border: 1px solid #000;
     min-width: 200px;
     width: 100px;
     margin-top: 10px;
+}
+.post-pfpic{
+    width: 50px; 
+    height: 50px; 
+    outline: none; 
+    cursor: pointer;
+}
+.post-alert{
+    margin-left: 300px;
+}
+.post-textarea{
+    resize: none; 
+    overflow: hidden; 
+    font-size: large; 
+    margin-top: 10px;
+}
+.post-link{
+    color: black; 
+    word-wrap: break-word; 
+    text-decoration: none;
+}
+.note-popover{
+    float : right; 
+    margin: 15px;
+}
+.post-gray{
+    color: #8C8C8C;
+}
+.no-notes{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;  
+}
+.no-notes button{
+    float : right; 
+    margin: 15px;
+}
+@media screen and (min-width: 1920px){
+    .postContainer h5{
+        margin-left: -83px; 
+        margin-top: -15px;
+    }
+    .postContainer p{
+        margin-left: -60px;
+    }
+}
+@media screen and (max-width: 1600px){
+    .postContainer h5{
+        margin-left: -53px; 
+        margin-top: -15px;
+    }
+    .postContainer p{
+        margin-left: -50px;
+    }
+}
+@media screen and (max-width: 1440px){
+    .postContainer h5{
+        margin-left: -43px; 
+        margin-top: -15px;
+    }
+    .postContainer p{
+        margin-left: -30px;
+    }
+}
+@media screen and (max-width: 1280px){
+    .postContainer h5{
+        margin-left: -33px; 
+        margin-top: -15px;
+    }
+    .postContainer p{
+        margin-left: -32px;
+    }
+}
+@media screen and (max-width: 1152px){
+    .postContainer h5{
+        margin-left: -10px; 
+        margin-top: -15px;
+    }
+    .postContainer p{
+        margin-left: -10px;
+    }
+}
+@media screen and (max-width: 1024px){
+    .postContainer h5{
+        margin-left: -10px; 
+        margin-top: -15px;
+    }
+    .postContainer p{
+        margin-left: -10px;
+    }
+}
+.alertProfile{
+    float: right;
+     padding: 10px;
+}
+.chatContainer{
+    margin-top: 50px; 
+    margin-left: 10px;
+}
+.chatIcon{
+    width: 35px;
 }

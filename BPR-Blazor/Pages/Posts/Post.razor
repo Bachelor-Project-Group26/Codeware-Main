@@ -2,8 +2,17 @@
 <div class="index">
  <div class="row pt-3">
             <div class="col-sm-1">
-                <img src="images/Picture.png" class="img rounded-circle"
+                @if (user.ProfilePicture != null)
+                {
+                    <img src="@string.Format(@imageFormat, @user.ProfilePicture)" class="img rounded-circle"
+                        style="width: 50px; height: 50px; outline: none; cursor: pointer"
+                        @onclick="() => GoToProfile(post.Username)" />
+                }
+                else{
+                    <img src="images/VIA-PP.jpg" class="img rounded-circle"
                      style="width: 50px; height: 50px; outline: none; cursor: pointer" @onclick="() => GoToProfile(post.Creator)" />
+                }
+                
             </div>
             <div class="col-auto" style="margin-left:-90px;">
                 <a class="mr-1" style="color: black;" href="/profile/@(post.Creator)">@(post.Creator)</a>
@@ -35,15 +44,17 @@
      public string username,response = "";
      public PostDTO post = new PostDTO();
     public bool showAlert, isSuccess = false;
+    public UserDTO user = new UserDTO();
+    public string imageFormat = "data:image/png;base64,{0}";
      protected override async Task OnInitializedAsync()
      {
         id = int.Parse(postId);
         var authState  = await _authStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        username = user.Identity.Name.ToString();
+        var loggedUser = authState.User;
+        username = loggedUser.Identity.Name.ToString();
         try{
             post = await PostService.GetPost(username, id);
-            Console.WriteLine(post.Creator);
+            user = await UserService.GetUserByUsername(post.Creator);
             StateHasChanged();
         }
         catch(Exception e){
