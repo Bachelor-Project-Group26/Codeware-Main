@@ -8,7 +8,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-// Add services to the container.
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

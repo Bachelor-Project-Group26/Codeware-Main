@@ -5,9 +5,9 @@ namespace BPR_API.DataAccess
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<UserDetails> UserDetails { get; set; }
-        public DbSet<UserPassword> UserPasswords { get; set; }
-        public DbSet<UserChat> UserChats { get; set; }
+        public virtual DbSet<UserDetails> UserDetails { get; set; }
+        public virtual DbSet<UserPassword> UserPasswords { get; set; }
+        public virtual DbSet<UserChat> UserChats { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Subject> Subjects { get; set; }

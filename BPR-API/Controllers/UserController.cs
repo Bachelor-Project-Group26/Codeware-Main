@@ -25,13 +25,19 @@ namespace BPR_API.Controllers
             _dbContext = new DatabaseContext();
         }
 
+        public UserController(IConfiguration configuration, DatabaseContext context)
+        {
+            _configuration = configuration;
+            _dbContext = context;
+        }
+
         /// <summary>
         /// Checks the credentials of the user and logs them in.
         /// </summary>
         /// <param name="userDTO">Carries data related to the user between the client and the API.</param>
         /// <returns>Action result with a JSON Web Token if successful or an error message.</returns>
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login([FromBody] UserDTO userDTO)
+        public ObjectResult Login([FromBody] UserDTO userDTO)
         {
             try
             {
@@ -55,12 +61,17 @@ namespace BPR_API.Controllers
         [HttpPost("register")]
         public ObjectResult Register([FromBody] UserDTO userDTO)
         {
-            using (DatabaseContext dbContext = new DatabaseContext())
+            try
             {
-                var dbPassword = dbContext.UserPasswords.FirstOrDefault(p => p.Username == userDTO.Username);
-                var dbUser = dbContext.UserDetails.FirstOrDefault(u => u.Username == userDTO.Username);
+                var dbPassword = _dbContext.UserPasswords.FirstOrDefault(p => p.Username == userDTO.Username);
+                var dbUser = _dbContext.UserDetails.FirstOrDefault(u => u.Username == userDTO.Username);
                 if (dbPassword != null | dbUser != null) return BadRequest("User already exists!");
             }
+            catch (Exception e)
+            {
+                return BadRequest("Something went wrong! Error:" + e.Message);
+            }
+        
 
             UserDetails userDetails = new UserDetails()
             {
@@ -79,7 +90,7 @@ namespace BPR_API.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Something went wrong! Error:" + e.Message);
+                return BadRequest("Something went wrong!");
             }
 
             return Ok("User created!");
@@ -108,7 +119,6 @@ namespace BPR_API.Controllers
         /// <summary>
         /// Gets a list of all users.
         /// </summary>
-        /// <param name="userDTO">Carries data related to the user between the client and the API.</param>
         /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpGet]
         public async Task<ActionResult<string>> GetAllUsers()
@@ -187,7 +197,7 @@ namespace BPR_API.Controllers
         /// <summary>
         /// Deletes a user.
         /// </summary>
-        /// <param name="userDTO">Carries data related to the user between the client and the API.</param>
+        /// <param name="user">Carries data related to the user between the client and the API.</param>
         /// <returns>Action result and a string with message regarding the action result.</returns>
         [HttpPut("delete"), Authorize]
         public async Task<ActionResult<string>> DeleteUser([FromBody] UserDTO user)
