@@ -262,8 +262,10 @@ namespace BPR_API.Controllers
             try
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-                var comment = _dbContext.Comments.Add(new Comment{PostId = postDTO.Id, UserId = user.Id, 
-                    Username = postDTO.Username, Title = postDTO.Title, Description = postDTO.Content});
+                var comment = _dbContext.Comments1.Add(new Comment{PostId = postDTO.Id, UserId = user.Id, Username = postDTO.Username,Title = postDTO.Title, Description = postDTO.Content});
+                var toUpdate = _dbContext.Posts.FirstOrDefault(p => p.Id == postDTO.Id);
+                toUpdate.Comments.Add(comment.Entity);
+                _dbContext.Posts.Update(toUpdate);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Comment added!");
             }
@@ -278,8 +280,23 @@ namespace BPR_API.Controllers
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var comments = _dbContext.Comments.Where(c => c.PostId == postDTO.Id).ToList();
+                var comments = _dbContext.Comments1.Where(c => c.PostId == postDTO.Id).ToList();
                 return Ok(comments);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Something went wrong! Error: " + e.Message + "Inner: " + e.InnerException);
+            }
+        }
+        [HttpPost("delete_comment"), Authorize]
+        public async Task<ActionResult<string>> DeleteComment ([FromBody] PostDTO postDTO){
+            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            {
+                var comment = _dbContext.Comments1.FirstOrDefault(c => c.PostId == postDTO.Id && c.CommentId == postDTO.followedId);
+                _dbContext.Comments1.Remove(comment);
+                await _dbContext.SaveChangesAsync();
+                return Ok("Comment deleted!");
             }
             catch (Exception e)
             {

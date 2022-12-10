@@ -20,7 +20,8 @@ namespace BPR_Blazor.Data
                 Content = postContent,
                 followedId = 0,
                 Reaction = 0,
-                CreatedDate = DateTime.Now
+                CreatedDate = DateTime.Now,
+                Comments = new List<CommentDTO>()
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
@@ -44,7 +45,8 @@ namespace BPR_Blazor.Data
                 Title = "",
                 followedId = 0,
                 Reaction = 0,
-                CreatedDate = DateTime.Now
+                CreatedDate = DateTime.Now,
+                Comments = new List<CommentDTO>()
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
@@ -69,7 +71,8 @@ namespace BPR_Blazor.Data
                 followedId = 0,
                 CreatedDate = DateTime.Now,
                 Reaction = reaction,
-                Likes = 0
+                Likes = 0,
+                Comments = new List<CommentDTO>()
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
@@ -95,7 +98,8 @@ namespace BPR_Blazor.Data
                 Title = "",
                 Content = "",
                 CreatedDate = DateTime.Now,
-                Likes = 0
+                Likes = 0,
+                Comments = new List<CommentDTO>()
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
@@ -121,6 +125,7 @@ namespace BPR_Blazor.Data
                 Title = usernameToGet,
                 Content = "",
                 CreatedDate = DateTime.Now,
+                Comments = new List<CommentDTO>()
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
@@ -145,6 +150,7 @@ namespace BPR_Blazor.Data
                 Title = "",
                 Content = "",
                 CreatedDate = DateTime.Now,
+                Comments = new List<CommentDTO>()
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
@@ -169,6 +175,7 @@ namespace BPR_Blazor.Data
                 Title = "",
                 Content = "",
                 CreatedDate = DateTime.Now,
+                Comments = new List<CommentDTO>()
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
@@ -193,6 +200,7 @@ namespace BPR_Blazor.Data
                 Title = "",
                 Content = "",
                 CreatedDate = DateTime.Now,
+                Comments = new List<CommentDTO>()
 
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
@@ -219,6 +227,7 @@ namespace BPR_Blazor.Data
                 Title = "",
                 Content = "",
                 CreatedDate = DateTime.Now,
+                Comments = new List<CommentDTO>()
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
@@ -231,6 +240,53 @@ namespace BPR_Blazor.Data
             }
         }
 
-       
+       public async Task<string> Comment (string username, string Title, string Content, int id){
+            PostDTO comment = new PostDTO{
+                Username = username,
+                Username2 = "",
+                Id = id,
+                followedId = 0,
+                isUser = true,
+                Reaction = 0,
+                Title = Title,
+                Content = Content,
+                CreatedDate = DateTime.Now,
+                Comments = new List<CommentDTO>()
+                };
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(comment);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/send_Comment", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(json);
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return response.StatusCode + str;
+            }
+        }
+        public async Task<List<CommentDTO>> GetComments (string username, int id){
+             List<CommentDTO> comments = new List<CommentDTO>();
+             PostDTO user = new PostDTO
+            {
+                Username = username,
+                Username2 = "",
+                Id = id,
+                followedId = 0,
+                isUser = true,
+                Reaction = 0,
+                Title = "",
+                Content = "",
+                CreatedDate = DateTime.Now,
+                Likes = 0,
+                Comments = new List<CommentDTO>()
+            };
+            string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_Comments", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                comments = JsonConvert.DeserializeObject<List<CommentDTO>>(json);
+                return comments;
+            }
+        }
     }
 }

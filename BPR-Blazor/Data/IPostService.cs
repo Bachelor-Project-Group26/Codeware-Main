@@ -12,5 +12,7 @@ namespace BPR_Blazor.Data
         public  Task<List<PostDTO>> GetPostListFromUser(string username, string usernameToGet);
         public Task<string> Follow(string username,string usernameToFollow);
         public Task<string> Unfollow(string username,string usernameToUnfollow);
+         public Task<List<CommentDTO>> GetComments (string username, int id);
+         public Task<string> Comment (string username, string Title, string Content, int id);
     }
 }

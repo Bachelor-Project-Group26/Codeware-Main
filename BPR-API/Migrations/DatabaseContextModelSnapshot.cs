@@ -41,12 +41,12 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chats");
+                    b.ToTable("Chats", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -68,9 +68,11 @@ namespace BPR_API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("CommentId");
 
-                    b.ToTable("Comments");
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Following", b =>
@@ -86,7 +88,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("UserId", "FollowedId");
 
-                    b.ToTable("FollowingList");
+                    b.ToTable("FollowingList", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Message", b =>
@@ -111,7 +113,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Note", b =>
@@ -137,7 +139,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("NoteId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Post", b =>
@@ -172,7 +174,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Reaction", b =>
@@ -188,7 +190,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("UserId", "PostId");
 
-                    b.ToTable("Reactions");
+                    b.ToTable("Reactions", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.Subject", b =>
@@ -207,7 +209,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.SubjectOwner", b =>
@@ -220,7 +222,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("UserId", "SubjectId");
 
-                    b.ToTable("SubjectOwners");
+                    b.ToTable("SubjectOwners", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.UserChat", b =>
@@ -233,7 +235,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("UserId", "ChatId");
 
-                    b.ToTable("UserChats");
+                    b.ToTable("UserChats", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.UserDetails", b =>
@@ -280,7 +282,7 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserDetails");
+                    b.ToTable("UserDetails", (string)null);
                 });
 
             modelBuilder.Entity("BPR_API.DBModels.UserPassword", b =>
@@ -306,7 +308,21 @@ namespace BPR_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserPasswords");
+                    b.ToTable("UserPasswords", (string)null);
+                });
+
+            modelBuilder.Entity("BPR_API.DBModels.Comment", b =>
+                {
+                    b.HasOne("BPR_API.DBModels.Post", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BPR_API.DBModels.Post", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,20 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BPR_API.DBModels
+namespace BPR_Blazor.Models
 {
-    public class Comment
+    public class CommentDTO
     {
-        [Key]
-        public int CommentId { get; set; }
         
+        public int Id { get; set; }
+       
         public string Username { get; set; }
         
         public string Title { get; set; }
-        
         public string Description { get; set; }
         
         public int PostId { get; set; }
-    
+       
         public int UserId { get; set; }
+        
     }
 }

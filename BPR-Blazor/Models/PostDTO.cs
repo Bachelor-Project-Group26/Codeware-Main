@@ -13,5 +13,6 @@
         public DateTime CreatedDate { get; set; }
         public int Reaction { get; set; }
         public int Likes { get; set; }
+        public ICollection<CommentDTO>? Comments { get; set; }
     }
 }
