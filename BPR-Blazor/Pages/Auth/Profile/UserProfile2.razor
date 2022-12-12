@@ -1,4 +1,5 @@
 @page "/profile/{username}"
+@attribute [Authorize]
 <div>
   @if (firstName.Equals("") && _username == loggedUser)
   {
@@ -39,11 +40,17 @@
         <p>You can contact me at @user.Email</p>
       }
       <div>
-        <p>@user.Country</p>
+        @if (user.Country == null)
+      {
+        <p></p>
+      }
+      else
+      {
+        <p>I'm from @user.Country</p>
+      }
       </div>
-    </div>
-    <div class="skills">
-      @if (loggedUser != username)
+      <div >
+        @if (loggedUser != username)
       {
         @if (!_alreadyFollows)
         {
@@ -76,6 +83,10 @@
         }
 
       }
+      </div>
+    </div>
+    <div class="skills">
+      
       @if (loggedUser == username)
       {
         <div style="width: 100%; margin-left: 6rem;">
@@ -155,16 +166,16 @@
 
 @code {
   [Parameter]
-  public string username { get; set; }
+  private string username { get; set; }
 
-  public string loggedUser, response, _image = "";
-  public string firstName = "";
-  public string _username = "";
-  public UserDTO user = new UserDTO();
-  public List<NoteDTO> notes = new List<NoteDTO>();
-  public NoteDTO lastNote = new NoteDTO();
-  public List<PostDTO> posts = new List<PostDTO>();
-  public PostDTO lastPost = new PostDTO();
+  private string loggedUser, response, _image = "";
+  private string firstName = "";
+  private string _username = "";
+  private UserDTO user = new UserDTO();
+  private List<NoteDTO> notes = new List<NoteDTO>();
+  private NoteDTO lastNote = new NoteDTO();
+  private List<PostDTO> posts = new List<PostDTO>();
+  private PostDTO lastPost = new PostDTO();
   private bool _processing, _alreadyFollows,showAlert, isSuccess = false;
   protected override async Task OnInitializedAsync()
   {
@@ -203,7 +214,17 @@
     {
       Console.WriteLine(e);
     }
-
+    try{
+      if(await PostService.CheckIfFollows(loggedUser, username) == "Followed"){
+        _alreadyFollows = true;
+        StateHasChanged();
+      }else{
+        _alreadyFollows = false;
+        StateHasChanged();
+      }
+    }catch(Exception e){
+      Console.WriteLine(e);
+    }
     StateHasChanged();
   }
   private async Task FollowUser()
@@ -213,16 +234,6 @@
      await Task.Delay(1000);
      _alreadyFollows = true;
     _processing = false;
-    if(result == "BadRequestSomething went wrong with following the user!"){
-      showAlert = true;
-      isSuccess = false;
-      await ShowAlert("You already follow this user!");
-    }
-    else{
-      showAlert = true;
-      isSuccess = true;
-      await ShowAlert("You are now following this user!");
-    }
     StateHasChanged();
   }
   private async Task UnFollowUser()

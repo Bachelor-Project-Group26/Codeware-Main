@@ -3,7 +3,7 @@ namespace BPR_Blazor.Models
     public class CommentDTO
     {
         
-        public int Id { get; set; }
+        public int CommentId { get; set; }
        
         public string Username { get; set; }
         

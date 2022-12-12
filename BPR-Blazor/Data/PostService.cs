@@ -179,7 +179,7 @@ namespace BPR_Blazor.Data
             };
             string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(post);
             StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_followed_posts", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/get_followed_posts_all", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 posts = JsonConvert.DeserializeObject<List<PostDTO>>(json);
@@ -286,6 +286,65 @@ namespace BPR_Blazor.Data
                 var json = await response.Content.ReadAsStringAsync();
                 comments = JsonConvert.DeserializeObject<List<CommentDTO>>(json);
                 return comments;
+            }
+        }
+         public async Task<string> CheckIfFollows (string username, string username2){
+                PostDTO user = new PostDTO
+                {
+                    Username = username,
+                    Username2 = username2,
+                    Id = 0,
+                    followedId = 0,
+                    isUser = true,
+                    Reaction = 0,
+                    Title = "",
+                    Content = "",
+                    CreatedDate = DateTime.Now,
+                    Likes = 0,
+                    Comments = new List<CommentDTO>()
+                };
+                string jsonPost = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+                StringContent content = new StringContent(jsonPost, Encoding.UTF8, "application/json");
+                using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/check_followed", content))
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var str = JsonConvert.DeserializeObject<string>(json);
+                    return str;
+                }
+         }
+         public async Task<string> DeleteComment(string username, int postId, int commentId)
+        {
+            PostDTO user = new PostDTO
+            {
+                Username = username,
+                Username2 = "",
+                Id = postId,
+                followedId = commentId,
+                isUser = true,
+                Title = "",
+                Content = "",
+                CreatedDate = DateTime.Now,
+                Reaction = 0,                
+                Likes = 0,
+                Comments = new List<CommentDTO>{
+                    new CommentDTO{
+                        CommentId = 0,
+                        Username = "",
+                        Title = "",
+                        Description = "",
+                        PostId = 0,
+                        UserId = 0,
+                    }
+                }
+            };
+            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync($"{URL}/Post/delete_comment", content))
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(json);
+                var str = JsonConvert.DeserializeObject<string>(json);
+                return str;
             }
         }
     }

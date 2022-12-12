@@ -1,4 +1,5 @@
 @page "/posts"
+@attribute [Authorize]
 <div class="index">
     <!-- Header Create post -->
     <div class="row border-bottom border-secondary p-3">
@@ -101,10 +102,10 @@
 
 @code {
     public List<PostDTO> posts = new List<PostDTO>();
-    public List<UserDTO> users, toShow = new List<UserDTO>();
+    public List<UserDTO> users = new List<UserDTO>();
     private PostDTO _post= new PostDTO();
     private UserDTO loggedUser = new UserDTO();
-    private string username, response, image, filter = "";
+    private string username = "", response = "", image = "";
     public bool showAlert, isSuccess = false;
     public string imageFormat = "data:image/png;base64,{0}";
    
@@ -199,21 +200,6 @@
         await Task.Delay(2000);
         showAlert = false;
         response = "";
-        StateHasChanged();
-    }
-    private void FilterByUser(){
-        if(filter != null){
-            toShow = users.Where(x => x.Username.Contains(filter)).ToList();
-            StateHasChanged();
-        }
-        else if (filter.Equals("")){
-            
-            toShow.Clear();
-            StateHasChanged();
-        }
-    }
-    private void ClearList(){
-        toShow.Clear();
         StateHasChanged();
     }
 }

@@ -109,40 +109,7 @@ namespace BPR_Blazor.Data
             };
             string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
             StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/delete", content))
-            {
-                var json = await response.Content.ReadAsStringAsync();
-                var str = JsonConvert.DeserializeObject<string>(json);
-                return response.StatusCode + str;
-            }
-        }
-
-        //Returns a list of IDs, Usernames, First Name, Last Name
-        //public async Task<List<UserDTO>> GetAllUsers()
-        //{
-        //    UserDTO user = new UserDTO
-        //    {
-        //        Username = username
-        //    };
-        //    string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-        //    StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-        //    using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{url}/User/get_users", content))
-        //    {
-        //        var json = await response.Content.ReadAsStringAsync();
-        //        var str = JsonConvert.DeserializeObject<string>(json);
-        //        return response.StatusCode + str;
-        //    }
-        //}
-
-        public async Task<string> DeleteUser(string username)
-        {
-            UserDTO user = new UserDTO
-            {
-                Username = username
-            };
-            string jsonUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-            StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/delete", content))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PutAsync($"{URL}/User/update_password", content))
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var str = JsonConvert.DeserializeObject<string>(json);

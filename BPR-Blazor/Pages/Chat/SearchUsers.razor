@@ -1,4 +1,5 @@
 @page "/search"
+@attribute [Authorize]
 <section class="index">
     
 
@@ -64,22 +65,5 @@
     private void ClearList(){
         toShow.Clear();
         StateHasChanged();
-    }
-     private void FilterByUsername(ChangeEventArgs args)
-    {
-        string filterByUsername = args.Value.ToString();
-        Console.WriteLine("Filter: " + filterByUsername + "Args: " + args.Value.ToString());
-        StateHasChanged();
-        if (args.Value.ToString() != null)
-        {
-            toShow = allUsers.Where(t => t.Username.Contains(filterByUsername)).ToList();
-            StateHasChanged();
-            
-        }
-        else if(args.Value.ToString() == ""){
-            allUsers.Clear();
-            toShow.Clear();
-            StateHasChanged();
-        }
     }
 }

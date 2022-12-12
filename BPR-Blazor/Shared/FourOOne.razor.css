@@ -1,0 +1,149 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  
+  body {
+    font-size: 0.938rem;
+    font-weight: 500;
+    color: hsl(38, 8%, 8%);
+  }
+  
+  ul {
+    list-style: none;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  .container {
+    max-width: 1024px;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+  
+  .main {
+    overflow: hidden;
+  }
+  
+  .home {
+    background-color: hsl(4, 75%, 51%);
+    padding: 9rem 0 2rem;
+    height: 100vh;
+    display: grid;
+  }
+  
+  .home_container {
+    display: grid;
+    align-content: center;
+    row-gap: 2.5rem;
+  }
+  
+  .data {
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 2.375rem;
+    margin: 0.75rem 0;
+  }
+  
+  .button {
+    margin-top: 2rem;
+    display: inline-block;
+    background-color: hsl(38, 8%, 8%);
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 3rem;
+    transition: 0.4s;
+  }
+  
+  .button:hover {
+    box-shadow: 0 4px 12px hsla(38, 69%, 8%, 0.2);
+  }
+  
+  .img_container img {
+    width: 230px;
+    animation: floaty 1.8s infinite alternate;
+  }
+  
+  .img_container {
+    justify-self: center;
+  }
+  
+  .shadow {
+    width: 130px;
+    height: 24px;
+    background-color: hsla(38, 21%, 19%, 0.16);
+    margin: 0 auto;
+    border-radius: 50%;
+    filter: blur(7px);
+    animation: shadow 1.8s infinite alternate;
+  }
+  
+  @keyframes floaty {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(15px);
+    }
+  }
+  
+  @keyframes shadow {
+    0% {
+      transform: scale(1, 1);
+    }
+    100% {
+      transform: scale(0.85, 0.85);
+    }
+  }
+  
+  @media screen and (max-width: 320px) {
+    .home {
+      padding-top: 7rem;
+    }
+  }
+  
+  @media screen and (min-width: 1024px) {
+    .home_container {
+      grid-template-columns: repeat(2, 1fr);
+      align-items: center;
+      column-gap: 2rem;
+    }
+    .data {
+      text-align: initial;
+    }
+    .img_container img {
+      width: 400px;
+    }
+    .shadow {
+      width: 250px;
+      height: 40px;
+    }
+  }
+  
+  @media screen and (min-width: 1048px) {
+    .container {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  
+  @media screen and (min-width: 2048px) {
+    body {
+      zoom: 1.7;
+    }
+  
+    .home {
+      height: initial;
+      row-gap: 4rem;
+    }
+  }
+  

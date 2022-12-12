@@ -1,27 +1,6 @@
 @page "/chats"
 @attribute [Authorize]
 
-<!--Chat list  
-<section class="index">
-<div class="col-4">
-    <h1>Chats</h1><a href="createChat">Create a chat</a>
-    @if (chats is not null)
-    {
-       @foreach (var chat in chats)
-        {
-        <div>
-            <a href="/chat/@chat.chatId"><h4>@chat.chatId</h4></a>
-            
-        </div>
-        } 
-    }else{
-        <div style="height: 50px">
-                <p>Loading...</p>
-            </div>
-    }
-    
-</div>
-</section>-->
 <section class="index">
 <div class="d-flex flex-grow-1 flex-row" style="margin-top: 50px; margin-left: 10px;">
     <MudPaper Elevation = "25" Class = "py-4 flex-grow-1">
