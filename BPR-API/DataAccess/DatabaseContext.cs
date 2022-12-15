@@ -8,15 +8,15 @@ namespace BPR_API.DataAccess
         public virtual DbSet<UserDetails> UserDetails { get; set; }
         public virtual DbSet<UserPassword> UserPasswords { get; set; }
         public virtual DbSet<UserChat> UserChats { get; set; }
-        public DbSet<Chat> Chats { get; set; }
-        public DbSet<Message> Messages { get; set; }
-        public DbSet<Subject> Subjects { get; set; }
-        public DbSet<SubjectOwner> SubjectOwners { get; set; }
-        public DbSet<Following> FollowingList { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<Reaction> Reactions { get; set; }
-        public DbSet<Note> Notes { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Chat> Chats { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<SubjectOwner> SubjectOwners { get; set; }
+        public virtual DbSet<Following> FollowingList { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<Reaction> Reactions { get; set; }
+        public virtual DbSet<Note> Notes { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

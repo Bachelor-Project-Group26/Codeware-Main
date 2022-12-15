@@ -14,6 +14,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
 
 namespace BPR_API_Tests
 {
@@ -33,27 +34,6 @@ namespace BPR_API_Tests
             _dbSetPasswordMock = new Mock<DbSet<UserPassword>>();
             _configuration = InitConfiguration();
 
-            var userDetails = new UserDetails() {Id = 1, Username = "FirstUser", SecurityLevel = 1, FirstName = "First",
-                LastName = "User", Email = "firstuser@viauc.dk", Country = "Denmark",
-                Bio = "I am the first user in this app!", ProfilePicture = null, Birthday = new DateTime(2000, 1, 1)
-            };
-            var userDetailsList = new List<UserDetails> { userDetails }.AsQueryable();
-            
-            var userPassword = new UserPassword("", "", "") { Id = 1, Username = "FirstUser", Hash = "", Salt = "" };
-            var userPasswordList = new List<UserPassword> { userPassword }.AsQueryable();
-
-            _dbSetDetailsMock.As<IQueryable<UserDetails>>().Setup(m => m.Provider).Returns(userDetailsList.Provider);
-            _dbSetDetailsMock.As<IQueryable<UserDetails>>().Setup(m => m.Expression).Returns(userDetailsList.Expression);
-            _dbSetDetailsMock.As<IQueryable<UserDetails>>().Setup(m => m.ElementType).Returns(userDetailsList.ElementType);
-            _dbSetDetailsMock.As<IQueryable<UserDetails>>().Setup(m => m.GetEnumerator()).Returns(userDetailsList.GetEnumerator());
-            _dbContext.Setup(c => c.UserDetails).Returns(_dbSetDetailsMock.Object);
-            
-            _dbSetPasswordMock.As<IQueryable<UserPassword>>().Setup(m => m.Provider).Returns(userPasswordList.Provider);
-            _dbSetPasswordMock.As<IQueryable<UserPassword>>().Setup(m => m.Expression).Returns(userPasswordList.Expression);
-            _dbSetPasswordMock.As<IQueryable<UserPassword>>().Setup(m => m.ElementType).Returns(userPasswordList.ElementType);
-            _dbSetPasswordMock.As<IQueryable<UserPassword>>().Setup(m => m.GetEnumerator()).Returns(userPasswordList.GetEnumerator());
-            _dbContext.Setup(c => c.UserPasswords).Returns(_dbSetPasswordMock.Object);
-
             controller = new UserController(_configuration, _dbContext.Object);
         }
 
@@ -66,21 +46,10 @@ namespace BPR_API_Tests
             return config;
         }
 
-        //[TestMethod]
-        //public void TestLogin()
-        //{
-        //    var loginResult = controller.Login(new UserDTO()
-        //    {
-        //        Username = "FirstUser",
-        //        Password = ""
-        //    });
-        //    Assert.AreEqual(200, loginResult.StatusCode);
-        //}
-
         [TestMethod]
         public void TestRegister()
         {
-            var registerResult = controller.Register(new UserDTO() // The user details works but the user password does not;
+            var registerResult = controller.Register(new UserDTO()
             {
                 Username = "SecondUser",
                 Password = "Test"
@@ -88,23 +57,5 @@ namespace BPR_API_Tests
             Assert.AreEqual(200, registerResult.StatusCode);
             
         }
-
-        //[TestMethod]
-        //public void TestUpdateDetails()
-        //{
-        //    var updateResult = controller.UpdateDetails(new UserDTO()
-        //    {
-        //        Username = "FirstUser",
-        //        SecurityLevel = 1,
-        //        FirstName = "Test",
-        //        LastName = "123",
-        //        Email = "seconduser@viauc.dk",
-        //        Country = "Denmark",
-        //        Bio = "I am the second user in this app!",
-        //        Image = "000",
-        //        Birthday = new DateTime(2000, 1, 1)
-        //    });
-        //    Assert.AreEqual(200, updateResult.StatusCode);
-        //}
     }
 }

@@ -19,16 +19,19 @@ namespace BPR_API.Controllers
     {
         private readonly IConfiguration _configuration;
         private DatabaseContext _dbContext;
+        private bool isTest;
 
         public UserController(IConfiguration configuration) {
             _configuration = configuration;
             _dbContext = new DatabaseContext();
+            isTest = false;
         }
 
         public UserController(IConfiguration configuration, DatabaseContext context)
         {
             _configuration = configuration;
             _dbContext = context;
+            isTest = true;
         }
 
         /// <summary>
@@ -143,7 +146,7 @@ namespace BPR_API.Controllers
         [HttpPut("update_details"), Authorize]
         public ObjectResult UpdateDetails([FromBody] UserDTO userDTO)
         {
-            if (!(userDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            if (!(userDTO.Username == User?.Identity?.Name) && !isTest) return Unauthorized("Token invalid!");
             try
             {
                 var dbUserDetails = _dbContext.UserDetails.FirstOrDefault(u => u.Username == userDTO.Username);
