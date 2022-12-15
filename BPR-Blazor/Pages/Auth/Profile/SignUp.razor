@@ -36,7 +36,7 @@
                                 <label>Bio</label>
                             </div>
                             <div class="signup">
-                                <InputFile OnChange="@LoadFiles"/>
+                                <InputFile OnChange="@LoadFiles" required=""/>
                                 <span></span>
                                 <label>Profile Picture</label>
                             </div>
@@ -61,7 +61,6 @@
     
     private string username, image = "";
     public DateTime? date = DateTime.Today;
-    private byte[]  _image = new byte[0];
     public IBrowserFile selectedFile { set; get; }
     public readonly long maxFileSize = 1024 * 1024 * 10;
     protected async override void OnInitialized()

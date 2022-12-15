@@ -1,4 +1,5 @@
 @page "/post/{postId}"
+@attribute [Authorize]
 <div class="index">
  <div class="row pt-3">
             <div class="col-sm-1">
@@ -31,20 +32,95 @@
 
         <div class="row m-2 mt-3 border-bottom border-top border-secondary">
             <span class="mt-3 mb-3" style="color:gray;">@(post.CreatedDate) <button class="btn shadow-none" style="color: gray" @onclick="() => ReactToPost(post.Id)">
-                <span class="oi oi-heart" style="color: red"></span>@post.Likes
+                <span class="oi oi-heart" style="color: red; margin-left: 10px;"></span>@post.Likes
             </button></span>
             
      </div>
+    <div class="row border-bottom border-secondary p-3">
+        <div class="col-sm-auto">
+            @if (loggedUser1.ProfilePicture != null)
+                    {
+                        <img src="@image" 
+                        class="img rounded-circle post-pfpic"
+                        @onclick="() => GoToProfile(post.Username)" />
+                }
+                else {
+                    <img src="images/VIA-PP.jpg" class="img rounded-circle post-pfpic"
+                    @onclick="() => GoToProfile(post.Username)" />
+                    } 
+        </div>
+        <div class="col-6">
+            <div class="container">
+                <EditForm Model="@comment" OnValidSubmit="@SendComment">
+                    <InputText class="form-control bg-dark text-light shadow-none border-0" @bind-Value="@(comment.Title)"
+                        placeholder="Insert a title"></InputText>
+                    <textarea class="form-control bg-dark text-light shadow-none border-0" rows="1"
+                        style="resize: none; overflow: hidden; font-size: large; margin-top: 10px"
+                        oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                        @bind="@(comment.Description)" 
+                        placeholder="I'm not a bug, I'm a feature! (Content)"></textarea>
 
+                    <button type="submit" class="btn btn-primary mt-2 float-left static">Comment</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+    @foreach (var _comment in comments)
+    {
+        <div class="row pt-3">
+            <div class="col-sm-auto">
+                @foreach (var user in users)
+                {
+                   @if (_comment.Username == user.Username && user.ProfilePicture != null)
+                    {
+                        <img src="@string.Format(@imageFormat, @user.ProfilePicture)" 
+                        class="img rounded-circle post-pfpic"
+                        @onclick="() => GoToProfile(post.Username)" />
+                }
+                else if(post.Creator == user.Username && user.ProfilePicture == null){
+                    <img src="images/VIA-PP.jpg" class="img rounded-circle post-pfpic"
+                    @onclick="() => GoToProfile(post.Username)" />
+                    } 
+                }
+            </div>
+            <div class="col-auto">
+                <a class="mr-1"  href="/profile/@(post.Creator)">@(_comment.Username)</a>
+                <span class="mr-1 post-gray">@("@" + _comment.Username)</span>
+                @if (_comment.Username == username)
+                {
+                    <button class="btn shadow-none" @onclick="() => DeleteComment(_comment.CommentId)">
+                        <span class="oi oi-trash  post-gray" aria-hidden="true"></span>
+                    </button>
+                }
+            </div>
+        </div>
+        
+<div class="row border-bottom border-secondary">
+    <div class="col-sm-1"></div>
+    <div class="col-8">
+        <div class="postContainer">
+        <h5><b>@_comment.Title</b></h5>
+            <p>
+                <a class="mb-1 post-link" href="post/@post.Id">@(_comment.Description)</a>
+            </p>
+        </div>
+    </div>
+</div>
+      
+    }
 </div>
 @code{
     [Parameter] 
      public string postId{get; set;}
      public int id = 0;
-     public string username,response = "";
+     public string username,response, image = "";
      public PostDTO post = new PostDTO();
+     public CommentDTO comment = new CommentDTO();
+     public List<CommentDTO> comments = new List<CommentDTO>();
+        public List<UserDTO> users = new List<UserDTO>();
     public bool showAlert, isSuccess = false;
     public UserDTO user = new UserDTO();
+    public UserDTO loggedUser1  = new UserDTO();
     public string imageFormat = "data:image/png;base64,{0}";
      protected override async Task OnInitializedAsync()
      {
@@ -55,6 +131,10 @@
         try{
             post = await PostService.GetPost(username, id);
             user = await UserService.GetUserByUsername(post.Creator);
+            users = await UserService.GetUsers();
+            comments = await PostService.GetComments(username, id);
+            loggedUser1 = await UserService.GetUserByUsername(username);
+            image = string.Format("data:image/png;base64,{0}", loggedUser1.ProfilePicture);
             StateHasChanged();
         }
         catch(Exception e){
@@ -64,7 +144,11 @@
      private void GoToProfile(string username){
         navManager.NavigateTo("/profile/" + username);
     }
-
+    private async Task SendComment(){
+        await PostService.Comment(username, comment.Title, comment.Description, id);
+        comments = await PostService.GetComments(username, id);
+        StateHasChanged();
+    }
     private async Task ReactToPost(int id){
         response = await PostService.ReactToPost(username, id,1);
         if(response == "Reaction added!"){
@@ -88,5 +172,26 @@
         showAlert = false;
         response = "";
         StateHasChanged();
+    }
+    private async Task DeleteComment(int commentId)
+    {
+        Console.WriteLine(commentId);
+        response = await PostService.DeleteComment(username,id,commentId);
+        if(response == "Comment deleted!"){
+            if(comments.Any(p => p.CommentId == commentId))
+            {
+            comments.Remove(comments.First(p => p.CommentId == commentId));
+            showAlert = true;
+            isSuccess = true;
+            ShowAlert("Post deleted successfully");
+            StateHasChanged();
+            }
+        }else{
+            showAlert = true;
+            isSuccess = false;
+            ShowAlert("Error deleting post");
+            StateHasChanged();
+        }
+        
     }
 }

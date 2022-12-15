@@ -24,6 +24,7 @@ namespace BPR_API.DataAccess
             modelBuilder.Entity<SubjectOwner>().HasKey(c => new { c.UserId, c.SubjectId });
             modelBuilder.Entity<Following>().HasKey(c => new { c.UserId, c.FollowedId });
             modelBuilder.Entity<Reaction>().HasKey(c => new { c.UserId, c.PostId });
+            modelBuilder.Entity<Comment>().HasKey(c => new { c.CommentId });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

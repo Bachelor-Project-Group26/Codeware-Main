@@ -1,4 +1,6 @@
-﻿namespace BPR_API.APIModels
+﻿using BPR_Blazor.Models;
+
+namespace BPR_API.APIModels
 {
     public class PostDTO
     {
@@ -12,5 +14,6 @@
         public DateTime CreatedDate { get; set; }
         public int Reaction { get; set; }
         public int Likes { get; set; }
+        public ICollection<CommentDTO> Comments { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace BPR_Blazor.Data
         private string URL = "https://codeware-backend-bpr.azurewebsites.net/";
         //private string URL = "https://localhost:7000";
 
+
         public async Task<ChatDTO> GetChat(string Username, int Id)
         {   
             ChatDTO chat = new ChatDTO();

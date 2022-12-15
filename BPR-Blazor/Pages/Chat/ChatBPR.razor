@@ -1,4 +1,5 @@
 @page "/chat/{chatId}"
+@attribute [Authorize]
 <section class="index">
    
 <div class="d-flex flex-grow-1 flex-row chatContainer">
@@ -30,6 +31,7 @@
                         <MudButton OnClick="deleteUser" StartIcon="@Icons.Filled.HorizontalRule" Color="Color.Secondary" Style="color:{Colors.Pink.Lighten2}" ButtonType="ButtonType.Button">Delete</MudButton>
                     </MudPopover>
              }
+             <p style="margin-left: 20px; margin-top: 15px;">@chat.Bio</p>
         </MudToolBar>
         <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh;  overflow:scroll;" id="chatContainer">
             @foreach (var message in messages)
@@ -38,7 +40,16 @@
                 {
                   <div class="d-flex flex-row my-4" >
                     <div class="mr-4">
-                        <MudAvatar Class="static" Color="Color.Secondary" Style="height:50px; width:50px;">@message.Username.ToUpper().FirstOrDefault()</MudAvatar>
+                        @foreach (var user in users)
+                        {
+                            @if (user.Username == message.Username)
+                            {
+                                <img src="@string.Format(@imageFormat, @user.ProfilePicture)" class="img rounded-circle"
+                        style="width: 50px; height: 50px; outline: none; cursor: pointer"
+                        @onclick="() => GoToProfile(user.Username)" />
+
+                            }
+                        }   
                     </div>
                     <div>
                         <MudText Typo="Typo.body1">@message.Username</MudText>
@@ -51,7 +62,9 @@
                 {
                     <div class="d-flex flex-row-reverse my-4">
                         <div class="ml-4">
-                            <MudAvatar Color="Color.Primary" Style="height:50px; width:50px;">@message.Username.ToUpper().FirstOrDefault()</MudAvatar>
+                            <img src="@image" class="img rounded-circle"
+                        style="width: 50px; height: 50px; outline: none; cursor: pointer"
+                        @onclick="() => GoToProfile(message.Username)" />
                         </div>
                         <div>
                             <MudText Typo="Typo.body1">@message.Username</MudText>
@@ -115,17 +128,19 @@
 
 @code{
      [Parameter] 
-     public string chatId{get; set;}
+     public string chatId{get; set;} = "";
      public int id = 0;
     [Parameter] 
-    public string CurrentMessage { get; set; }
+    public string CurrentMessage { get; set; } = "";
     private ChatDTO chat = new ChatDTO();
     private List<ChatDTO> chats = new List<ChatDTO>();
     private List<MessageDTO> messages = new List<MessageDTO>();
-    private string username = "";
+    private List<UserDTO> users = new List<UserDTO>();
+    private UserDTO loggedUser = new UserDTO();
+    
     public bool _isOpen, showAlert, isSuccess = false;
-    private string usernameToAdd, usernameToDelete, result, response = "";
-    private string sampleText = "Type your message here";
+    private string usernameToAdd = "", usernameToDelete= "", result= "", response= "", username= "", image = "";
+    private string imageFormat = "data:image/png;base64,{0}";
     
 
 	public void ToggleOpen()
@@ -145,6 +160,9 @@
         chat = await ChatService.GetChat(username,id);
         chats = await ChatService.GetChatList(user.Identity.Name);
         messages = await ChatService.GetMessages(username,id);
+        users = await UserService.GetUsers();
+        loggedUser = await UserService.GetUserByUsername(username);
+        image = string.Format("data:image/png;base64,{0}", loggedUser.ProfilePicture);
         StateHasChanged();
         }catch(Exception e){
             Console.WriteLine(e);
@@ -216,10 +234,6 @@
         showAlert = false;
         response = "";
     }
-    private void hide(){
-
-        sampleText = "";
-    }
     private void ToCreateChat(){
         navManager.NavigateTo("/createchat");
     }
@@ -248,5 +262,8 @@
             isSuccess = false;
             ShowAlert("Something went wrong with the system");
         }   
+    }
+    private void GoToProfile(string username){
+        navManager.NavigateTo("/profile/" + username);
     }
 }

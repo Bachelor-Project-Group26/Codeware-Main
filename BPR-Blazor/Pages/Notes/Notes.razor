@@ -1,5 +1,5 @@
 @page "/notes"
-
+@attribute [Authorize]
 <div class="index">
     @if (notes.Count == 0)
     {
@@ -93,10 +93,7 @@
         await Task.Delay(1);
         notes = await NoteService.GetNoteList(username);
     }
-    private async Task updateNote()
-    {
-        await NoteService.UpdateNote(username, noteDTO.NoteId, title, content);
-    }
+    
     private async Task CreateNote(){
         await NoteService.CreateNote(username, noteDTO.Title, noteDTO.Content);
         _isOpen = false;

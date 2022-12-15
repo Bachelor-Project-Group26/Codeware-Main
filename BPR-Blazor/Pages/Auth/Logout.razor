@@ -5,7 +5,7 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        //await UserService.Logout();
+        await LocalStorage.RemoveItemAsync("token");
         navManager.NavigateTo("/");
     }
 }

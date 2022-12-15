@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BPR_API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221207093027_Chnaged_the_comments2")]
-    partial class Chnaged_the_comments2
+    [Migration("20221210172507_RevertComment")]
+    partial class RevertComment
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,7 +48,7 @@ namespace BPR_API.Migrations
 
             modelBuilder.Entity("BPR_API.DBModels.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -70,7 +70,9 @@ namespace BPR_API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("PostId");
 
                     b.ToTable("Comments");
                 });
@@ -309,6 +311,20 @@ namespace BPR_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserPasswords");
+                });
+
+            modelBuilder.Entity("BPR_API.DBModels.Comment", b =>
+                {
+                    b.HasOne("BPR_API.DBModels.Post", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BPR_API.DBModels.Post", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

@@ -230,31 +230,6 @@ namespace BPR_API.Controllers
             }
             return Ok("User unfollowed!");
         }
-        // Method that get the posts from the followed users
-        [HttpPost("get_followed_posts"), Authorize]
-        public async Task<ActionResult<string>> GetFollowedPosts([FromBody] PostDTO postDTO)
-        {
-            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
-            try
-            {
-                int creatorId = 0;
-                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-                creatorId = user.Id;
-                var followedUsers = _dbContext.FollowingList.Where(f => f.UserId == user.Id && f.IsUser == true).ToList();
-                List<Post> posts = new List<Post>();
-                foreach (var followedUser in followedUsers)
-                {
-                    var _user = _dbContext.UserDetails.FirstOrDefault(u => u.Id == followedUser.FollowedId);
-                    var followedUserPosts = _dbContext.Posts.Where(p => p.Creator == _user.Username).ToList();
-                    return Ok(followedUserPosts);
-                }
-                return BadRequest("Something went wrong with getting the posts!");
-            }
-            catch (Exception)
-            {
-                return BadRequest("Something went wrong with getting the posts!");
-            }
-        } 
         
         [HttpPost("send_Comment"), Authorize]
         public async Task<ActionResult<string>> Comment ([FromBody] PostDTO postDTO){
@@ -262,8 +237,10 @@ namespace BPR_API.Controllers
             try
             {
                 var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
-                var comment = _dbContext.Comments.Add(new Comment{PostId = postDTO.Id, UserId = user.Id, 
-                    Username = postDTO.Username, Title = postDTO.Title, Description = postDTO.Content});
+                var comment = _dbContext.Comments1.Add(new Comment{PostId = postDTO.Id, UserId = user.Id, Username = postDTO.Username,Title = postDTO.Title, Description = postDTO.Content});
+                var toUpdate = _dbContext.Posts.FirstOrDefault(p => p.Id == postDTO.Id);
+                toUpdate.Comments.Add(comment.Entity);
+                _dbContext.Posts.Update(toUpdate);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Comment added!");
             }
@@ -278,12 +255,68 @@ namespace BPR_API.Controllers
             if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
             try
             {
-                var comments = _dbContext.Comments.Where(c => c.PostId == postDTO.Id).ToList();
+                var comments = _dbContext.Comments1.Where(c => c.PostId == postDTO.Id).ToList();
                 return Ok(comments);
             }
             catch (Exception e)
             {
                 return BadRequest("Something went wrong! Error: " + e.Message + "Inner: " + e.InnerException);
+            }
+        }
+        [HttpPost("delete_comment"), Authorize]
+        public async Task<ActionResult<string>> DeleteComment ([FromBody] PostDTO postDTO){
+            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            {
+                var comment = _dbContext.Comments1.FirstOrDefault(c => c.PostId == postDTO.Id && c.CommentId == postDTO.followedId);
+                _dbContext.Comments1.Remove(comment);
+                await _dbContext.SaveChangesAsync();
+                return Ok("Comment deleted!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Something went wrong! Error: " + e.Message + "Inner: " + e.InnerException);
+            }
+        }
+        [HttpPost("check_followed"), Authorize]
+        public async Task<ActionResult<string>> CheckFollowed ([FromBody] PostDTO postDTO){
+            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            {
+                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
+                var followedUser = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username2);
+                var following = _dbContext.FollowingList.FirstOrDefault(f => f.UserId == user.Id && f.FollowedId == followedUser.Id && f.IsUser == true);
+                if (following != null) return Ok("Followed");
+                return Ok("Not followed");
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Something went wrong! Error: " + e.Message + "Inner: " + e.InnerException);
+            }
+        }
+        // Method that get the posts from all the followed users
+        [HttpPost("get_followed_posts_all"), Authorize]
+        public async Task<ActionResult<string>> GetFollowedPostsAll([FromBody] PostDTO postDTO)
+        {
+            if (!(postDTO.Username == User?.Identity?.Name)) return Unauthorized("Token invalid!");
+            try
+            {
+                int creatorId = 0;
+                var user = _dbContext.UserDetails.FirstOrDefault(u => u.Username == postDTO.Username);
+                creatorId = user.Id;
+                var followedUsers = _dbContext.FollowingList.Where(f => f.UserId == user.Id && f.IsUser == true).ToList();
+                List<Post> posts = new List<Post>();
+                foreach (var followedUser in followedUsers)
+                {
+                    var _user = _dbContext.UserDetails.FirstOrDefault(u => u.Id == followedUser.FollowedId);
+                    var followedUserPosts = _dbContext.Posts.Where(p => p.Creator == _user.Username).ToList();
+                    posts.AddRange(followedUserPosts);
+                }
+                return Ok(posts);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong with getting the posts!");
             }
         }
     }
