@@ -580,60 +580,6 @@ form .signup{
     float : right; 
     margin: 15px;
 }
-@media screen and (min-width: 1920px){
-    .postContainer h5{
-        margin-left: -83px; 
-        margin-top: -15px;
-    }
-    .postContainer p{
-        margin-left: -60px;
-    }
-}
-@media screen and (max-width: 1600px){
-    .postContainer h5{
-        margin-left: -53px; 
-        margin-top: -15px;
-    }
-    .postContainer p{
-        margin-left: -50px;
-    }
-}
-@media screen and (max-width: 1440px){
-    .postContainer h5{
-        margin-left: -43px; 
-        margin-top: -15px;
-    }
-    .postContainer p{
-        margin-left: -30px;
-    }
-}
-@media screen and (max-width: 1280px){
-    .postContainer h5{
-        margin-left: -33px; 
-        margin-top: -15px;
-    }
-    .postContainer p{
-        margin-left: -32px;
-    }
-}
-@media screen and (max-width: 1152px){
-    .postContainer h5{
-        margin-left: -10px; 
-        margin-top: -15px;
-    }
-    .postContainer p{
-        margin-left: -10px;
-    }
-}
-@media screen and (max-width: 1024px){
-    .postContainer h5{
-        margin-left: -10px; 
-        margin-top: -15px;
-    }
-    .postContainer p{
-        margin-left: -10px;
-    }
-}
 .alertProfile{
     float: right;
      padding: 10px;

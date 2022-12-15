@@ -9,8 +9,8 @@ namespace BPR_Blazor.Data
 {
     public class UserService : IUserService
     {
-         private string URL = "https://localhost:7000";
-        //private string URL = "https://codeware-backend-bpr.azurewebsites.net/";
+        // private string URL = "https://localhost:7000";
+        private string URL = "https://codeware-backend-bpr.azurewebsites.net/";
         public async Task<string> Login(string username, string password)
         {
             UserDTO user = new UserDTO {
