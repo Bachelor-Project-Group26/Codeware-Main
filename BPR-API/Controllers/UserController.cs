@@ -27,13 +27,12 @@ namespace BPR_API.Controllers
             isTest = false;
         }
 
-        /*public UserController(IConfiguration configuration, DatabaseContext context)
+        public void addContext(DatabaseContext context)
         {
-            _configuration = configuration;
             _dbContext = context;
             isTest = true;
         }
-*/
+
         /// <summary>
         /// Checks the credentials of the user and logs them in.
         /// </summary>

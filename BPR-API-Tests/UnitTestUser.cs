@@ -34,7 +34,8 @@ namespace BPR_API_Tests
             _dbSetPasswordMock = new Mock<DbSet<UserPassword>>();
             _configuration = InitConfiguration();
 
-            controller = new UserController(_configuration, _dbContext.Object);
+            controller = new UserController(_configuration);
+            controller.addContext(_dbContext.Object);
         }
 
         public static IConfiguration InitConfiguration()
